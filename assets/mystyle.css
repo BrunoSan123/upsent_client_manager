@@ -1,0 +1,48 @@
+.upsent_plugin_form{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.section_form{
+    display: flex;
+    flex-direction: column;
+}
+
+.upsent_table{
+    border-collapse: collapse;
+    margin-bottom: 2%;
+    width: 70%;
+}
+
+.upsent_table_head{
+    background: lightblue;
+    height: 30px;
+}
+
+.upsent_table_data{
+    width: 25%;
+    background-color: lightcyan;
+    height: 30px;
+}
+
+.upsent_table_data{
+    text-align: center;
+}
+
+.upsent-pop-up{
+    display: none;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    background: rgba(0, 0, 0, .6);
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.reveal{
+    display: flex !important;
+}
