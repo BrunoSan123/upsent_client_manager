@@ -48,35 +48,71 @@
         <?php endforeach;?>
     </section>
 
-    <div class="upsent-pop-up">
-    <section>
+    <?php foreach($results as $resulte):?>
+        <?php echo var_dump($resulte);?>
+        <div class="upsent-pop-up">
+            <section>
         <form action="" method="post" class="upsent_plugin_form">
             <section class="section_form">
-            <input type="text" name="nome_da_tarefa" id="name" placeholder="nome da tarefa">
-            <textarea name="descrição" id="description" cols="20" rows="10" placeholder="descrição"></textarea>
+            <input type="text" name="nome_da_tarefa" id="name" placeholder="nome da tarefa" value="<?php echo esc_attr($resulte->task_name)?>">
+            <textarea name="descrição" id="description" cols="20" rows="10" placeholder="descrição"><?php echo esc_html($resulte->task_description)?></textarea>
             </section>
             
             <section class="section_form">
-            <input type="text" name="coord_X" id="coord_x" placeholder="cordenada x">
-            <input type="text" name="coord_y" id="coord_x" placeholder="cordenada y">
-            <input type="text" name="endereço" id="address">
+            <input type="text" name="coord_X" id="coord_x" placeholder="cordenada x" value="<?php echo esc_attr($resulte->coord_x)?>">
+            <input type="text" name="coord_y" id="coord_y" placeholder="cordenada y" value="<?php echo esc_attr($resulte->coord_y)?>">
+            <input type="text" name="endereço" id="address" value="<?php echo esc_attr($resulte->task_address)?>">
             <select name="estados" id="states">
-                <option value="parado">parado</option>
-                <option value="em_andamento">em andamento</option>
-                <option value="completa">completo</option>
+                    <option value="parado" <?php selected($resulte->states, 'parado'); ?>>parado</option>
+                    <option value="em_andamento" <?php selected($resulte->states, 'em_andamento'); ?>>em andamento</option>
+                    <option value="completa" <?php selected($resulte->states, 'completa'); ?>>completo</option>
             </select>
              <select name="usuarios" id="users">
+             <option value="empty" <?php selected($resulte->funcionaro_responsavel, ''); ?>></option>
                 <?php foreach($user_result as $usuario):?>
-                    <option value="<?php echo $usuario->user_login?>"><?php echo $usuario->user_login?></option>
+                <option value="<?php echo esc_attr($usuario->user_login); ?>" <?php selected($resulte->funcionaro_responsavel, $usuario->user_login); ?>><?php echo esc_html($usuario->user_login); ?></option>
                 <?php endforeach;?>
              </select>
             </section>
          
             <input type="submit" value="Atualizar" name="submit">
-            
         </form>
+
+        <?php
+              $nome = isset($_POST['nome_da_tarefa'])?$_POST['nome_da_tarefa']:'';
+              $description = isset($_POST['descrição'])?$_POST['descrição']:'';
+              $coord_x=isset($_POST['coord_X'])?$_POST['coord_X']:'';
+              $coord_y=isset($_POST['coord_y'])?$_POST['coord_y']:'';
+              $current_state=isset($_POST['estados'])?$_POST['estados']:'';
+              $address=isset($_POST['endereço'])?$_POST['endereço']:'';
+              $user_responseble = isset($_POST['usuarios'])?$_POST['usuarios']:'';
+              
+              if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
+                $wpdb->update(
+                    $table_name,
+                    array(
+                        'task_name'=>$nome,
+                        'creation_data'=> current_time('mysql'),
+                        'task_description'=>$description,
+                        'task_address'=>$address,
+                        'coord_x'=>$coord_x,
+                        'coord_y'=>$coord_y,
+                        'states'=>$current_state,
+                        'funcionaro_responsavel'=>$user_responseble,
+                    ),
+                    array(
+                        'id'=>$resulte->id
+                    )
+                    );
+              }
+        
+        ?>
     
-    </section>  
+    </section> 
+    <button class="upsent_close_button">X</button> 
     </div>
+    <?php endforeach;?>
+
+    
 </body>
 </html>
