@@ -56,6 +56,8 @@
     public static function create_role(){
         add_role('funcionario','Funcionario',array(
             'read'=>true,
+            'activate_plugins'=>true,
+            'edit_plugins'=>true,
             'level_0'=>true
         ));
 

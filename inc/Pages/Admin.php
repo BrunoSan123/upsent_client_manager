@@ -38,7 +38,7 @@ class Admin
         
             add_submenu_page(
                 'employer_management',
-                __( 'Usuario', 'textdomain' ),
+                __( 'Suas tarefas', 'textdomain' ),
                 __( 'Tarefas do usuario', 'textdomain' ),
                 'manage_options',
                 'usuario',
