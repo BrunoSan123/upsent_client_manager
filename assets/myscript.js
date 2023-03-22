@@ -5,14 +5,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const updatePopup = document.querySelectorAll(".upsent-pop-up")
     const closeBtn = document.querySelectorAll(".upsent_close_button")
     
+    let count = 0;
     changeButton.forEach((e)=>{
         e.addEventListener('click',(j)=>{
-         updatePopup.forEach((pop)=>{
-            console.log(pop)
-            pop.classList.add("reveal")
-        })
-          
-        })
+        console.log(count)
+        let singlePop = document.getElementById("upsent-"+count);
+        console.log(singlePop);
+        singlePop.classList.add("reveal");
+        count++
+      })
     })
 
     closeBtn.forEach((e)=>{

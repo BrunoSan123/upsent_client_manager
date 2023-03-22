@@ -11,6 +11,7 @@
     public static function activate(){
         self::create_client();
         self::create_task();
+        self::create_role();
         flush_rewrite_rules();
     } 
 
@@ -49,6 +50,15 @@
         )";
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql_client);
+    }
+
+
+    public static function create_role(){
+        add_role('funcionario','Funcionario',array(
+            'read'=>true,
+            'level_0'=>true
+        ));
+
     }
     
  }

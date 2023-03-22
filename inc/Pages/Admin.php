@@ -14,8 +14,17 @@ class Admin
     }
 
     public function add_admin_pages(){
+        $user='administrator';
+        $args=array(
+            'role'=>'administrator',
+            'orderby' => 'user_nicename',
+            'order'   => 'ASC'
+           
+        );
+        $allUsers=get_users($args);
+        $get_user_role=get_role($user);
         add_menu_page('EmployerManagement','EMT','manage_options','employer_management',array($this,'admin_index'),'dashicons-editor-table',110);
-
+        if($allUsers && $get_user_role->name=="administrator"){
         add_submenu_page(
             'employer_management',
             __( 'Tarefas ', 'textdomain' ),
@@ -24,7 +33,21 @@ class Admin
             'tarefas',
             array($this,'task_subpage'),
             '2'
-        );
+        );}
+
+        
+            add_submenu_page(
+                'employer_management',
+                __( 'Usuario', 'textdomain' ),
+                __( 'Tarefas do usuario', 'textdomain' ),
+                'manage_options',
+                'usuario',
+                 array($this,'task_user_subpage'),
+                 '4'
+    
+            );
+
+      
     }
 
     public function admin_index(){
@@ -34,5 +57,9 @@ class Admin
 
     public function task_subpage(){
         require_once PLUGIN_PATH.'templates/task_view.php';
+    }
+
+    public function task_user_subpage(){
+        require_once PLUGIN_PATH.'templates/usuario.php';
     }
 }
