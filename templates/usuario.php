@@ -20,6 +20,7 @@
             $results=$wpdb->get_results("SELECT * FROM $table_name WHERE funcionaro_responsavel='$current_user->display_name'");
             $user_table=$wpdb->prefix.'users';
             $user_result=$wpdb->get_results("SELECT * FROM $user_table");
+            $logs_table_name=$wpdb->prefix.'logs';
             
         ?>
 
@@ -74,7 +75,19 @@
         <?php
 
               $current_state=isset($_POST['estados-'.$i])?$_POST['estados-'.$i]:'';
+              $sinal;
+              if($current_state=='parado'){
+                $sinal='RED';
+              }elseif($current_state=='em_andamento'){
+                $sinal='YELLOW';
+              }else{
+                $sinal= 'GREEN';
+              }
+              echo $sinal;
+
+             
               if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit-'.$i])){
+             
                 $wpdb->update(
                     $table_name,
                     array(
@@ -84,9 +97,17 @@
                         'id'=>$result->id
                     )
                     );
-              }
-        
-        ?>
+
+                    $wpdb->insert(
+                        $logs_table_name,
+                        array(
+                          'user'=>$result->funcionaro_responsavel,
+                          'log_description'=>"usuario ".$result->funcionaro_responsavel." mudou o estado da tarefa para ".$current_state,
+                          'sign'=>$sinal
+                          )
+                        );
+                    }
+            ?>
     
     </section> 
     <button class="upsent_close_button">X</button> 

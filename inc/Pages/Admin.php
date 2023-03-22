@@ -33,7 +33,19 @@ class Admin
             'tarefas',
             array($this,'task_subpage'),
             '2'
-        );}
+        );
+
+        add_submenu_page(
+            'employer_management',
+            __( 'Histórico ', 'textdomain' ),
+            __( 'Histórico dos funcionarios', 'textdomain' ),
+            'manage_options',
+            'historico',
+            array($this,'logs_subpage'),
+            '3'
+        );
+    
+    }
 
         
             add_submenu_page(
@@ -46,8 +58,6 @@ class Admin
                  '4'
     
             );
-
-      
     }
 
     public function admin_index(){
@@ -61,5 +71,9 @@ class Admin
 
     public function task_user_subpage(){
         require_once PLUGIN_PATH.'templates/usuario.php';
+    }
+
+    public function logs_subpage(){
+        require_once PLUGIN_PATH.'templates/historico.php';
     }
 }

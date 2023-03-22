@@ -11,6 +11,7 @@
     public static function activate(){
         self::create_client();
         self::create_task();
+        self::create_logs();
         self::create_role();
         flush_rewrite_rules();
     } 
@@ -50,6 +51,20 @@
         )";
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql_client);
+    }
+
+    public static function create_logs(){
+        global $wpdb;
+        $table_name=$wpdb->prefix.'logs';
+        $sql_logs="CREATE TABLE IF NOT EXISTS $table_name(
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            user VARCHAR(50) NOT NULL,
+            log_description VARCHAR(50) NOT NULL,
+            sign VARCHAR(50) NOT NULL,
+            PRIMARY KEY(id)
+        )";
+        require_once(ABSPATH.'wp-admin/includes/upgrade.php');
+        dbDelta($sql_logs);
     }
 
 
