@@ -46,3 +46,8 @@
 .reveal{
     display: flex !important;
 }
+
+#map{
+    width: 400px;
+    height: 400px;
+}

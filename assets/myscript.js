@@ -15,8 +15,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
       }
 
       function showPosition(position) {
-        x.innerHTML = "Latitude: " + position.coords.latitude + 
-        "<br>Longitude: " + position.coords.longitude;
+        //x.innerHTML = "Latitude: " + position.coords.latitude + 
+        //"<br>Longitude: " + position.coords.longitude;
+        const map =new google.maps.Map(document.getElementById("map"), {
+          mapId: "fd8fa89344b48be0",
+          center: { lat: position.coords.latitude, lng: position.coords.longitude },
+          zoom: 16,
+        });
+
+        new google.maps.Marker({
+          position: { lat: position.coords.latitude, lng: position.coords.longitude },
+          map,
+          title: "funcionario",
+        });
+      
+        
       }
     
     

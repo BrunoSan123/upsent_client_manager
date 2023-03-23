@@ -49,7 +49,9 @@
             </tr>
             
         </table>
-        <p id="demo"></p>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChwlr0dGv_YSZfJkVdblKgIV47MK3tkks&callback=initMap"></script>
+        <div id="map"></div>
+        <div id="demo"></div>
             <?php $i++;?>
         <?php endforeach;?>
     </section>
