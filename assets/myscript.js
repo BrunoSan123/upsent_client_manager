@@ -14,9 +14,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
       }
 
-      function showPosition(position) {
-        //x.innerHTML = "Latitude: " + position.coords.latitude + 
-        //"<br>Longitude: " + position.coords.longitude;
+
+      function showPosition(position){
+          document.cookie=`coord_x= ${position.coords.latitude}` 
+          document.cookie=`coord_y= ${position.coords.longitude}`
+      }
+      
+
+      function redermap(position) {
         const map =new google.maps.Map(document.getElementById("map"), {
           mapId: "fd8fa89344b48be0",
           center: { lat: position.coords.latitude, lng: position.coords.longitude },

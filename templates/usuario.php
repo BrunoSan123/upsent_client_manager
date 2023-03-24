@@ -21,6 +21,7 @@
             $user_table=$wpdb->prefix.'users';
             $user_result=$wpdb->get_results("SELECT * FROM $user_table");
             $logs_table_name=$wpdb->prefix.'logs';
+            $user_coords_table=$wpdb->prefix.'user_coords';
             
         ?>
 
@@ -41,19 +42,20 @@
                 <td><?php echo $result->task_name?></td>
                 <td><?php echo $result->task_address?></td>
                 <td><?php echo $result->task_description?></td>
-                <td><?php echo $result->coord_x?></td>
-                <td><?php echo $result->coord_y?></td>
+                <td class="coord_x-<?php echo $i?>"><?php echo $result->coord_x?></td>
+                <td class="coord_y-<?php echo $i?>"><?php echo $result->coord_y?></td>
                 <td><?php echo $result->states?></td>
                 <td><?php echo $result->funcionaro_responsavel?></td>
                 <td><button class="change_btn">alterar</button></td>
             </tr>
             
         </table>
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChwlr0dGv_YSZfJkVdblKgIV47MK3tkks&callback=initMap"></script>
-        <div id="map"></div>
-        <div id="demo"></div>
+        
+        </div>
             <?php $i++;?>
         <?php endforeach;?>
+        <div id="demo"></div>
+        <div id="map"></div>
     </section>
 
     <?php $i=0;?>
@@ -89,8 +91,9 @@
 
              
               if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit-'.$i])){
-             
-                $wpdb->update(
+                    $coord_x=$_COOKIE['coord_x'];
+                    $coord_y=$_COOKIE['coord_y'];
+                    $wpdb->update(
                     $table_name,
                     array(
                         'states'=>$current_state,
@@ -108,6 +111,15 @@
                           'sign'=>$sinal
                           )
                         );
+
+                    $wpdb->insert(
+                        $user_coords_table,
+                        array(
+                            'coord_x'=>$coord_x,
+                            'coord_y'=>$coord_y,
+                            'user'=>$result->funcionaro_responsavel
+                        )
+                    );
                     }
             ?>
     
@@ -116,6 +128,7 @@
     </div>
      <?php $i++;?>
     <?php endforeach;?>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChwlr0dGv_YSZfJkVdblKgIV47MK3tkks&callback=initMap"></script>
     
 </body>
 </html>

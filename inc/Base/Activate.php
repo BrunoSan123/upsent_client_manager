@@ -12,6 +12,7 @@
         self::create_client();
         self::create_task();
         self::create_logs();
+        self::user_coords();
         self::create_role();
         flush_rewrite_rules();
     } 
@@ -65,6 +66,21 @@
         )";
         require_once(ABSPATH.'wp-admin/includes/upgrade.php');
         dbDelta($sql_logs);
+    }
+
+    public static function user_coords(){
+        global $wpdb;
+        $table_name=$wpdb->prefix.'user_coords';
+        $sql_user_cords="CREATE TABLE IF NOT EXISTS $table_name(
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            coord_x FLOAT(50) NOT NULL,
+            coord_y FLOAT(50) NOT NULL,
+            user VARCHAR(50) NOT NULL,
+            PRIMARY KEY(id)
+        )";
+        require_once(ABSPATH.'wp-admin/includes/upgrade.php');
+        dbDelta($sql_user_cords);
+
     }
 
 

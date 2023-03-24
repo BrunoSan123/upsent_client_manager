@@ -10,8 +10,15 @@
     <header>
         <h1>Cadastro de Tarefas</h1>
     </header>
+  
 
     <section>
+    <?php 
+             global $wpdb;
+             $user_table=$wpdb->prefix.'users';
+             $user_result=$wpdb->get_results("SELECT * FROM $user_table");
+        ?>
+        
         <form action="" method="post" class="upsent_plugin_form">
             <section class="section_form">
             <input type="text" name="nome_da_tarefa" id="name" placeholder="nome da tarefa">
@@ -27,23 +34,28 @@
                 <option value="em_andamento">em andamento</option>
                 <option value="completa">completo</option>
             </select>
+                <select name="usuarios" id="users">
+                    <option value="empty"></option>
+                    <?php foreach($user_result as $usuario):?>
+                    <option value="<?php echo esc_attr($usuario->user_login); ?>" <?php selected($usuario->user_login); ?>><?php echo esc_html($usuario->user_login); ?></option>
+                    <?php endforeach;?>
+                </select>
             </section>
          
             <input type="submit" value="Cadastrar" name="submit">
             
         </form>
         <?php 
-            global $wpdb;
             $nome = isset($_POST['nome_da_tarefa'])?$_POST['nome_da_tarefa']:'';
             $description = isset($_POST['descrição'])?$_POST['descrição']:'';
             $coord_x=isset($_POST['coord_X'])?$_POST['coord_X']:'';
             $coord_y=isset($_POST['coord_y'])?$_POST['coord_y']:'';
             $current_state=isset($_POST['estados'])?$_POST['estados']:'';
             $address=isset($_POST['endereço'])?$_POST['endereço']:'';
+            $user_responseble=isset($_POST['usuarios'])?$_POST['usuarios']:'';
 
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
-                
                 $table_name = $wpdb->prefix . 'my_tasks';
                 $wpdb->insert(
                     $table_name,
@@ -55,6 +67,7 @@
                         'coord_x'=>$coord_x,
                         'coord_y'=>$coord_y,
                         'states'=>$current_state,
+                        'funcionaro_responsavel'=>$user_responseble,
                         )
                     );
                 }
