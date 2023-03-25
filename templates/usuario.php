@@ -46,6 +46,7 @@
                 <td class="coord_y-<?php echo $i?>"><?php echo $result->coord_y?></td>
                 <td><?php echo $result->states?></td>
                 <td><?php echo $result->funcionaro_responsavel?></td>
+                <td><a class="client_position">Ver posição</a></td>
                 <td><button class="change_btn">alterar</button></td>
             </tr>
             
@@ -55,8 +56,7 @@
             <?php $i++;?>
         <?php endforeach;?>
         <div id="demo"></div>
-        <div id="map"></div>
-    </section>
+        </section>
 
     <?php $i=0;?>
     <?php foreach($results as $result):?>
@@ -126,6 +126,10 @@
     </section> 
     <button class="upsent_close_button">X</button> 
     </div>
+     
+     <div class="map_modal">
+        <div id="map"></div>
+     </div>
      <?php $i++;?>
     <?php endforeach;?>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChwlr0dGv_YSZfJkVdblKgIV47MK3tkks&callback=initMap"></script>
