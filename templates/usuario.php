@@ -126,13 +126,17 @@
     </section> 
     <button class="upsent_close_button">X</button> 
     </div>
-     
-     <div class="map_modal">
+    <div class="map_modal">
         <div id="map"></div>
-     </div>
-     <?php $i++;?>
+        <button class="upsent_close_button_map">X</button> 
+    </div>
+    <?php $i++;?>
     <?php endforeach;?>
+    
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChwlr0dGv_YSZfJkVdblKgIV47MK3tkks&callback=initMap"></script>
+    <script>
+        const usuario ='<?php echo $current_user->display_name?>';
+    </script>
     
 </body>
 </html>

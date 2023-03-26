@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const changeButton = [...document.querySelectorAll(".change_btn")];
   const updatePopup = document.querySelectorAll(".upsent-pop-up");
   const closeBtn = document.querySelectorAll(".upsent_close_button");
+  const closeBtnMap = document.querySelectorAll(".upsent_close_button_map")
   const clientMapBtn = document.querySelectorAll(".client_position");
   const clientMapPosition = document.querySelectorAll(".map_modal");
   var x = document.getElementById("demo");
@@ -19,21 +20,30 @@ document.addEventListener("DOMContentLoaded", function (event) {
     document.cookie = `coord_y= ${position.coords.longitude}`;
   }
 
-  function redermap() {
-    const map = new google.maps.Map(document.getElementById("map"), {
-      mapId: "fd8fa89344b48be0",
-      center: { lat: 38.00511, lng: -131.11143 },
-      zoom: 16,
-    });
+  async function rendermap() {
+    const current_user=window.history=usuario
+    const coordinates= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/?funcionaro-responsavel=${current_user}`);
+    const coord_results=await coordinates.json();
+    
+    
+    for (const coords of coord_results){
+        const map = new google.maps.Map(document.getElementById("map"), {
+        mapId: "fd8fa89344b48be0",
+        center: { lat: Number(coords.coord_x), lng: Number(coords.coord_y) },
+        zoom: 16,
+      });
 
-    new google.maps.Marker({
-      position: {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      },
-      map,
-      title: "funcionario",
-    });
+      new google.maps.Marker({
+        position: {
+          lat: Number(coords.coord_x),
+          lng: Number(coords.coord_y)
+        },
+        map,
+        title: coords.funcionaro_responsavel,
+      });
+  
+    }
+  
   }
 
   let count = 0;
@@ -54,10 +64,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
   });
 
+  closeBtnMap.forEach((e, i) => {
+    e.addEventListener("click", () => {
+      clientMapPosition[i].classList.remove("reveal");
+    });
+  });
+
   clientMapBtn.forEach((e, i) => {
     e.addEventListener("click", () => {
-      clientMapPosition[i].classList.toggle("reveal");
-      redermap();
+      clientMapPosition[i].classList.add("reveal");
+      rendermap();
     });
   });
 });

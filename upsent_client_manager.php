@@ -24,7 +24,6 @@ use Inc\Base\Deactivate;
 define('PLUGIN_PATH',plugin_dir_path(__FILE__));
 define('PLUGIN_URL',plugin_dir_url(__FILE__));
 define('PLUGIN_BASE_DIR',plugin_basename(__FILE__));
-header("Content-Security-Policy: default-src 'self' http://localhost:8080/wp-json/upsent-api/v1/tasks");
 
 function activate_employer_manager_plugin(){
     Activate::activate();
@@ -41,15 +40,28 @@ function get_task_data(){
     global $wpdb;
     $table_name =$wpdb->prefix.'my_tasks';
     $task_data=$wpdb->get_results("SELECT * FROM $table_name");
-
     return $task_data;
+}
 
-  }
+
+function get_task_by_name($data){
+    global $wpdb;
+    $table_name =$wpdb->prefix.'my_tasks';
+    $task_data_user=$wpdb->get_results("SELECT * FROM $table_name WHERE funcionaro_responsavel='$data'");
+    return $task_data_user;
+}
 
   add_action('rest_api_init',function(){
     register_rest_route('upsent-api/v1','tasks',array(
         'methods'=>'GET',
         'callback'=>'get_task_data' 
+    ));
+  });
+
+  add_action('rest_api_init',function(){
+    register_rest_route('upsent-api/v1','tasks/(?P<funcionario-responsavel>\w+)',array(
+        'methods'=>'GET',
+        'callback'=>'get_task_by_name' 
     ));
   });
 
