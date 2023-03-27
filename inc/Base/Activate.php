@@ -10,6 +10,7 @@
    
     public static function activate(){
         self::create_client();
+        self::create_sub_task();
         self::create_task();
         self::create_logs();
         self::user_coords();
@@ -20,7 +21,8 @@
     public static function create_task(){
         global $wpdb;
         $table_name = $wpdb->prefix . 'my_tasks';
-        $table_reference ='wp_clients(id)';
+        $table_reference_client ='wp_clients(id)';
+        $table_reference_subtasks='wp_my_subtasks(id)';
         $sql = "CREATE TABLE IF NOT EXISTS $table_name (
                 id mediumint(9) NOT NULL AUTO_INCREMENT,
                 task_name VARCHAR(50) NOT NULL,
@@ -32,8 +34,10 @@
                 task_description TEXT(100) NOT NULL,
                 funcionaro_responsavel VARCHAR(50) NOT NULL DEFAULT '',
                 client mediumint(9),
+                subtasks mediumint(9),
                 concluida BOOLEAN NOT NULL DEFAULT 0,
-                FOREIGN KEY (client) REFERENCES $table_reference ON DELETE CASCADE, 
+                FOREIGN KEY (client) REFERENCES $table_reference_client ON DELETE CASCADE,
+                FOREIGN KEY (subtasks) REFERENCES $table_reference_subtasks ON DELETE CASCADE,  
                 PRIMARY KEY  (id)
                 );";
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -81,6 +85,23 @@
         )";
         require_once(ABSPATH.'wp-admin/includes/upgrade.php');
         dbDelta($sql_user_cords);
+
+    }
+
+    public static function create_sub_task(){
+        global $wpdb;
+        $table_name=$wpdb->prefix.'my_subtasks';
+        $sql_user_subtasks="CREATE TABLE IF NOT EXISTS $table_name(
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            task_name VARCHAR(50) NOT NULL,
+            creation_data TIMESTAMP NOT NULL,
+            states  VARCHAR(50) NOT NULL,
+            task_description TEXT(100) NOT NULL,
+            concluida BOOLEAN NOT NULL DEFAULT 0,
+            PRIMARY KEY(id)
+        )";
+        require_once(ABSPATH.'wp-admin/includes/upgrade.php');
+        dbDelta($sql_user_subtasks);
 
     }
 

@@ -86,20 +86,26 @@
               $current_state=isset($_POST['estados-'.$i])?$_POST['estados-'.$i]:'';
               $sinal;
               $finished=0;
-              if($current_state=='parado'){
-                $sinal='RED';
-              }elseif($current_state=='em_andamento'){
-                $sinal='YELLOW';
-              }else{
-                $sinal= 'GREEN';
-                $finished=1;
+              switch($current_state){
+                case 'parado':
+                    $sinal='RED';
+                    break;
+                case 'em_andamento':
+                     $sinal='YELLOW';
+                     break;
+                case 'completa':
+                    $sinal= 'GREEN';
+                    $finished=1;
+                    break;
+                default:
+                    $sinal='';
                 }
-              echo $sinal;
 
              
               if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit-'.$i])){
                     $coord_x=$_COOKIE['coord_x'];
                     $coord_y=$_COOKIE['coord_y'];
+                    echo $sinal;
                     $wpdb->update(
                     $table_name,
                     array(
