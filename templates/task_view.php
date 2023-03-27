@@ -32,6 +32,7 @@
                 <th>Andamento</th>
                 <th>Funcionário</th>
                 <th></th>
+                <th>Concluida</th>
             </tr>
             <tr class="upsent_table_data">
                 <td><?php echo $result->task_name?></td>
@@ -41,7 +42,8 @@
                 <td><?php echo $result->coord_y?></td>
                 <td><?php echo $result->states?></td>
                 <td><?php echo $result->funcionaro_responsavel?></td>
-                <td><button class="change_btn">alterar-<?php echo $i?></button></td>
+                <td><button class="change_btn">alterar</button></td>
+                <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
             </tr>
             
         </table>

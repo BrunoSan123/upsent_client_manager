@@ -32,6 +32,7 @@
                 task_description TEXT(100) NOT NULL,
                 funcionaro_responsavel VARCHAR(50) NOT NULL DEFAULT '',
                 client mediumint(9),
+                concluida BOOLEAN NOT NULL DEFAULT 0,
                 FOREIGN KEY (client) REFERENCES $table_reference ON DELETE CASCADE, 
                 PRIMARY KEY  (id)
                 );";

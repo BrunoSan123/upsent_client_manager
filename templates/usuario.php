@@ -36,7 +36,10 @@
                 <th>Coordenada Y</th>
                 <th>Andamento</th>
                 <th>Funcionário</th>
+                <th>Posição</th>
                 <th></th>
+                <th>Concluida</th>
+                <?php if($result->concluida!=0):?><th>Entregar</th><?php endif?>
             </tr>
             <tr class="upsent_table_data">
                 <td><?php echo $result->task_name?></td>
@@ -48,6 +51,8 @@
                 <td><?php echo $result->funcionaro_responsavel?></td>
                 <td><a class="client_position">Ver posição</a></td>
                 <td><button class="change_btn">alterar</button></td>
+                <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
+                <?php if($result->concluida!=0):?><td><div class="finish"></div></td><?php endif?>
             </tr>
             
         </table>
@@ -56,7 +61,7 @@
             <?php $i++;?>
         <?php endforeach;?>
         <div id="demo"></div>
-        </section>
+      </section>
 
     <?php $i=0;?>
     <?php foreach($results as $result):?>
@@ -80,13 +85,15 @@
 
               $current_state=isset($_POST['estados-'.$i])?$_POST['estados-'.$i]:'';
               $sinal;
+              $finished=0;
               if($current_state=='parado'){
                 $sinal='RED';
               }elseif($current_state=='em_andamento'){
                 $sinal='YELLOW';
               }else{
                 $sinal= 'GREEN';
-              }
+                $finished=1;
+                }
               echo $sinal;
 
              
@@ -97,6 +104,7 @@
                     $table_name,
                     array(
                         'states'=>$current_state,
+                        'concluida'=>$finished
                     ),
                     array(
                         'id'=>$result->id
@@ -127,8 +135,8 @@
     <button class="upsent_close_button">X</button> 
     </div>
     <div class="map_modal">
-        <div id="map"></div>
-        <button class="upsent_close_button_map">X</button> 
+        <div class="map" ></div>
+    <button class="upsent_close_button_map">X</button> 
     </div>
     <?php $i++;?>
     <?php endforeach;?>

@@ -15,48 +15,27 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 
+  // pega a posição atual do funcionario e salva como cookie
+
   function showPosition(position) {
     document.cookie = `coord_x= ${position.coords.latitude}`;
     document.cookie = `coord_y= ${position.coords.longitude}`;
   }
 
-  async function rendermap() {
-    const current_user=window.history=usuario
-    const coordinates= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/?funcionaro-responsavel=${current_user}`);
-    const coord_results=await coordinates.json();
-    
-    
-    for (const coords of coord_results){
-        const map = new google.maps.Map(document.getElementById("map"), {
-        mapId: "fd8fa89344b48be0",
-        center: { lat: Number(coords.coord_x), lng: Number(coords.coord_y) },
-        zoom: 16,
-      });
 
-      new google.maps.Marker({
-        position: {
-          lat: Number(coords.coord_x),
-          lng: Number(coords.coord_y)
-        },
-        map,
-        title: coords.funcionaro_responsavel,
-      });
-  
-    }
-  
-  }
-
-  let count = 0;
+  //let count = 0;
   changeButton.forEach((e, i) => {
     e.addEventListener("click", () => {
-      console.log(count);
-      let singlePop = document.getElementById("upsent-" + count);
+      //console.log(count);
+      let singlePop = document.getElementById("upsent-" + i);
       console.log(singlePop);
       singlePop.classList.add("reveal");
       getLocation();
-      count++;
+      //count++;
     });
   });
+
+
 
   closeBtn.forEach((e, i) => {
     e.addEventListener("click", () => {
@@ -70,10 +49,28 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
   });
 
+  //adiciona mapa com a localização do cliente para o funcionario
+
   clientMapBtn.forEach((e, i) => {
-    e.addEventListener("click", () => {
+    e.addEventListener("click", async  () => {
+      const current_user=window.history=usuario
+      const coordinates= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/?funcionaro-responsavel=${current_user}`);
+      const coord_results=await coordinates.json();
+      const map = new google.maps.Map(document.querySelectorAll(".map")[i], {
+        mapId: "fd8fa89344b48be0",
+        center: { lat: Number(coord_results[i].coord_x), lng: Number(coord_results[i].coord_y) },
+        zoom: 16,
+      });
+
+      new google.maps.Marker({
+        position: {
+          lat: Number(coord_results[i].coord_x),
+          lng: Number(coord_results[i].coord_y)
+        },
+        map,
+        title: coord_results[i].funcionaro_responsavel,
+      });
       clientMapPosition[i].classList.add("reveal");
-      rendermap();
     });
   });
 });

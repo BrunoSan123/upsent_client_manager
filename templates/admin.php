@@ -28,7 +28,7 @@
             <section class="section_form">
             <input type="text" name="coord_X" id="coord_x" placeholder="cordenada x">
             <input type="text" name="coord_y" id="coord_x" placeholder="cordenada y">
-            <input type="text" name="endereço" id="address">
+            <input type="text" name="endereço" id="address" placeholder="endereço">
             <select name="estados" id="states">
                 <option value="parado">parado</option>
                 <option value="em_andamento">em andamento</option>
