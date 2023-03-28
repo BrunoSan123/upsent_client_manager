@@ -51,6 +51,27 @@ function get_task_by_name($data){
     return $task_data_user;
 }
 
+function delete_task($id){
+    global $wpdb;
+    $table_name= $wpdb->prefix.'my_tasks';
+    $wpdb->delete(
+        $table_name,
+        array('id'=>$id),
+        array('%d')
+    );
+}
+
+function update_deliverance($id,$request){
+    global $wpdb;
+    $table_name =$wpdb->prefix.'my_tasks';
+    $update_data=$wpdb->update(
+        $table_name,
+        array('entregue'=>$request->get_param('entregue')),
+        array('id'=>$id->get_param('id'))
+    );
+     return $update_data;
+}
+
   add_action('rest_api_init',function(){
     register_rest_route('upsent-api/v1','tasks',array(
         'methods'=>'GET',
@@ -62,6 +83,27 @@ function get_task_by_name($data){
     register_rest_route('upsent-api/v1','tasks/(?P<funcionario-responsavel>\w+)',array(
         'methods'=>'GET',
         'callback'=>'get_task_by_name' 
+    ));
+  });
+
+  add_action('rest_api_init',function(){
+    register_rest_route('upsent-api/v1','tasks/(?P<id>\d+)',array(
+        'methods'=>'DELETE',
+        'callback'=>'delete_task'
+    ));
+  });
+
+  add_action('rest_api_init',function(){
+    register_rest_route('upsent-api/v1','tasks-update/(?P<id>\d+)',array(
+        'methods'=>WP_REST_Server::CREATABLE,
+        'callback'=>'update_deliverance',
+        'args' => array(
+            'id' => array(
+                'required' => true,
+                'description' => __('The ID of the task to update', 'upsent-api'),
+                'type' => 'integer',
+            ),
+        ),
     ));
   });
 

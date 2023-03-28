@@ -36,6 +36,7 @@
                 client mediumint(9),
                 subtasks mediumint(9),
                 concluida BOOLEAN NOT NULL DEFAULT 0,
+                entregue  BOOLEAN NOT NULL DEFAULT 0,
                 FOREIGN KEY (client) REFERENCES $table_reference_client ON DELETE CASCADE,
                 FOREIGN KEY (subtasks) REFERENCES $table_reference_subtasks ON DELETE CASCADE,  
                 PRIMARY KEY  (id)
