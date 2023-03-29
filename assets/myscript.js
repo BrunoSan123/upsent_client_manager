@@ -1,10 +1,12 @@
 document.addEventListener("DOMContentLoaded", function (event) {
   const changeButton = [...document.querySelectorAll(".change_btn")];
+  const taskTable= document.querySelectorAll(".upsent_table");
   const updatePopup = document.querySelectorAll(".upsent-pop-up");
   const closeBtn = document.querySelectorAll(".upsent_close_button");
   const closeBtnMap = document.querySelectorAll(".upsent_close_button_map")
   const clientMapBtn = document.querySelectorAll(".client_position");
   const clientMapPosition = document.querySelectorAll(".map_modal");
+  const finishButtonBtn=document.querySelectorAll(".finish");
   var x = document.getElementById("demo");
 
   function getLocation() {
@@ -73,4 +75,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
       clientMapPosition[i].classList.add("reveal");
     });
   });
+
+  finishButtonBtn.forEach((e,i)=>{
+    e.addEventListener('click',async ()=>{
+      const current_user=window.history=usuario
+      const task_info= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/?funcionaro-responsavel=${current_user}`);
+      const task_results=await task_info.json();
+      await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/`,{
+          method:'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: task_results[i].id, entregue: 1 })
+      })
+      taskTable[i].remove();
+    })
+  })
 });

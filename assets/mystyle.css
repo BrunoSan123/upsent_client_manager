@@ -82,6 +82,10 @@
     margin-right: auto;
 }
 
+.finish{
+    cursor: pointer;
+}
+
 .finish::before{
     content: '';
     width: 12px;

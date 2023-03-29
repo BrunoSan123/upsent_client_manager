@@ -67,21 +67,21 @@ function delete_task($id)
     );
 }
 
-function teste_route($identification)
-{
-    return 'Works' . $identification;
+function teste_route($request){
+	$id = $request->get_param( 'identification' );
+	return $id;
 }
 
-function update_deliverance($id, $request)
+function update_deliverance($request)
 {
     global $wpdb;
     $table_name = $wpdb->prefix . 'my_tasks';
-    $update_data = $wpdb->update(
+    $wpdb->update(
         $table_name,
         array('entregue' => $request->get_param('entregue')),
-        array('id' => $id->get_param('id'))
+        array('id' => $request->get_param('id'))
     );
-    return $update_data;
+    return 'ok';
 }
 
 
@@ -108,16 +108,9 @@ add_action('rest_api_init', function () {
 });
 
 add_action('rest_api_init', function () {
-    register_rest_route('upsent-api/v1', 'tasks/(?P<identification>[\d]+)', array(
-        'methods' => WP_REST_Server::EDITABLE | WP_REST_Server::CREATABLE,
-        'callback' => 'teste_route',
-        'args' => array(
-            'identification' => array(
-                'required' => true,
-                'type' => 'integer',
-            ),
-        ),
-        
+    register_rest_route('upsent-api/v1', 'tasks/', array(
+        'methods' => 'PUT',
+        'callback' => 'update_deliverance'     
     ));
 });
 
