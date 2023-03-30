@@ -13,7 +13,7 @@
     </header>
 
     <section>
-        <?php 
+        <?php
             global $wpdb;
             $current_user= wp_get_current_user();
             $table_name=$wpdb->prefix . 'my_tasks';
@@ -39,7 +39,10 @@
                 <th>Posição</th>
                 <th></th>
                 <th>Concluida</th>
-                <?php if($result->concluida!=0):?><th>Entregar</th><?php endif?>
+                <?php if($result->concluida!=0):?>
+                    <th>Comprovante</th>
+                    <th>Entregar</th>
+                <?php endif?>
             </tr>
             <tr class="upsent_table_data">
                 <td><?php echo $result->task_name?></td>
@@ -52,7 +55,10 @@
                 <td><a class="client_position">Ver posição</a></td>
                 <td><button class="change_btn">alterar</button></td>
                 <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
-                <?php if($result->concluida!=0):?><td><div class="finish"></div></td><?php endif?>
+                <?php if($result->concluida!=0):?>
+                    <td class="comprovante"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></td>
+                    <td><div class="finish"></div></td>
+                <?php endif?>
             </tr>
             
         </table>
@@ -68,13 +74,14 @@
         
         <div class="upsent-pop-up" id="upsent-<?php echo $i?>">
           <section>
-        <form action="" method="post" class="upsent_plugin_form">
+        <form action="" method="post" class="upsent_plugin_form" enctype="multipart/form-data">
             <section class="section_form">
             <select name="estados-<?php echo $i?>" id="states">
                     <option value="parado" <?php selected($result->states, 'parado'); ?>>parado</option>
                     <option value="em_andamento" <?php selected($result->states, 'em_andamento'); ?>>em andamento</option>
                     <option value="completa" <?php selected($result->states, 'completa'); ?>>completo</option>
             </select>
+            <input type="file" name="upload_file-<?php echo $i?>" id="picture_upload" value="Comprovante">
 
             </section>
          
@@ -84,8 +91,16 @@
         <?php
 
               $current_state=isset($_POST['estados-'.$i])?$_POST['estados-'.$i]:'';
+              $file=isset($_FILES['upload_file-'.$i])?$_FILES['upload_file-'.$i]:'';
               $sinal;
               $finished=0;
+              $fileNew=explode('.',$file);
+              echo $file["name"];
+              $targetDirectory = PLUGIN_PATH.'/uploads/';
+              $targetFile = $targetDirectory . basename($file["name"]);
+              move_uploaded_file($file['tmp_name'],$targetFile);
+              echo 'upload feito com sucesso';
+            
               switch($current_state){
                 case 'parado':
                     $sinal='RED';
@@ -105,12 +120,12 @@
               if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit-'.$i])){
                     $coord_x=$_COOKIE['coord_x'];
                     $coord_y=$_COOKIE['coord_y'];
-                    echo $sinal;
                     $wpdb->update(
                     $table_name,
                     array(
                         'states'=>$current_state,
-                        'concluida'=>$finished
+                        'concluida'=>$finished,
+                        'conclued_img'=>$file["name"],
                     ),
                     array(
                         'id'=>$result->id

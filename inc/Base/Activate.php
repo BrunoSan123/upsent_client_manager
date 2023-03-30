@@ -37,6 +37,7 @@
                 subtasks mediumint(9),
                 concluida BOOLEAN NOT NULL DEFAULT 0,
                 entregue  BOOLEAN NOT NULL DEFAULT 0,
+                conclued_img  VARCHAR(50) NOT NULL,
                 FOREIGN KEY (client) REFERENCES $table_reference_client ON DELETE CASCADE,
                 FOREIGN KEY (subtasks) REFERENCES $table_reference_subtasks ON DELETE CASCADE,  
                 PRIMARY KEY  (id)
