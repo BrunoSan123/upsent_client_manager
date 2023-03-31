@@ -84,6 +84,14 @@ function update_deliverance($request)
     return 'ok';
 }
 
+function get_employer_position()
+{
+    global $wpdb;
+    $table_name=$wpdb->prefix.'user_coords';
+    $employer_position=$wpdb->get_results("SELECT * FROM $table_name");
+    return $employer_position;
+}
+
 
 
 add_action('rest_api_init', function () {
@@ -111,6 +119,13 @@ add_action('rest_api_init', function () {
     register_rest_route('upsent-api/v1', 'tasks/', array(
         'methods' => 'PUT',
         'callback' => 'update_deliverance'     
+    ));
+});
+
+add_action('rest_api_init', function(){
+    register_rest_route('upsent-api/v1','employeer_position/',array(
+        'methods' => 'GET',
+        'callback' => 'get_employer_position' 
     ));
 });
 

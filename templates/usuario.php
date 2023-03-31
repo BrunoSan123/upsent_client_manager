@@ -76,12 +76,12 @@
           <section>
         <form action="" method="post" class="upsent_plugin_form" enctype="multipart/form-data">
             <section class="section_form">
-            <select name="estados-<?php echo $i?>" id="states">
+            <select name="estados-<?php echo $i?>" id="states-<?php echo $i?>" class="states">
                     <option value="parado" <?php selected($result->states, 'parado'); ?>>parado</option>
                     <option value="em_andamento" <?php selected($result->states, 'em_andamento'); ?>>em andamento</option>
                     <option value="completa" <?php selected($result->states, 'completa'); ?>>completo</option>
             </select>
-            <input type="file" name="upload_file-<?php echo $i?>" id="picture_upload" value="Comprovante">
+            <input type="file" name="upload_file-<?php echo $i?>" id="picture_upload-<?php echo $i?>" value="Comprovante" class="upload_button">
 
             </section>
          

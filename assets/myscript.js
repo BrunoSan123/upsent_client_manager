@@ -7,6 +7,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const clientMapBtn = document.querySelectorAll(".client_position");
   const clientMapPosition = document.querySelectorAll(".map_modal");
   const finishButtonBtn=document.querySelectorAll(".finish");
+  const uploadInput = document.querySelectorAll(".upload_button");
+  const selectState= document.querySelectorAll(".states");
+  const fileInput = document.querySelectorAll('input[type="file"]');
+  
+ 
   var x = document.getElementById("demo");
 
   function getLocation() {
@@ -25,19 +30,36 @@ document.addEventListener("DOMContentLoaded", function (event) {
   }
 
 
-  //let count = 0;
+  
   changeButton.forEach((e, i) => {
     e.addEventListener("click", () => {
-      //console.log(count);
       let singlePop = document.getElementById("upsent-" + i);
-      console.log(singlePop);
       singlePop.classList.add("reveal");
       getLocation();
-      //count++;
     });
   });
 
+  selectState.forEach((e,i)=>{
+      e.addEventListener('change',()=>{
+        console.log(e.selectedOptions[0].value);
+        if(e.selectedOptions[0].value=="completa"){
+          uploadInput[i].classList.add("reveal")
+        }else{
+          uploadInput[i].classList.remove("reveal");
+        }
+      })
+  })
 
+  fileInput.forEach((e,i)=>{
+    e.addEventListener("change",()=>{
+      const allowedExtensions = /(\.png|\.jpg|\.jpeg)$/i;
+      if (!allowedExtensions.exec(e.value)) {
+        alert('Por favor, selecione um arquivo de imagem válido (PNG, JPG ou JPEG).');
+        e.value = '';
+        return false;
+      }
+      })
+  })
 
   closeBtn.forEach((e, i) => {
     e.addEventListener("click", () => {

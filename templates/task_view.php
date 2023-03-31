@@ -33,6 +33,10 @@
                 <th>Funcionário</th>
                 <th></th>
                 <th>Concluida</th>
+                <?php if($result->concluida!=0):?>
+                    <th>Comprovante</th>
+                    <th>Entregar</th>
+                <?php endif?>
             </tr>
             <tr class="upsent_table_data">
                 <td><?php echo $result->task_name?></td>
@@ -44,6 +48,10 @@
                 <td><?php echo $result->funcionaro_responsavel?></td>
                 <td><button class="change_btn">alterar</button></td>
                 <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
+                <?php if($result->concluida!=0):?>
+                    <td class="comprovante"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></td>
+                    <td><div class="finished"></div></td>
+                <?php endif?>
             </tr>
             
         </table>
