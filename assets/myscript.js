@@ -112,9 +112,7 @@ var x = document.getElementById("demo");
 
     employeeMapBtn.forEach((e,i)=>{
       e.addEventListener("click", async()=>{
-        console.log(user_maped[i])
-        console.log(`http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${user_maped[i]}`)
-        const employee_coordinates= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${user_maped[i]}`);
+        const employee_coordinates= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks`);
         const coord_results=await employee_coordinates.json()
         const map = new google.maps.Map(document.querySelectorAll(".map")[i], {
           mapId: "fd8fa89344b48be0",

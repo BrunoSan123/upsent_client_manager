@@ -21,9 +21,9 @@
         ?>
 
 
-        <?php $i=0;?>    
+    
         <?php foreach($results as $result):?>
-            <table class="upsent_table">
+           <table class="upsent_table">
             <tr class="upsent_table_head">
                 <th>Nome da Tarefa</th>
                 <th>Enrereço da Tarefa</th>
@@ -58,7 +58,7 @@
             </tr>
             
         </table>
-            <?php $i++;?>
+
         <?php endforeach;?>
     </section>
         

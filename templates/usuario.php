@@ -90,31 +90,35 @@
 
         <?php
 
-              $current_state=isset($_POST['estados-'.$i])?$_POST['estados-'.$i]:'';
-              $file=isset($_FILES['upload_file-'.$i])?$_FILES['upload_file-'.$i]:'';
-              $sinal;
-              $finished=0;
-              $fileNew=explode('.',$file);
-              echo $file["name"];
-              $targetDirectory = PLUGIN_PATH.'/uploads/';
-              $targetFile = $targetDirectory . basename($file["name"]);
-              move_uploaded_file($file['tmp_name'],$targetFile);
-              echo 'upload feito com sucesso';
-            
-              switch($current_state){
-                case 'parado':
-                    $sinal='RED';
-                    break;
-                case 'em_andamento':
-                     $sinal='YELLOW';
-                     break;
-                case 'completa':
-                    $sinal= 'GREEN';
-                    $finished=1;
-                    break;
-                default:
-                    $sinal='';
-                }
+             if(isset($_POST['estados-'.$i])){
+                $current_state=isset($_POST['estados-'.$i])?$_POST['estados-'.$i]:'';
+                $file=isset($_FILES['upload_file-'.$i])?$_FILES['upload_file-'.$i]:'';
+                $sinal;
+                $finished=0;
+                $fileNew=explode('.',$file["name"]);
+                echo $file["name"];
+                $targetDirectory = PLUGIN_PATH.'/uploads/';
+                $targetFile = $targetDirectory . basename($file["name"]);
+                move_uploaded_file($file['tmp_name'],$targetFile);
+                echo 'upload feito com sucesso';
+
+                  
+                switch($current_state){
+                    case 'parado':
+                        $sinal='RED';
+                        break;
+                    case 'em_andamento':
+                        $sinal='YELLOW';
+                        break;
+                    case 'completa':
+                        $sinal= 'GREEN';
+                        $finished=1;
+                        break;
+                    default:
+                        $sinal='';
+                    }
+            }
+
 
              
               if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit-'.$i])){
