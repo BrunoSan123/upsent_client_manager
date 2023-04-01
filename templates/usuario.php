@@ -126,6 +126,8 @@
                         'states'=>$current_state,
                         'concluida'=>$finished,
                         'conclued_img'=>$file["name"],
+                        'employeer_position_x'=>$coord_x,
+                        'employeer_position_Y'=>$coord_y,
                     ),
                     array(
                         'id'=>$result->id

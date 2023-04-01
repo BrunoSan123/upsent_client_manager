@@ -20,6 +20,7 @@
             $user_result=$wpdb->get_results("SELECT * FROM $user_table");
         ?>
 
+
         <?php $i=0;?>    
         <?php foreach($results as $result):?>
             <table class="upsent_table">
@@ -31,6 +32,7 @@
                 <th>Coordenada Y</th>
                 <th>Andamento</th>
                 <th>Funcionário</th>
+                <th>posição atual</th>
                 <th></th>
                 <th>Concluida</th>
                 <?php if($result->concluida!=0):?>
@@ -46,6 +48,7 @@
                 <td><?php echo $result->coord_y?></td>
                 <td><?php echo $result->states?></td>
                 <td><?php echo $result->funcionaro_responsavel?></td>
+                <td><a class="employee_position">Ver posição atual</a></td>
                 <td><button class="change_btn">alterar</button></td>
                 <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
                 <?php if($result->concluida!=0):?>
@@ -60,7 +63,9 @@
     </section>
         
     <?php $i=0;?>
-    <?php foreach($results as $resulte):?>
+    <?php 
+    $maped=[];
+    foreach($results as $resulte):?>
         
         <div class="upsent-pop-up" id="upsent-<?php echo $i?>">
             <section>
@@ -123,9 +128,18 @@
     </section> 
     <button class="upsent_close_button">X</button> 
     </div>
+    <div class="map_modal">
+        <div class="map" ></div>
+    <button class="upsent_close_button_map">X</button> 
+    </div>
      <?php $i++;?>
-    <?php endforeach;?>
+    <?php 
+     $maped[]=$resulte->funcionaro_responsavel;  
+    endforeach;?>
 
-    
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChwlr0dGv_YSZfJkVdblKgIV47MK3tkks&callback=initMap"></script>
+    <script>
+       const usuario_maped =<?php echo json_encode($maped)?> 
+    </script>
 </body>
 </html>

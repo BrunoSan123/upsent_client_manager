@@ -48,11 +48,12 @@ function get_task_data()
 }
 
 
-function get_task_by_name($data)
+function get_task_by_name($request)
 {
     global $wpdb;
+    $funcionario=$request->get_param('funcionaro_responsavel');
     $table_name = $wpdb->prefix . 'my_tasks';
-    $task_data_user = $wpdb->get_results("SELECT * FROM $table_name WHERE funcionaro_responsavel='$data'");
+    $task_data_user = $wpdb->get_results("SELECT * FROM $table_name WHERE funcionaro_responsavel='$funcionario'");
     return $task_data_user;
 }
 
@@ -102,7 +103,7 @@ add_action('rest_api_init', function () {
 });
 
 add_action('rest_api_init', function () {
-    register_rest_route('upsent-api/v1', 'tasks/(?P<funcionario-responsavel>\w+)', array(
+    register_rest_route('upsent-api/v1', 'tasks_employee/', array(
         'methods' => 'GET',
         'callback' => 'get_task_by_name'
     ));
