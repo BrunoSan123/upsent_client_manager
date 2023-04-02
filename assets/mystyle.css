@@ -118,3 +118,8 @@
 .upload_button{
     display:none
 }
+
+.pagination{
+ display: flex;
+ gap: 1em;
+}

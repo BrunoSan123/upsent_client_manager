@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const fileInput = document.querySelectorAll('input[type="file"]');
 
 
+
 var x = document.getElementById("demo");
 
   function getLocation() {

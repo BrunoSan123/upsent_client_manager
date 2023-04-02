@@ -14,14 +14,17 @@
     <section>
         <?php 
             global $wpdb;
+            $itens_por_pagina = 3;
+            isset($_GET['pagina'])? $pagina_atual=$_GET['pagina']:$pagina_atual=1;
+            $posicao_inicial = ($pagina_atual - 1) * $itens_por_pagina;
             $table_name=$wpdb->prefix . 'my_tasks';
-            $results=$wpdb->get_results("SELECT * FROM $table_name");
+            $results=$wpdb->get_results("SELECT * FROM $table_name LIMIT $posicao_inicial, $itens_por_pagina");
+            $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name");
+            $total_pages = ceil($total_tasks / $itens_por_pagina);
             $user_table=$wpdb->prefix.'users';
             $user_result=$wpdb->get_results("SELECT * FROM $user_table");
         ?>
 
-
-    
         <?php foreach($results as $result):?>
            <table class="upsent_table">
             <tr class="upsent_table_head">
@@ -61,6 +64,24 @@
 
         <?php endforeach;?>
     </section>
+
+    <?php
+        echo "<div class='pagination'>";
+        if ($pagina_atual > 1) {
+            echo "<a href='?page=tarefas&pagina=".($pagina_atual - 1)."'>Anterior</a>";
+        }
+        for ($i = 1; $i <= $total_pages; $i++) {
+            if ($i == $pagina_atual) {
+                echo "<span class='current'>$i</span>";
+            } else {
+                echo "<a href='?page=tarefas&pagina=$i'>$i</a>";
+            }
+        }
+        if ($pagina_atual < $total_pages) {
+            echo "<a href='?page=tarefas&pagina=".($pagina_atual + 1)."'>Próximo</a>";
+        }
+        echo "</div>";
+      ?>
         
     <?php $i=0;?>
     <?php 
