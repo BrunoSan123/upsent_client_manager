@@ -19,10 +19,11 @@
              $user_result=$wpdb->get_results("SELECT * FROM $user_table");
         ?>
         
-        <form action="" method="post" class="upsent_plugin_form">
+        <form action="" method="post" class="upsent_main">
+            <div class="upsent_plugin_form">
             <section class="section_form">
             <input type="text" name="nome_da_tarefa" id="name" placeholder="nome da tarefa">
-            <textarea name="descrição" id="description" cols="20" rows="10" placeholder="descrição"></textarea>
+            <textarea name="descrição" id="description" cols="20" rows="7" placeholder="descrição"></textarea>
             </section>
             
             <section class="section_form">
@@ -41,10 +42,11 @@
                     <?php endforeach;?>
                 </select>
             </section>
-         
-            <input type="submit" value="Cadastrar" name="submit">
+            </div>
             
+            <input type="submit" value="Cadastrar" name="submit" class="button">  
         </form>
+        
         <?php 
             $nome = isset($_POST['nome_da_tarefa'])?$_POST['nome_da_tarefa']:'';
             $description = isset($_POST['descrição'])?$_POST['descrição']:'';
@@ -69,20 +71,16 @@
                         'states'=>$current_state,
                         'funcionaro_responsavel'=>$user_responseble,
                         )
-                    );
-                }
+                    );?>
+
+                <div class="notice notice-warning">
+                    <p>Cadastro realizado com sucesso</p>
+                </div>
+                <?php }?>
+                
+        
 
 
-        ?>
-
-        <ul>
-            <li><?php echo $nome;?></li>
-            <li><?php echo $description;?></li>
-            <li><?php echo $coord_x;?></li>
-            <li><?php echo $coord_y;?></li>
-            <li><?php echo $current_state;?></li>
-            <li><?php echo $address;?></li>
-        </ul>
        
     </section>
     
