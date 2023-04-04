@@ -31,6 +31,7 @@
 
             
         <?php foreach($results as $result):?>
+            <?php $i=0;?>
             <table class="upsent_table">
             <tr class="upsent_table_head">
                 <th>Nome da Tarefa</th>
@@ -66,24 +67,23 @@
             </tr>
             
         </table>
+        <?php $i++?>
 
-        
-        </div>
         <?php endforeach;?>
         
         <div id="demo"></div>
       </section>
 
       <?php
-        echo "<div class='pagination'>";
+        echo "<div class='pagination-upsent'>";
         if ($pagina_atual > 1) {
             echo "<a href='?page=usuario&pagina=".($pagina_atual - 1)."'>Anterior</a>";
         }
-        for ($i = 1; $i <= $total_pages; $i++) {
-            if ($i == $pagina_atual) {
-                echo "<span class='current'>$i</span>";
+        for ($j = 1; $j <= $total_pages; $j++) {
+            if ($j == $pagina_atual) {
+                echo "<span class='current'>$j</span>";
             } else {
-                echo "<a href='?page=usuario&pagina=$i'>$i</a>";
+                echo "<a href='?page=usuario&pagina=$j'>$j</a>";
             }
         }
         if ($pagina_atual < $total_pages) {
@@ -97,7 +97,8 @@
         
         <div class="upsent-pop-up" id="upsent-<?php echo $i?>">
           <section>
-        <form action="" method="post" class="upsent_plugin_form" enctype="multipart/form-data">
+        <form action="" method="post" class="upsent_main" enctype="multipart/form-data">
+            <div class=""upsent_plugin_form">
             <section class="section_form">
             <select name="estados-<?php echo $i?>" id="states-<?php echo $i?>" class="states">
                     <option value="parado" <?php selected($result->states, 'parado'); ?>>parado</option>
@@ -107,9 +108,11 @@
             <input type="file" name="upload_file-<?php echo $i?>" id="picture_upload-<?php echo $i?>" value="Comprovante" class="upload_button">
 
             </section>
+            </div>
          
-            <input type="submit" value="Atualizar" name="submit-<?php echo $i?>">
+            <input type="submit" value="Atualizar" name="submit-<?php echo $i?>" class="button">
         </form>
+
 
         <?php
 

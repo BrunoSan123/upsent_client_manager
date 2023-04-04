@@ -14,10 +14,10 @@
       ?>
 
       <?php foreach($logs_table_result as $result):?>
-        <h4>
+        <h4 class="notice notice-warning upsent-log">
         <span><?php echo $result->id?></span>
         <span><?php echo $result->log_description?></span>
-        <span><?php echo $result->sign?></span>
+        <span><div class="<?php if($result->sign=="RED"):?> conclued_bullet <?php elseif($result->sign=="YELLOW"):?>.bullet-yellow<?php else:?> bullet-green <?php endif?>"></div></span>
       </h4>
       <?php endforeach?>
     

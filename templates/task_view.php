@@ -66,7 +66,7 @@
     </section>
 
     <?php
-        echo "<div class='pagination'>";
+        echo "<div class='pagination-upsent'>";
         if ($pagina_atual > 1) {
             echo "<a href='?page=tarefas&pagina=".($pagina_atual - 1)."'>Anterior</a>";
         }
@@ -90,7 +90,8 @@
         
         <div class="upsent-pop-up" id="upsent-<?php echo $i?>">
             <section>
-        <form action="" method="post" class="upsent_plugin_form">
+        <form action="" method="post" class="upsent-main">
+            <div class="upsent_plugin_form">
             <section class="section_form">
             <input type="text" name="nome_da_tarefa-<?php echo $i?>" id="name-<?php echo $i?>" placeholder="nome da tarefa" value="<?php echo esc_attr($resulte->task_name)?>">
             <textarea name="descrição-<?php echo $i?>" id="description" cols="20" rows="10" placeholder="descrição"><?php echo esc_html($resulte->task_description)?></textarea>
@@ -112,8 +113,9 @@
                 <?php endforeach;?>
              </select>
             </section>
+             </div>
          
-            <input type="submit" value="Atualizar" name="submit-<?php echo $i?>">
+            <input type="submit" value="Atualizar" name="submit-<?php echo $i?>" class="button">
         </form>
 
         <?php
