@@ -23,8 +23,20 @@ class Admin
         );
         $allUsers=get_users($args);
         $get_user_role=get_role($user);
-        add_menu_page('EmployerManagement','EMT','manage_options','employer_management',array($this,'admin_index'),'dashicons-editor-table',110);
+        add_menu_page('EmployerManagement','EMT','manage_options','employer_management',array($this,'admin_dashboard'),'dashicons-editor-table',110);
         if($allUsers && $get_user_role->name=="administrator"){
+
+        
+        add_submenu_page(
+            'employer_management',
+            __( 'Cadastro de tarefas', 'textdomain' ),
+            __( 'Cadastro de tarefas', 'textdomain' ),
+            'manage_options',
+            'cadastro',
+            array($this,'admin_index'),
+            '2'
+        );
+
         add_submenu_page(
             'employer_management',
             __( 'Tarefas ', 'textdomain' ),
@@ -32,7 +44,7 @@ class Admin
             'manage_options',
             'tarefas',
             array($this,'task_subpage'),
-            '2'
+            '3'
         );
 
         add_submenu_page(
@@ -42,7 +54,7 @@ class Admin
             'manage_options',
             'historico',
             array($this,'logs_subpage'),
-            '3'
+            '4'
         );
     
     }
@@ -55,9 +67,13 @@ class Admin
                 'manage_options',
                 'usuario',
                  array($this,'task_user_subpage'),
-                 '4'
+                 '5'
     
             );
+    }
+
+    public function admin_dashboard(){
+        require_once PLUGIN_PATH.'templates/dashboard.php';
     }
 
     public function admin_index(){

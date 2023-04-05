@@ -114,35 +114,40 @@ function get_employer_position()
 add_action('rest_api_init', function () {
     register_rest_route('upsent-api/v1', 'tasks', array(
         'methods' => 'GET',
-        'callback' => 'get_task_data'
+        'callback' => 'get_task_data',
+        'permission_callback' => '__return_true'
     ));
 });
 
 add_action('rest_api_init', function () {
     register_rest_route('upsent-api/v1', 'tasks_employee/', array(
         'methods' => 'GET',
-        'callback' => 'get_task_by_name'
+        'callback' => 'get_task_by_name',
+        'permission_callback' => '__return_true'
     ));
 });
 
 add_action('rest_api_init', function () {
     register_rest_route('upsent-api/v1', 'tasks/(?P<id>\d+)', array(
         'methods' => 'DELETE',
-        'callback' => 'delete_task'
+        'callback' => 'delete_task',
+        'permission_callback' => '__return_true'
     ));
 });
 
 add_action('rest_api_init', function () {
     register_rest_route('upsent-api/v1', 'tasks/', array(
         'methods' => 'PUT',
-        'callback' => 'update_deliverance'     
+        'callback' => 'update_deliverance',
+        'permission_callback' => '__return_true'     
     ));
 });
 
 add_action('rest_api_init', function(){
     register_rest_route('upsent-api/v1','employeer_position/',array(
         'methods' => 'GET',
-        'callback' => 'get_employer_position' 
+        'callback' => 'get_employer_position',
+        'permission_callback' => '__return_true' 
     ));
 });
 

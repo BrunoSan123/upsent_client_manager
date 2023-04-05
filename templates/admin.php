@@ -44,7 +44,7 @@
             </section>
             </div>
             
-            <input type="submit" value="Cadastrar" name="submit" class="button">  
+            <input type="submit" value="Cadastrar" name="submit" class="button_upsent">  
         </form>
         
         <?php 

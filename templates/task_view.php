@@ -52,7 +52,7 @@
                 <td><?php echo $result->states?></td>
                 <td><?php echo $result->funcionaro_responsavel?></td>
                 <td><a class="employee_position">Ver posição atual</a></td>
-                <td><button class="change_btn">alterar</button></td>
+                <td><button class="change_btn button">alterar</button></td>
                 <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
                 <?php if($result->concluida!=0):?>
                     <td class="comprovante"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></td>
@@ -115,7 +115,7 @@
             </section>
              </div>
          
-            <input type="submit" value="Atualizar" name="submit-<?php echo $i?>" class="button">
+            <input type="submit" value="Atualizar" name="submit-<?php echo $i?>" class="button_upsent">
         </form>
 
         <?php
