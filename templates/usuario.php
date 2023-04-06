@@ -20,8 +20,8 @@
             $posicao_inicial = ($pagina_atual - 1) * $itens_por_pagina;
             $current_user= wp_get_current_user();
             $table_name=$wpdb->prefix . 'my_tasks';
-            $results=$wpdb->get_results("SELECT * FROM $table_name WHERE funcionaro_responsavel='$current_user->display_name' LIMIT $posicao_inicial, $itens_por_pagina");
-            $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE funcionaro_responsavel='$current_user->display_name'");
+            $results=$wpdb->get_results("SELECT * FROM $table_name WHERE funcionaro_responsavel='$current_user->display_name' AND entregue=0 LIMIT $posicao_inicial, $itens_por_pagina");
+            $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE funcionaro_responsavel='$current_user->display_name' AND entregue=0");
             $total_pages = ceil($total_tasks / $itens_por_pagina);
             $user_table=$wpdb->prefix.'users';
             $user_result=$wpdb->get_results("SELECT * FROM $user_table");
