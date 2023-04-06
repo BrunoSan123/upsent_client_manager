@@ -26,7 +26,7 @@
         ?>
 
         <?php foreach($results as $result):?>
-           <table class="upsent_table">
+           <table class="upsent_table table-desk">
             <tr class="upsent_table_head">
                 <th>Nome da Tarefa</th>
                 <th>Enrereço da Tarefa</th>
@@ -61,6 +61,28 @@
             </tr>
             
         </table>
+
+        <div class="upsent_table-mobile table-mobile">
+            <div class="table_mobile_main">
+                <div class="upsent-table-item"><span>Nome da Tarefa:</span><span><?php echo $result->task_name?></span></div>
+                <div class="upsent-table-item"><span>Enrereço da Tarefa:</span><span><?php echo $result->task_address?></span></div>
+                <div class="upsent-table-item"><span>Descrição da tarefa:</span><span><?php echo $result->task_description?></span></div>
+                <div class="upsent-table-item"><span>Cordenada X:</span> <span><?php echo $result->coord_x?></span></div>
+                <div class="upsent-table-item"><span>Coordenada Y:</span><span><?php echo $result->coord_y?></span></div>
+                <div class="upsent-table-item"><span>Andamento:</span><span><?php echo $result->states?></span></div>
+                <div class="upsent-table-item"><span>Funcionário:</span> <span><?php echo $result->funcionaro_responsavel?></span> </div>
+                <div class="upsent-table-item"><span>posição atual:</span><a class="employee_position_mobile">Ver posição atual</a></div>
+                <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></div>
+                <?php if($result->concluida!=0):?>
+                    <div class="upsent-table-item">Comprovante: 
+                        <div class="comprovante"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></div>
+                    </div>
+                    <div class="upsent-table-item">Entregar:<div class="finished"></div></div>
+                    
+                <?php endif?>
+                <div class="upsent-table-item"><button class="change_btn button">alterar</button></div>
+                </div>
+            </div>
 
         <?php endforeach;?>
     </section>

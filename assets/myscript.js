@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const closeBtnMap = document.querySelectorAll(".upsent_close_button_map")
   const clientMapBtn = document.querySelectorAll(".client_position");
   const employeeMapBtn=document.querySelectorAll(".employee_position")
+  const employerMapBtnMobile=document.querySelectorAll(".employee_position_mobile");
   const clientMapPosition = document.querySelectorAll(".map_modal");
   const finishButtonBtn=document.querySelectorAll(".finish");
   const uploadInput = document.querySelectorAll(".upload_button");
@@ -112,6 +113,28 @@ var x = document.getElementById("demo");
     console.log(user_maped);
 
     employeeMapBtn.forEach((e,i)=>{
+      e.addEventListener("click", async()=>{
+        const employee_coordinates= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks`);
+        const coord_results=await employee_coordinates.json()
+        const map = new google.maps.Map(document.querySelectorAll(".map")[i], {
+          mapId: "fd8fa89344b48be0",
+          center: { lat: Number(coord_results[i].employeer_position_x), lng: Number(coord_results[i].employeer_position_Y) },
+          zoom: 16,
+        });
+  
+        new google.maps.Marker({
+          position: {
+            lat: Number(coord_results[i].employeer_position_x),
+            lng: Number(coord_results[i].employeer_position_Y)
+          },
+          map,
+          title: coord_results[i].funcionaro_responsavel,
+        });
+        clientMapPosition[i].classList.add("reveal");
+      })
+    })
+
+    employerMapBtnMobile.forEach((e,i)=>{
       e.addEventListener("click", async()=>{
         const employee_coordinates= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks`);
         const coord_results=await employee_coordinates.json()

@@ -149,6 +149,15 @@
     display: inline-block;
 }
 
+@media(max-width:900px){
+    .bullet-green,.bullet-yellow,.conclued_bullet{
+        margin: 0;
+    }
+    .comprovante{
+        width: unset !important;
+    }
+}
+
 .finish{
     cursor: pointer;
 }
@@ -294,6 +303,41 @@
     #myChart{
         width: 100% !important;
         padding: 0 !important;
+    }
+  }
+
+  .table-mobile{
+    display: none;
+  }
+  .upsent_table-mobile{
+    background-color: pink;
+    font-size: 16px;
+    margin-bottom: 4%;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 5px 1px 3px #9f9595;
+  }
+  .upsent-table-item{
+    padding-bottom: 2%;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 5%;
+    margin-left: 5%;
+    align-content: center;
+    align-items: center;
+  }
+
+  .table_mobile_main{
+    padding-top: 4%;
+    padding-bottom: 4%;
+  }
+  @media(max-width:900px){
+    .table-desk{
+        display: none;
+    }
+    .table-mobile{
+        display: block;
     }
   }
 
