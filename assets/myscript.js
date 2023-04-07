@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function (event) {
-  const changeButton = [...document.querySelectorAll(".change_btn")];
+  const changeButton = document.querySelectorAll(".change_btn");
+  const changeButtonMobile=document.querySelectorAll(".change_btn_mobile")
   const page_tarefas_cadastradas= document.body.classList.contains("emt_page_tarefas");
   const page_tarefas_do_funcionario =document.body.classList.contains("emt_page_usuario");
   const taskTable= document.querySelectorAll(".upsent_table");
@@ -38,8 +39,14 @@ var x = document.getElementById("demo");
   
   changeButton.forEach((e, i) => {
     e.addEventListener("click", () => {
-      let singlePop = document.getElementById("upsent-" + i);
-      singlePop.classList.add("reveal");
+      updatePopup[i].classList.add("reveal");
+      getLocation();
+    });
+  });
+
+  changeButtonMobile.forEach((e, i) => {
+    e.addEventListener("click", () => {
+      updatePopup[i].classList.add("reveal");
       getLocation();
     });
   });

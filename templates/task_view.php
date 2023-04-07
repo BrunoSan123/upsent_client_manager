@@ -80,7 +80,7 @@
                     <div class="upsent-table-item">Entregar:<div class="finished"></div></div>
                     
                 <?php endif?>
-                <div class="upsent-table-item"><button class="change_btn button">alterar</button></div>
+                <div class="upsent-table-item"><button class="change_btn_mobile button">alterar</button></div>
                 </div>
             </div>
 
@@ -92,11 +92,11 @@
         if ($pagina_atual > 1) {
             echo "<a href='?page=tarefas&pagina=".($pagina_atual - 1)."'>Anterior</a>";
         }
-        for ($i = 1; $i <= $total_pages; $i++) {
-            if ($i == $pagina_atual) {
-                echo "<span class='current'>$i</span>";
+        for ($j = 1; $j <= $total_pages; $j++) {
+            if ($j == $pagina_atual) {
+                echo "<span class='current'>$j</span>";
             } else {
-                echo "<a href='?page=tarefas&pagina=$i'>$i</a>";
+                echo "<a href='?page=tarefas&pagina=$j'>$j</a>";
             }
         }
         if ($pagina_atual < $total_pages) {
