@@ -56,8 +56,9 @@ function get_task_by_name($request)
     // Get page and per_page parameters
     $page = $request->get_param('page') ? absint($request->get_param('page')) : 1;
     $per_page = $request->get_param('per_page') ? absint($request->get_param('per_page')) : 10;
+    $entregue=$request->get_param('entregue');
     $offset = ($page - 1) * $per_page;
-    $task_data_user = $wpdb->get_results("SELECT * FROM $table_name WHERE funcionaro_responsavel='$funcionario'  LIMIT $per_page OFFSET $offset");
+    $task_data_user = $wpdb->get_results("SELECT * FROM $table_name WHERE funcionaro_responsavel='$funcionario' AND entregue=$entregue  LIMIT $per_page OFFSET $offset");
     $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE funcionaro_responsavel='$funcionario'");
     // Calculate the total number of pages
     $total_pages = ceil($total_tasks / $per_page);
@@ -68,7 +69,8 @@ function get_task_by_name($request)
             'total_pages' => $total_pages,
             'total_tasks' => $total_tasks,
             'current_page' => $page,
-            'per_page' => $per_page
+            'per_page' => $per_page,
+            'entregue'=>$entregue,
         );
     return $task_data_user;
 }

@@ -91,7 +91,7 @@ var x = document.getElementById("demo");
     clientMapBtn.forEach((e, i) => {
       e.addEventListener("click", async  () => {
         const current_user=window.history=usuario
-        const coordinates= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}`);
+        const coordinates= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`);
         const coord_results=await coordinates.json();
         const map = new google.maps.Map(document.querySelectorAll(".map")[i], {
           mapId: "fd8fa89344b48be0",
@@ -165,18 +165,23 @@ var x = document.getElementById("demo");
   }
 
 
-
-  finishButtonBtn.forEach((e,i)=>{
-    e.addEventListener('click',async ()=>{
-      const current_user=window.history=usuario
-      const task_info= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}`);
-      const task_results=await task_info.json();
-      await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/`,{
-          method:'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: task_results[i].id, entregue: 1 })
-      })
-      taskTable[i].remove();
-    })
+  taskTable.forEach((e,i)=>{
+   finishButtonBtn[i].addEventListener('click',async ()=>{
+    const current_user=window.history=usuario
+    const task_info= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`);
+    const task_results=await task_info.json();
+    console.log(task_results[i].concluida)
+    if(task_results[i].concluida==0){
+      alert('precisa concluir a tarefa primeiro')
+    }else{
+       e.remove();
+       await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/`,{
+            method:'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: task_results[i].id, entregue: 1 })
+        })
+      }
+   })
   })
+
 });
