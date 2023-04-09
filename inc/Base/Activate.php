@@ -115,7 +115,8 @@
             'read'=>true,
             'activate_plugins'=>true,
             'edit_plugins'=>true,
-            'level_0'=>true
+            'level_0'=>true,
+            'manage_options'=>true,
         ));
 
     }
