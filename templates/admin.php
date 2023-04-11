@@ -26,10 +26,10 @@
             <textarea name="descrição" id="description" cols="20" rows="7" placeholder="descrição"></textarea>
             </section>
             
-            <section class="section_form">
-            <input type="text" name="coord_X" id="coord_x" placeholder="cordenada x">
-            <input type="text" name="coord_y" id="coord_x" placeholder="cordenada y">
-            <input type="text" name="endereço" id="address" placeholder="endereço">
+            <section class="section_form" id="locate_state_form">
+            <!-- <input type="text" name="coord_X" id="coord_x" placeholder="cordenada x">
+            <input type="text" name="coord_y" id="coord_x" placeholder="cordenada y"> -->
+            <input type="text" name="endereço" id="address" placeholder="endereço: Rua Cidade Estado">
             <select name="estados" id="states">
                 <option value="parado">parado</option>
                 <option value="em_andamento">em andamento</option>
@@ -58,7 +58,7 @@
 
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
-                $table_name = $wpdb->prefix . 'my_tasks';
+               $table_name = $wpdb->prefix . 'my_tasks';
                 $wpdb->insert(
                     $table_name,
                     array(

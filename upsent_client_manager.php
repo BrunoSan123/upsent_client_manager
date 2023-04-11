@@ -75,15 +75,17 @@ function get_task_by_name($request)
     return $task_data_user;
 }
 
-function delete_task($id)
+function delete_task($request)
 {
     global $wpdb;
     $table_name = $wpdb->prefix . 'my_tasks';
+    $id=$request->get_param('id');
     $wpdb->delete(
         $table_name,
         array('id' => $id),
         array('%d')
     );
+    return "item deletado com sucesso";
 }
 
 function teste_route($request){
@@ -130,7 +132,7 @@ add_action('rest_api_init', function () {
 });
 
 add_action('rest_api_init', function () {
-    register_rest_route('upsent-api/v1', 'tasks/(?P<id>\d+)', array(
+    register_rest_route('upsent-api/v1', 'tasks/delete', array(
         'methods' => 'DELETE',
         'callback' => 'delete_task',
         'permission_callback' => '__return_true'

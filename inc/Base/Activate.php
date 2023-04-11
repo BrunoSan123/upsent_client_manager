@@ -117,6 +117,7 @@
             'edit_plugins'=>true,
             'level_0'=>true,
             'manage_options'=>true,
+
         ));
 
     }

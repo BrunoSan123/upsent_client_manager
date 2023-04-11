@@ -40,8 +40,10 @@
                 <th>Concluida</th>
                 <?php if($result->concluida!=0):?>
                     <th>Comprovante</th>
-                    <th>Entregar</th>
                 <?php endif?>
+                <th>Desentregar</th>
+                <th>Excluir</th>
+
             </tr>
             <tr class="upsent_table_data">
                 <td><?php echo $result->task_name?></td>
@@ -56,8 +58,9 @@
                 <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
                 <?php if($result->concluida!=0):?>
                     <td class="comprovante"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></td>
-                    <td><div class="finished"></div></td>
                 <?php endif?>
+                <td><div class="finish"></div></td>
+                <td><div class="delete_task"></div></td>
             </tr>
             
         </table>
@@ -77,7 +80,8 @@
                     <div class="upsent-table-item">Comprovante: 
                         <div class="comprovante"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></div>
                     </div>
-                    <div class="upsent-table-item">Entregar:<div class="finished"></div></div>
+                    <div class="upsent-table-item">Desentregar:<div class="finish"></div></div>
+                    <div class="upsent-table-item">Excluir:<div class="delete_task"></div></div>
                     
                 <?php endif?>
                 <div class="upsent-table-item"><button class="change_btn_mobile button">alterar</button></div>

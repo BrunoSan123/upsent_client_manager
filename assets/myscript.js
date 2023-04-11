@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const closeBtn = document.querySelectorAll(".upsent_close_button");
   const closeBtnMap = document.querySelectorAll(".upsent_close_button_map")
   const clientMapBtn = document.querySelectorAll(".client_position");
+  const clientMapBtnMobile =document.querySelectorAll(".client_position_mobile")
   const employeeMapBtn=document.querySelectorAll(".employee_position")
   const employerMapBtnMobile=document.querySelectorAll(".employee_position_mobile");
   const clientMapPosition = document.querySelectorAll(".map_modal");
@@ -15,6 +16,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const uploadInput = document.querySelectorAll(".upload_button");
   const selectState= document.querySelectorAll(".states");
   const fileInput = document.querySelectorAll('input[type="file"]');
+  const clientAddress= document.getElementById("address");
+  const coord_x=document.getElementById("coord_x")
+  const coord_y=document.getElementById("coord_y")
+  const deleteButton= document.querySelectorAll(".delete_task")
 
 
 
@@ -35,6 +40,20 @@ var x = document.getElementById("demo");
     document.cookie = `coord_y= ${position.coords.longitude}`;
   }
 
+  async function getClientCoords(value){
+    const localeRequest= await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${value}&key=AIzaSyChwlr0dGv_YSZfJkVdblKgIV47MK3tkks`)
+    const localeResponse=await localeRequest.json();
+    if(coord_x && coord_y){
+      return
+    }else{
+      clientAddress.innerHTML=`
+      <input type="hidden" name="coord_X" id="coord_x" placeholder="cordenada x" value="${localeResponse.results[0].geometry.location.lat}">
+      <input type="hidden" name="coord_y" id="coord_y" placeholder="cordenada y" value="${localeResponse.results[0].geometry.location.lng}">
+      `
+
+    }
+
+  }
 
   
   changeButton.forEach((e, i) => {
@@ -111,6 +130,48 @@ var x = document.getElementById("demo");
       });
     });
 
+    clientMapBtnMobile.forEach((e, i) => {
+      e.addEventListener("click", async  () => {
+        const current_user=window.history=usuario
+        const coordinates= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`);
+        const coord_results=await coordinates.json();
+        const map = new google.maps.Map(document.querySelectorAll(".map")[i], {
+          mapId: "fd8fa89344b48be0",
+          center: { lat: Number(coord_results[i].coord_x), lng: Number(coord_results[i].coord_y) },
+          zoom: 16,
+        });
+  
+        new google.maps.Marker({
+          position: {
+            lat: Number(coord_results[i].coord_x),
+            lng: Number(coord_results[i].coord_y)
+          },
+          map,
+          title: coord_results[i].funcionaro_responsavel,
+        });
+        clientMapPosition[i].classList.add("reveal");
+      });
+    });
+
+    taskTable.forEach((e,i)=>{
+      finishButtonBtn[i].addEventListener('click',async ()=>{
+       const current_user=window.history=usuario
+       const task_info= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`);
+       const task_results=await task_info.json();
+       console.log(task_results[i].concluida)
+       if(task_results[i].concluida==0){
+         alert('precisa concluir a tarefa primeiro')
+       }else{
+          e.remove();
+          await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/`,{
+               method:'PUT',
+               headers: { 'Content-Type': 'application/json' },
+               body: JSON.stringify({ id: task_results[i].id, entregue: 1 })
+           })
+         }
+      })
+     })
+
   }
 
 
@@ -141,6 +202,31 @@ var x = document.getElementById("demo");
       })
     })
 
+    taskTable.forEach((e,i)=>{
+      deleteButton[i].addEventListener('click',async ()=>{
+       const task_info= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks`);
+       const task_results=await task_info.json();
+       console.log(task_results[i].id)
+       e.remove();
+       await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/delete?id=${task_results[i].id}`,{
+            method:'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+        })
+      })
+
+      finishButtonBtn[i].addEventListener('click',async ()=>{
+        const task_info= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks`);
+        const task_results=await task_info.json();
+        console.log(task_results[i].concluida)
+        await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/`,{
+          method:'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: task_results[i].id, entregue: 0 })
+      })
+
+       })
+     })
+
     employerMapBtnMobile.forEach((e,i)=>{
       e.addEventListener("click", async()=>{
         const employee_coordinates= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks`);
@@ -165,23 +251,12 @@ var x = document.getElementById("demo");
   }
 
 
-  taskTable.forEach((e,i)=>{
-   finishButtonBtn[i].addEventListener('click',async ()=>{
-    const current_user=window.history=usuario
-    const task_info= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`);
-    const task_results=await task_info.json();
-    console.log(task_results[i].concluida)
-    if(task_results[i].concluida==0){
-      alert('precisa concluir a tarefa primeiro')
-    }else{
-       e.remove();
-       await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/`,{
-            method:'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: task_results[i].id, entregue: 1 })
-        })
-      }
-   })
+
+
+
+  clientAddress.addEventListener("change",(e)=>{
+    getClientCoords(e.target.value);
   })
 
 });
+
