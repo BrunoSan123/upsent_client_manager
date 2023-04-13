@@ -126,8 +126,9 @@
                     <option value="em_andamento" <?php selected($result->states, 'em_andamento'); ?>>em andamento</option>
                     <option value="completa" <?php selected($result->states, 'completa'); ?>>completo</option>
             </select>
-            <input type="file" name="upload_file-<?php echo $i?>" id="picture_upload-<?php echo $i?>" value="Comprovante" class="upload_button">
-
+            <div class="upload_button">
+                <input type="file" name="upload_file-<?php echo $i?>" id="picture_upload-<?php echo $i?>" value="Comprovante">
+            </div>
             </section>
             </div>
          
@@ -138,7 +139,7 @@
         <?php
 
              if(isset($_POST['estados-'.$i])){
-                $current_state=isset($_POST['estados-'.$i])?$_POST['estados-'.$i]:'';
+                $current_state=$_POST['estados-'.$i];
                 $file=isset($_FILES['upload_file-'.$i])?$_FILES['upload_file-'.$i]:'';
                 $sinal;
                 $finished=0;
@@ -147,9 +148,7 @@
                 $targetDirectory = PLUGIN_PATH.'/uploads/';
                 $targetFile = $targetDirectory . basename($file["name"]);
                 move_uploaded_file($file['tmp_name'],$targetFile);
-                echo 'upload feito com sucesso';
 
-                  
                 switch($current_state){
                     case 'parado':
                         $sinal='RED';
@@ -161,10 +160,8 @@
                         $sinal= 'GREEN';
                         $finished=1;
                         break;
-                    default:
-                        $sinal='';
                     }
-            }
+                }
 
 
              
@@ -189,7 +186,7 @@
                         $logs_table_name,
                         array(
                           'user'=>$result->funcionaro_responsavel,
-                          'log_description'=>"usuario ".$result->funcionaro_responsavel." mudou o estado da tarefa para ".$current_state,
+                          'log_description'=>"usuario ".$result->funcionaro_responsavel." mudou o estado da tarefa para",
                           'sign'=>$sinal
                           )
                         );

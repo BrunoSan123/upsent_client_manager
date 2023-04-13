@@ -13,7 +13,6 @@ class Enqueue{
         // load css and js
         wp_enqueue_style('upsent_plugin_style',PLUGIN_URL.'assets/mystyle.css');
         wp_enqueue_style('bootstap',PLUGIN_URL.'assets/bootstap/css/bootstrap.min.css');
-        wp_enqueue_script('upsent_plugin_script',PLUGIN_URL.'assets/myscript.js');
-        wp_enqueue_script('bootstrap-js',PLUGIN_URL.'assets/bootstrap/js/bootstrap.min.js');
+        wp_enqueue_script('upsent_plugin_script',PLUGIN_URL.'assets/myscript.js','',true);
     }
 }

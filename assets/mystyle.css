@@ -3,7 +3,7 @@
     padding:1% !important;
     resize:none !important;
 }
-.toplevel_page_employer_management header, .emt_page_tarefas header{
+.emt_page_usuario header, .emt_page_cadastro header, .emt_page_tarefas header{
     margin-bottom: 3%;
     text-align:center;
 }
@@ -359,5 +359,28 @@
     .table-mobile{
         display: block;
     }
+  }
+
+  .upload_button{
+    background: #ddd;
+  }
+
+  input[type=file]{
+    background: #ddd;
+    height: 93px;
+  }
+  
+
+  input[type=file]::file-selector-button {
+    border: 2px solid #6c5ce7;
+    padding: .2em .4em;
+    border-radius: .2em;
+    transition: 1s;
+    height: 80px;
+  }
+  
+  input[type=file]::file-selector-button:hover {
+    background-color: #81ecec;
+    border: 2px solid #00cec9;
   }
 
