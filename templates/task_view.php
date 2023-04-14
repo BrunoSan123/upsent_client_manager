@@ -12,10 +12,25 @@
     </header>
 
     <section>
+        <form action="" method="post">
+        <div class="filter-div">
+            <select name="filter_selection" id="filter" class="filter">
+                <option value="" class="filter-item" selected></option>
+                <option value="parado" class="filter-item">parado</option>
+                <option value="em_andamento" class="filter-item">em andamaneto</option>
+                <option value="concluido"  class="filter-item">concluido</option>
+            </select>
+            <input type="submit" value="filtrar" name='filtro'>
+                
+        </div>
+            
+        </form> 
+
         <?php 
             global $wpdb;
             $itens_por_pagina = 3;
             isset($_GET['pagina'])? $pagina_atual=$_GET['pagina']:$pagina_atual=1;
+            isset($_POST['filter_selection'])?$filter=$_POST['filter_selection']:'';
             $posicao_inicial = ($pagina_atual - 1) * $itens_por_pagina;
             $table_name=$wpdb->prefix . 'my_tasks';
             $results=$wpdb->get_results("SELECT * FROM $table_name LIMIT $posicao_inicial, $itens_por_pagina");
@@ -23,7 +38,41 @@
             $total_pages = ceil($total_tasks / $itens_por_pagina);
             $user_table=$wpdb->prefix.'users';
             $user_result=$wpdb->get_results("SELECT * FROM $user_table");
+            $states=null;
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filtro'])){
+                $results=null;
+                $total_tasks=null;
+                $total_pages=null;
+                switch ($filter) {
+                    case 'parado':
+                        $results=$wpdb->get_results("SELECT * FROM $table_name WHERE states='$filter' LIMIT $posicao_inicial, $itens_por_pagina");
+                        $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE states='$filter'");
+                        $total_pages = ceil($total_tasks / $itens_por_pagina);
+                        $states='&status='.$filter;
+                        break;
+                    case 'em_andamento':
+                        $results=$wpdb->get_results("SELECT * FROM $table_name WHERE states='$filter' LIMIT $posicao_inicial, $itens_por_pagina");
+                        $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE states='$filter'");
+                        $total_pages = ceil($total_tasks / $itens_por_pagina);
+                        $states='&status='.$filter;
+                        break;
+                    case 'concluido':
+                       $results=$wpdb->get_results("SELECT * FROM $table_name WHERE states='completa' LIMIT $posicao_inicial, $itens_por_pagina");
+                       $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE states='completa'");
+                       $total_pages = ceil($total_tasks / $itens_por_pagina);
+                       $states='&status='.$filter;
+                        break;
+                }
+                echo $filter;
+
+            } 
+
+
         ?>
+
+
+        
 
         <?php foreach($results as $result):?>
            <table class="upsent_table table-desk">
@@ -94,17 +143,17 @@
     <?php
         echo "<div class='pagination-upsent'>";
         if ($pagina_atual > 1) {
-            echo "<a href='?page=tarefas&pagina=".($pagina_atual - 1)."'>Anterior</a>";
+            echo "<a href='?page=tarefas$states&pagina=".($pagina_atual - 1)."'>Anterior</a>";
         }
         for ($j = 1; $j <= $total_pages; $j++) {
             if ($j == $pagina_atual) {
                 echo "<span class='current'>$j</span>";
             } else {
-                echo "<a href='?page=tarefas&pagina=$j'>$j</a>";
+                echo "<a href='?page=tarefas$states&pagina=$j'>$j</a>";
             }
         }
         if ($pagina_atual < $total_pages) {
-            echo "<a href='?page=tarefas&pagina=".($pagina_atual + 1)."'>Próximo</a>";
+            echo "<a href='?page=tarefas$states&pagina=".($pagina_atual + 1)."'>Próximo</a>";
         }
         echo "</div>";
       ?>

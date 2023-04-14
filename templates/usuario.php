@@ -144,7 +144,6 @@
                 $sinal;
                 $finished=0;
                 $fileNew=explode('.',$file["name"]);
-                echo $file["name"];
                 $targetDirectory = PLUGIN_PATH.'/uploads/';
                 $targetFile = $targetDirectory . basename($file["name"]);
                 move_uploaded_file($file['tmp_name'],$targetFile);
@@ -161,6 +160,8 @@
                         $finished=1;
                         break;
                     }
+                    echo $finished;
+                    echo $sinal;
                 }
 
 

@@ -188,15 +188,6 @@ var x = document.getElementById("demo");
       })
      })
 
-     employerSubmitButton.forEach((e,i)=>{
-      e.addEventListener('submit',(evt)=>{
-        console.log(fileInput[i].value)
-        if(fileInput[i].value==""){
-          evt.preventDefault();
-          alert("Precisa da comprovação");
-        }
-      })
-    })
   
 
   }

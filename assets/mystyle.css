@@ -384,3 +384,23 @@
     border: 2px solid #00cec9;
   }
 
+  section{
+    position:relative;
+  }
+
+  .filter{
+    padding: 0 !important;
+    width:200px !important;
+  }
+  .filter-div{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -38px;
+    margin-bottom: 2%;
+    align-items:center;
+  }
+  .filter-div>input{
+    margin-top: -6px;
+    padding:6px !important;
+  }
+
