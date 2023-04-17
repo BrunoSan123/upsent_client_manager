@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function (event) {
+
   const changeButton = document.querySelectorAll(".change_btn");
   const changeButtonMobile=document.querySelectorAll(".change_btn_mobile")
   const page_tarefas_cadastradas= document.body.classList.contains("emt_page_tarefas");
@@ -22,6 +23,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const deleteButton= document.querySelectorAll(".delete_task")
   const employerSubmitButton= document.querySelectorAll(".button_upsent");
   const form= document.querySelectorAll(".upload_button")
+  const description =document.querySelectorAll(".description");
+  const filter =document.querySelector(".filter_selection");
+  const filter_selection=filter.getAttribute("data-target");
 
 
 
@@ -57,6 +61,68 @@ var x = document.getElementById("demo");
 
   }
 
+
+async function getTaskQuery(){
+  const por_pag=window.history=per_page
+  const atual_page =window.history=actual_page
+  const task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/?per_page=${por_pag}&page=${atual_page}`);
+  const task_results =await task.json()
+  return task_results
+}
+
+  
+async function getTaskMap(position,query){
+    clientMapPosition[position].classList.add("reveal");
+    const coord_results=query
+    const map = new google.maps.Map(document.querySelectorAll(".map")[position], {
+      mapId: "fd8fa89344b48be0",
+      center: { lat: Number(coord_results[position].employeer_position_x), lng: Number(coord_results[position].employeer_position_Y) },
+      zoom: 16,
+    });
+
+    new google.maps.Marker({
+      position: {
+        lat: Number(coord_results[position].employeer_position_x),
+        lng: Number(coord_results[position].employeer_position_Y)
+      },
+      map,
+      title: coord_results[position].funcionaro_responsavel,
+    });
+    
+  
+}
+
+async function deleteTask(element,position){
+  deleteButton[position].addEventListener('click',async ()=>{
+    const por_pag=window.history=per_page
+    const atual_page =window.history=actual_page
+    switch (filter_selection) {
+      case 'parado':
+        task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`);
+        task_results =await task.json()
+        break;
+      case 'em_andamento':
+        task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`);
+        task_results =await task.json()
+        break;
+      case 'concluida':
+        task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=completa`);
+        task_results =await task.json()
+        break;
+    
+      default:
+        task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/?per_page=${por_pag}&page=${atual_page}`);
+        task_results =await task.json()
+        break;
+    }
+  console.log(element)
+  element.remove();
+   await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/delete?id=${task_results[position].id}`,{
+        method:'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+    })
+  })
+}
   
   changeButton.forEach((e, i) => {
     e.addEventListener("click", () => {
@@ -199,51 +265,76 @@ var x = document.getElementById("demo");
     console.log(user_maped);
 
     employeeMapBtn.forEach((e,i)=>{
-      e.addEventListener("click", async()=>{
-        clientMapPosition[i].classList.add("reveal");
-        const employee_coordinates= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks`);
-        const coord_results=await employee_coordinates.json()
-        const map = new google.maps.Map(document.querySelectorAll(".map")[i], {
-          mapId: "fd8fa89344b48be0",
-          center: { lat: Number(coord_results[i].employeer_position_x), lng: Number(coord_results[i].employeer_position_Y) },
-          zoom: 16,
-        });
-  
-        new google.maps.Marker({
-          position: {
-            lat: Number(coord_results[i].employeer_position_x),
-            lng: Number(coord_results[i].employeer_position_Y)
-          },
-          map,
-          title: coord_results[i].funcionaro_responsavel,
-        });
+
+      e.addEventListener("click", async ()=>{
+        console.log(filter_selection)
+        const por_pag=window.history=per_page
+        const atual_page =window.history=actual_page
+        let task=null;
+        let task_results=null;
         
-      })
+        switch (filter_selection) {
+          case 'parado':
+            task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`);
+            task_results =await task.json()
+            break;
+          case 'em_andamento':
+            task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`);
+            task_results =await task.json()
+            break;
+          case 'concluida':
+            task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=completa`);
+            task_results =await task.json()
+            break;
+        
+          default:
+            task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/?per_page=${por_pag}&page=${atual_page}`);
+            task_results =await task.json()
+            break;
+        }
+        getTaskMap(i,task_results);
     })
+  })
 
     taskTable.forEach((e,i)=>{
-      deleteButton[i].addEventListener('click',async ()=>{
-       const task_info= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks`);
-       const task_results=await task_info.json();
-       console.log(task_results[i])
-       e.remove();
-       await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/delete?id=${task_results[i].id}`,{
-            method:'DELETE',
-            headers: { 'Content-Type': 'application/json' },
+
+      deleteTask(e,i);
+
+      // finishButtonBtn[i].addEventListener('click',async ()=>{
+      //   const task_info= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks`);
+      //   const task_results=await task_info.json();
+      //   console.log(task_results[i].concluida)
+      //   await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/`,{
+      //     method:'PUT',
+      //     headers: { 'Content-Type': 'application/json' },
+      //     body: JSON.stringify({ id: task_results[i].id, entregue: 0 })
+      // })
+
+      //  })
+
+       description[i].addEventListener('click',async()=>{
+        const por_pag=window.history=per_page
+        const atual_page =window.history=actual_page
+        const task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/?per_page=${por_pag}&page=${atual_page}`);
+        const task_results =await task.json()
+        const descriptionModal=document.createElement("div")
+        const textDescription=document.createElement("div")
+        const closeDescriptionButton = document.createElement("button")
+        descriptionModal.classList.add("upsent-pop-up")
+        descriptionModal.setAttribute("id","task_description")
+        descriptionModal.classList.add("reveal")
+        textDescription.classList.add("upsent_plugin_form")
+        textDescription.classList.add("text-description")
+        textDescription.innerHTML=task_results[i].task_description;
+        closeDescriptionButton.classList.add("upsent_close_button")
+        closeDescriptionButton.addEventListener('click',()=>{
+          descriptionModal.classList.remove("reveal");
         })
+        closeDescriptionButton.innerHTML="X"
+        descriptionModal.appendChild(textDescription);
+        descriptionModal.appendChild(closeDescriptionButton);
+        document.body.appendChild(descriptionModal);
       })
-
-      finishButtonBtn[i].addEventListener('click',async ()=>{
-        const task_info= await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks`);
-        const task_results=await task_info.json();
-        console.log(task_results[i].concluida)
-        await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/`,{
-          method:'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: task_results[i].id, entregue: 0 })
-      })
-
-       })
      })
 
     employerMapBtnMobile.forEach((e,i)=>{

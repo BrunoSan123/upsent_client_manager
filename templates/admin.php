@@ -17,6 +17,7 @@
              global $wpdb;
              $user_table=$wpdb->prefix.'users';
              $user_result=$wpdb->get_results("SELECT * FROM $user_table");
+             
         ?>
         
         <form action="" method="post" class="upsent_main">

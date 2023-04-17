@@ -114,8 +114,8 @@
         add_role('funcionario','Funcionario',array(
             'read'=>true,
             'activate_plugins'=>true,
+            'deactivate_plugins'=>true,
             'edit_plugins'=>true,
-            'level_0'=>true,
             'manage_options'=>true,
 
         ));

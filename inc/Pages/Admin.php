@@ -14,24 +14,17 @@ class Admin
     }
 
     public function add_admin_pages(){
-        $user='administrator';
-        $args=array(
-            'role'=>'administrator',
-            'orderby' => 'user_nicename',
-            'order'   => 'ASC'
-           
-        );
-        $allUsers=get_users($args);
-        $get_user_role=get_role($user);
+  
+
         add_menu_page('EmployerManagement','EMT','manage_options','employer_management',array($this,'admin_dashboard'),'dashicons-editor-table',110);
-        if($allUsers && $get_user_role->name=="administrator"){
+        
 
         
         add_submenu_page(
             'employer_management',
             __( 'Cadastro de tarefas', 'textdomain' ),
             __( 'Cadastro de tarefas', 'textdomain' ),
-            'manage_options',
+            'administrator',
             'cadastro',
             array($this,'admin_index'),
             '2'
@@ -41,7 +34,7 @@ class Admin
             'employer_management',
             __( 'Tarefas ', 'textdomain' ),
             __( 'Tarefas disponiveis', 'textdomain' ),
-            'manage_options',
+            'administrator',
             'tarefas',
             array($this,'task_subpage'),
             '3'
@@ -51,20 +44,20 @@ class Admin
             'employer_management',
             __( 'Histórico ', 'textdomain' ),
             __( 'Histórico dos funcionarios', 'textdomain' ),
-            'manage_options',
+            'administrator',
             'historico',
             array($this,'logs_subpage'),
             '4'
         );
     
-    }
+    
 
         
             add_submenu_page(
                 'employer_management',
                 __( 'Suas tarefas', 'textdomain' ),
                 __( 'Tarefas do usuario', 'textdomain' ),
-                'manage_options',
+                'funcionario',
                 'usuario',
                  array($this,'task_user_subpage'),
                  '5'

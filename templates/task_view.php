@@ -9,9 +9,6 @@
 <body>
     <header>
         <nav><h1>Tarefas Cadastradas</h1></nav>
-    </header>
-
-    <section>
         <form action="" method="post">
         <div class="filter-div">
             <select name="filter_selection" id="filter" class="filter">
@@ -25,6 +22,10 @@
         </div>
             
         </form> 
+    </header>
+
+    <section>
+
 
         <?php 
             global $wpdb;
@@ -38,7 +39,7 @@
             $total_pages = ceil($total_tasks / $itens_por_pagina);
             $user_table=$wpdb->prefix.'users';
             $user_result=$wpdb->get_results("SELECT * FROM $user_table");
-            $states=null;
+            $state=null;
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filtro'])){
                 $results=null;
@@ -49,31 +50,27 @@
                         $results=$wpdb->get_results("SELECT * FROM $table_name WHERE states='$filter' LIMIT $posicao_inicial, $itens_por_pagina");
                         $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE states='$filter'");
                         $total_pages = ceil($total_tasks / $itens_por_pagina);
-                        $states='&status='.$filter;
+                        $state=$filter;
                         break;
                     case 'em_andamento':
                         $results=$wpdb->get_results("SELECT * FROM $table_name WHERE states='$filter' LIMIT $posicao_inicial, $itens_por_pagina");
                         $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE states='$filter'");
                         $total_pages = ceil($total_tasks / $itens_por_pagina);
-                        $states='&status='.$filter;
+                        $state=$filter;
                         break;
                     case 'concluido':
                        $results=$wpdb->get_results("SELECT * FROM $table_name WHERE states='completa' LIMIT $posicao_inicial, $itens_por_pagina");
                        $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE states='completa'");
                        $total_pages = ceil($total_tasks / $itens_por_pagina);
-                       $states='&status='.$filter;
-                        break;
+                       $state=$filter;
+                       break;
                 }
-                echo $filter;
 
             } 
 
 
         ?>
-
-
-        
-
+        <input type="hidden" name="filtro" class="filter_selection" value="" data-target="<?php echo $state?>">
         <?php foreach($results as $result):?>
            <table class="upsent_table table-desk">
             <tr class="upsent_table_head">
@@ -90,14 +87,16 @@
                 <?php if($result->concluida!=0):?>
                     <th>Comprovante</th>
                 <?php endif?>
-                <th>Desentregar</th>
+                <?php if($result->entregue!=0):?>
+                    <th>Desentregar</th>
+                <?php endif?>
                 <th>Excluir</th>
 
             </tr>
             <tr class="upsent_table_data">
                 <td><?php echo $result->task_name?></td>
                 <td><?php echo $result->task_address?></td>
-                <td><?php echo $result->task_description?></td>
+                <td><div class="description">Descrição</div></td>
                 <td><?php echo $result->coord_x?></td>
                 <td><?php echo $result->coord_y?></td>
                 <td><?php echo $result->states?></td>
@@ -108,7 +107,9 @@
                 <?php if($result->concluida!=0):?>
                     <td class="comprovante"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></td>
                 <?php endif?>
-                <td><div class="finish"></div></td>
+                <?php if($result->entregue!=0):?>
+                    <td><div class="finish"></div></td>
+                <?php endif?>
                 <td><div class="delete_task"></div></td>
             </tr>
             
@@ -143,17 +144,17 @@
     <?php
         echo "<div class='pagination-upsent'>";
         if ($pagina_atual > 1) {
-            echo "<a href='?page=tarefas$states&pagina=".($pagina_atual - 1)."'>Anterior</a>";
+            echo "<a href='?page=tarefas&pagina=".($pagina_atual - 1)."'>Anterior</a>";
         }
         for ($j = 1; $j <= $total_pages; $j++) {
             if ($j == $pagina_atual) {
                 echo "<span class='current'>$j</span>";
             } else {
-                echo "<a href='?page=tarefas$states&pagina=$j'>$j</a>";
+                echo "<a href='?page=tarefas&pagina=$j'>$j</a>";
             }
         }
         if ($pagina_atual < $total_pages) {
-            echo "<a href='?page=tarefas$states&pagina=".($pagina_atual + 1)."'>Próximo</a>";
+            echo "<a href='?page=tarefas&pagina=".($pagina_atual + 1)."'>Próximo</a>";
         }
         echo "</div>";
       ?>
@@ -238,6 +239,12 @@
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChwlr0dGv_YSZfJkVdblKgIV47MK3tkks&callback=initMap"></script>
     <script>
        const usuario_maped =<?php echo json_encode($maped)?> 
+    </script>
+    <script>
+        const per_page=<?php echo $itens_por_pagina?>
+    </script>
+    <script>
+         const actual_page=<?php echo $pagina_atual?>
     </script>
 </body>
 </html>

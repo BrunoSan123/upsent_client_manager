@@ -14,6 +14,7 @@
          $results_finished=$wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE concluida=1");
          $results_incoming=$wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE states='em_andamento'");
          $results_stoped=$wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE states='parado'");
+         //print_r(get_role('funcionario'));
         ?>
         <div class="dashboard_info dashboard_info_finished">Tarefas concluidas: <p class="task_total"><?php echo $results_finished?></p></div>
         <div class="dashboard_info dashboard_info_incoming">Tarefas em Andamento: <p class="task_total"><?php echo $results_incoming?></p></div>

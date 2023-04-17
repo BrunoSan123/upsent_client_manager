@@ -39,11 +39,25 @@ function deactivate_employer_manager_plugin()
 register_activation_hook(__FILE__, 'activate_employer_manager_plugin');
 register_deactivation_hook(__FILE__, 'deactivate_employer_manager_plugin');
 
-function get_task_data()
+function get_task_data($request)
 {
     global $wpdb;
     $table_name = $wpdb->prefix . 'my_tasks';
-    $task_data = $wpdb->get_results("SELECT * FROM $table_name");
+    $page = $request->get_param('page') ? absint($request->get_param('page')) : 1;
+    $per_page = $request->get_param('per_page') ? absint($request->get_param('per_page')) : 10;
+    $offset = ($page - 1) * $per_page;
+    $task_data = $wpdb->get_results("SELECT * FROM $table_name LIMIT $per_page OFFSET $offset");
+    return $task_data;
+}
+
+function get_task_data_by_status($request){
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'my_tasks';
+    $page = $request->get_param('page') ? absint($request->get_param('page')) : 1;
+    $per_page = $request->get_param('per_page') ? absint($request->get_param('per_page')) : 10;
+    $status=$request->get_param('status');
+    $offset = ($page - 1) * $per_page;
+    $task_data = $wpdb->get_results("SELECT * FROM $table_name WHERE states='$status' LIMIT $per_page OFFSET $offset");
     return $task_data;
 }
 
@@ -155,6 +169,13 @@ add_action('rest_api_init', function(){
     ));
 });
 
+add_action('rest_api_init', function(){
+    register_rest_route('upsent-api/v1','tasks/filter',array(
+        'methods' => 'GET',
+        'callback' => 'get_task_data_by_status',
+        'permission_callback' => '__return_true' 
+    ));
+});
 
 if (class_exists('Inc\\Init')) {
     Inc\Init::register_services();
