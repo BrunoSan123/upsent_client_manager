@@ -96,7 +96,7 @@
             <tr class="upsent_table_data">
                 <td><?php echo $result->task_name?></td>
                 <td><?php echo $result->task_address?></td>
-                <td><div class="description">Descrição</div></td>
+                <td><a class="description">Descrição</a></td>
                 <td><?php echo $result->coord_x?></td>
                 <td><?php echo $result->coord_y?></td>
                 <td><?php echo $result->states?></td>
@@ -231,6 +231,11 @@
         <div class="map" ></div>
     <button class="upsent_close_button_map">X</button> 
     </div>
+     <div class="description-pop">
+        <div class="text-description ">
+            <p><?php echo $resulte->task_description?></p>
+        </div>
+     </div>
      <?php $i++;?>
     <?php 
      $maped[]=$resulte->funcionaro_responsavel;  

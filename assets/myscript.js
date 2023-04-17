@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const description =document.querySelectorAll(".description");
   const filter =document.querySelector(".filter_selection");
   const filter_selection=filter.getAttribute("data-target");
+  const modelDescription= document.querySelectorAll(".description-pop")
 
 
 
@@ -264,34 +265,35 @@ async function deleteTask(element,position){
     var user_maped =window.history=usuario_maped;
     console.log(user_maped);
 
-    employeeMapBtn.forEach((e,i)=>{
+    employeeMapBtn.forEach(async (e,i)=>{
+      console.log(filter_selection)
+      const por_pag=window.history=per_page
+      const atual_page =window.history=actual_page
+      let task=null;
+      let task_results=null;
+      
+      switch (filter_selection) {
+        case 'parado':
+          task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`);
+          task_results =await task.json()
+          break;
+        case 'em_andamento':
+          task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`);
+          task_results =await task.json()
+          break;
+        case 'concluida':
+          task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=completa`);
+          task_results =await task.json()
+          break;
+      
+        default:
+          task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/?per_page=${por_pag}&page=${atual_page}`);
+          task_results =await task.json()
+          break;
+      }
 
-      e.addEventListener("click", async ()=>{
-        console.log(filter_selection)
-        const por_pag=window.history=per_page
-        const atual_page =window.history=actual_page
-        let task=null;
-        let task_results=null;
-        
-        switch (filter_selection) {
-          case 'parado':
-            task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`);
-            task_results =await task.json()
-            break;
-          case 'em_andamento':
-            task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`);
-            task_results =await task.json()
-            break;
-          case 'concluida':
-            task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=completa`);
-            task_results =await task.json()
-            break;
-        
-          default:
-            task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/?per_page=${por_pag}&page=${atual_page}`);
-            task_results =await task.json()
-            break;
-        }
+      e.addEventListener("click", ()=>{
+
         getTaskMap(i,task_results);
     })
   })
@@ -313,27 +315,7 @@ async function deleteTask(element,position){
       //  })
 
        description[i].addEventListener('click',async()=>{
-        const por_pag=window.history=per_page
-        const atual_page =window.history=actual_page
-        const task =await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/?per_page=${por_pag}&page=${atual_page}`);
-        const task_results =await task.json()
-        const descriptionModal=document.createElement("div")
-        const textDescription=document.createElement("div")
-        const closeDescriptionButton = document.createElement("button")
-        descriptionModal.classList.add("upsent-pop-up")
-        descriptionModal.setAttribute("id","task_description")
-        descriptionModal.classList.add("reveal")
-        textDescription.classList.add("upsent_plugin_form")
-        textDescription.classList.add("text-description")
-        textDescription.innerHTML=task_results[i].task_description;
-        closeDescriptionButton.classList.add("upsent_close_button")
-        closeDescriptionButton.addEventListener('click',()=>{
-          descriptionModal.classList.remove("reveal");
-        })
-        closeDescriptionButton.innerHTML="X"
-        descriptionModal.appendChild(textDescription);
-        descriptionModal.appendChild(closeDescriptionButton);
-        document.body.appendChild(descriptionModal);
+         modelDescription[i].classList.add("reveal");
       })
      })
 
