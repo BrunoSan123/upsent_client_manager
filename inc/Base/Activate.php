@@ -70,6 +70,7 @@
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             user VARCHAR(50) NOT NULL,
             log_description VARCHAR(50) NOT NULL,
+            task_name VARCHAR(50) NOT NULL,
             sign VARCHAR(50) NOT NULL,
             PRIMARY KEY(id)
         )";

@@ -8,20 +8,7 @@
 </head>
 <body>
     <header>
-        <nav><h1>Tarefas Cadastradas</h1></nav>
-        <form action="" method="post">
-        <div class="filter-div">
-            <select name="filter_selection" id="filter" class="filter">
-                <option value="" class="filter-item" selected></option>
-                <option value="parado" class="filter-item">parado</option>
-                <option value="em_andamento" class="filter-item">em andamaneto</option>
-                <option value="concluido"  class="filter-item">concluido</option>
-            </select>
-            <input type="submit" value="filtrar" name='filtro'>
-                
-        </div>
-            
-        </form> 
+        <nav><h1>Tarefas entregues</h1></nav>
     </header>
 
     <section>
@@ -34,39 +21,11 @@
             isset($_POST['filter_selection'])?$filter=$_POST['filter_selection']:'';
             $posicao_inicial = ($pagina_atual - 1) * $itens_por_pagina;
             $table_name=$wpdb->prefix . 'my_tasks';
-            $results=$wpdb->get_results("SELECT * FROM $table_name LIMIT $posicao_inicial, $itens_por_pagina");
-            $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name");
+            $results=$wpdb->get_results("SELECT * FROM $table_name WHERE entregue=1  LIMIT $posicao_inicial, $itens_por_pagina");
+            $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE entregue=1");
             $total_pages = ceil($total_tasks / $itens_por_pagina);
             $user_table=$wpdb->prefix.'users';
             $user_result=$wpdb->get_results("SELECT * FROM $user_table");
-            $state=null;
-
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filtro'])){
-                $results=null;
-                $total_tasks=null;
-                $total_pages=null;
-                switch ($filter) {
-                    case 'parado':
-                        $results=$wpdb->get_results("SELECT * FROM $table_name WHERE states='$filter' LIMIT $posicao_inicial, $itens_por_pagina");
-                        $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE states='$filter'");
-                        $total_pages = ceil($total_tasks / $itens_por_pagina);
-                        $state=$filter;
-                        break;
-                    case 'em_andamento':
-                        $results=$wpdb->get_results("SELECT * FROM $table_name WHERE states='$filter' LIMIT $posicao_inicial, $itens_por_pagina");
-                        $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE states='$filter'");
-                        $total_pages = ceil($total_tasks / $itens_por_pagina);
-                        $state=$filter;
-                        break;
-                    case 'concluido':
-                       $results=$wpdb->get_results("SELECT * FROM $table_name WHERE states='completa' LIMIT $posicao_inicial, $itens_por_pagina");
-                       $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE states='completa'");
-                       $total_pages = ceil($total_tasks / $itens_por_pagina);
-                       $state=$filter;
-                       break;
-                }
-
-            } 
 
 
         ?>
@@ -79,12 +38,8 @@
                 <th>Descrição da tarefa</th>
                 <th>Andamento</th>
                 <th>Funcionário</th>
-                <th>posição atual</th>
                 <th></th>
                 <th>Concluida</th>
-                <?php if($result->concluida!=0):?>
-                    <th>Comprovante</th>
-                <?php endif?>
                 <?php if($result->entregue!=0):?>
                     <th>Reabrir</th>
                 <?php endif?>
@@ -97,12 +52,8 @@
                 <td><a class="description">Descrição</a></td>
                 <td><?php echo $result->states?></td>
                 <td><?php echo $result->funcionaro_responsavel?></td>
-                <td><a class="employee_position">Ver posição atual</a></td>
                 <td><button class="change_btn button">alterar</button></td>
                 <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
-                <?php if($result->concluida!=0):?>
-                    <td class="comprovante"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></td>
-                <?php endif?>
                 <?php if($result->entregue!=0):?>
                     <td><div class="finish"></div></td>
                 <?php endif?>
@@ -115,15 +66,10 @@
             <div class="table_mobile_main">
                 <div class="upsent-table-item"><span>Nome da Tarefa:</span><span><?php echo $result->task_name?></span></div>
                 <div class="upsent-table-item"><span>Enrereço da Tarefa:</span><span><?php echo $result->task_address?></span></div>
-                <div class="upsent-table-item descriptionMobile"><span>Descrição da tarefa:</span><span><?php echo $result->task_description?></span></div>
-                <div class="upsent-table-item"><span>Andamento:</span><span><?php echo $result->states?></span></div>
+               <div class="upsent-table-item"><span>Andamento:</span><span><?php echo $result->states?></span></div>
                 <div class="upsent-table-item"><span>Funcionário:</span> <span><?php echo $result->funcionaro_responsavel?></span> </div>
-                <div class="upsent-table-item"><span>posição atual:</span><a class="employee_position_mobile">Ver posição atual</a></div>
                 <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></div>
                 <?php if($result->concluida!=0):?>
-                    <div class="upsent-table-item">Comprovante: 
-                        <div class="comprovanteMobile"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></div>
-                    </div>
                     <div class="upsent-table-item">Reabrir:<div class="finish"></div></div>
                     <div class="upsent-table-item">Excluir:<div class="delete_task"></div></div>
                     
@@ -218,46 +164,12 @@
               }
         
         ?>
-    
+      <button class="upsent_close_button">X</button>
     </section> 
-    <button class="upsent_close_button">X</button> 
-    </div>
-    <div class="map_modal">
-        <div class="map" ></div>
-    <button class="upsent_close_button_map">X</button> 
-    </div>
-     <div class="description-pop">
-        <div class="text-description ">
-            <p><?php echo $resulte->task_description?></p>
-        </div>
-        <button class="upsent_close_button_description">X</button>
-     </div>
-     <?php if($resulte->concluida!=0):?>
-     <div class="img_comprovante">
-        <div style="width:400px; height:400px;">
-        <img style="width:100%;" src="<?php echo PLUGIN_URL."/uploads/".$resulte->conclued_img ?>" alt="description-img">
-        </div>
-        <button class="upsent_close_button_img">X</button>
-    </div>
-     <?php endif?>
      <?php $i++;?>
     <?php 
-     $maped[]=$resulte->funcionaro_responsavel;
      $img_path[]= PLUGIN_URL."/uploads/".$resulte->conclued_img;  
     endforeach;?>
-
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChwlr0dGv_YSZfJkVdblKgIV47MK3tkks&callback=initMap"></script>
-    <script>
-       const usuario_maped =<?php echo json_encode($maped)?> 
-    </script>
-    <script>
-        const img_path=<?php echo json_encode($img_path) ?>
-     </script>
-    <script>
-        const per_page=<?php echo $itens_por_pagina?>
-    </script>
-    <script>
-         const actual_page=<?php echo $pagina_atual?>
-    </script>
+ 
 </body>
 </html>

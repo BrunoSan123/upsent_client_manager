@@ -49,18 +49,25 @@ class Admin
             array($this,'logs_subpage'),
             '4'
         );
-    
-    
-
+        add_submenu_page(
+            'employer_management',
+            __( 'Tarefas Entrregues', 'textdomain' ),
+            __( 'Tarefas Entregues', 'textdomain' ),
+            'administrator',
+            'tarefas_concluidas',
+            array($this,'tasks_finished'),
+            '5'
+        );
         
-            add_submenu_page(
+    
+       add_submenu_page(
                 'employer_management',
                 __( 'Suas tarefas', 'textdomain' ),
                 __( 'Tarefas do usuario', 'textdomain' ),
                 'funcionario',
                 'usuario',
                  array($this,'task_user_subpage'),
-                 '5'
+                 '6'
     
             );
     }
@@ -84,5 +91,9 @@ class Admin
 
     public function logs_subpage(){
         require_once PLUGIN_PATH.'templates/historico.php';
+    }
+
+    public function tasks_finished(){
+        require_once PLUGIN_PATH.'templates/tarefas_concluidas.php';
     }
 }

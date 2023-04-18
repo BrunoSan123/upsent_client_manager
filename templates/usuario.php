@@ -37,8 +37,6 @@
                 <th>Nome da Tarefa</th>
                 <th>Enrereço da Tarefa</th>
                 <th>Descrição da tarefa</th>
-                <th>Cordenada X</th>
-                <th>Coordenada Y</th>
                 <th>Andamento</th>
                 <th>Funcionário</th>
                 <th>Posição</th>
@@ -52,9 +50,7 @@
             <tr class="upsent_table_data">
                 <td><?php echo $result->task_name?></td>
                 <td><?php echo $result->task_address?></td>
-                <td><?php echo $result->task_description?></td>
-                <td class="coord_x-<?php echo $i?>"><?php echo $result->coord_x?></td>
-                <td class="coord_y-<?php echo $i?>"><?php echo $result->coord_y?></td>
+                <td><a class="description">Descrição</a></td>
                 <td><?php echo $result->states?></td>
                 <td><?php echo $result->funcionaro_responsavel?></td>
                 <td><a class="client_position">Ver posição</a></td>
@@ -72,16 +68,14 @@
             <div class="table_mobile_main">
                 <div class="upsent-table-item"><span>Nome da Tarefa:</span><span><?php echo $result->task_name?></span></div>
                 <div class="upsent-table-item"><span>Enrereço da Tarefa:</span><span><?php echo $result->task_address?></span></div>
-                <div class="upsent-table-item"><span>Descrição da tarefa:</span><span><?php echo $result->task_description?></span></div>
-                <div class="upsent-table-item"><span>Cordenada X:</span> <span><?php echo $result->coord_x?></span></div>
-                <div class="upsent-table-item"><span>Coordenada Y:</span><span><?php echo $result->coord_y?></span></div>
-                <div class="upsent-table-item"><span>Andamento:</span><span><?php echo $result->states?></span></div>
+                <div class="upsent-table-item descriptionMobile"><span>Descrição da tarefa:</span><span>Descrição</span></div>
+               <div class="upsent-table-item"><span>Andamento:</span><span><?php echo $result->states?></span></div>
                 <div class="upsent-table-item"><span>Funcionário:</span> <span><?php echo $result->funcionaro_responsavel?></span> </div>
                 <div class="upsent-table-item"><span>posição atual:</span><a class="client_position_mobile">Ver posição atual</a></div>
                 <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></div>
                 <?php if($result->concluida!=0):?>
                     <div class="upsent-table-item">Comprovante: 
-                        <div class="comprovante"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></div>
+                        <div class="comprovanteMobile"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></div>
                     </div>
                 <?php endif?>
                 <div class="upsent-table-item">Entregar:<div class="finished"></div></div>
@@ -188,6 +182,7 @@
                         array(
                           'user'=>$result->funcionaro_responsavel,
                           'log_description'=>"usuario ".$result->funcionaro_responsavel." mudou o estado da tarefa para",
+                          'task_name'=>$result->task_name,
                           'sign'=>$sinal
                           )
                         );
@@ -210,12 +205,26 @@
         <div class="map" ></div>
     <button class="upsent_close_button_map">X</button> 
     </div>
+    <div class="description-pop">
+        <div class="text-description ">
+            <p><?php echo $result->task_description?></p>
+        </div>
+        <button class="upsent_close_button_description">X</button>
+     </div>
+     <?php if($result->concluida!=0):?>
+     <div class="img_comprovante">
+        <div style="width:400px; height:400px;">
+        <img style="width:100%;" src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img ?>" alt="description-img">
+        </div>
+        <button class="upsent_close_button_img">X</button>
+    </div>
+    <?php endif?>
     <?php $i++;?>
     <?php endforeach;?>
     
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChwlr0dGv_YSZfJkVdblKgIV47MK3tkks&callback=initMap"></script>
     <script>
-        const usuario ='<?php echo $current_user->display_name?>';
+        const usuario ='<?php echo $current_user->user_nicename?>';
     </script>
     
 </body>
