@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
       `https://maps.googleapis.com/maps/api/geocode/json?address=${value}&key=AIzaSyChwlr0dGv_YSZfJkVdblKgIV47MK3tkks`
     );
     const localeResponse = await localeRequest.json();
+    console.log(localeResponse.results[0])
     if (coord_x && coord_y) {
       return;
     } else {
@@ -469,10 +470,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
       });
     });
 
-    clientAddress.addEventListener("change", (e) => {
-      getClientCoords(e.target.value);
-    });
+
   }
+
+  clientAddress.addEventListener("change", (e) => {
+    getClientCoords(e.target.value);
+  });
 
   if(tarefas_concluidas){
     taskTable.forEach((e, i) => {
