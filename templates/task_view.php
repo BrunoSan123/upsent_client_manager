@@ -71,7 +71,9 @@
 
         ?>
         <input type="hidden" name="filtro" class="filter_selection" value="" data-target="<?php echo $state?>">
+       
         <?php foreach($results as $result):?>
+            <input type="hidden" name="concluido" class="conclued" data-target="<?php echo $result->concluida?>">
            <table class="upsent_table table-desk">
             <tr class="upsent_table_head">
                 <th>Nome da Tarefa</th>
@@ -85,27 +87,21 @@
                 <?php if($result->concluida!=0):?>
                     <th>Comprovante</th>
                 <?php endif?>
-                <?php if($result->entregue!=0):?>
-                    <th>Reabrir</th>
-                <?php endif?>
+                <th>Reabrir</th>
                 <th>Excluir</th>
 
             </tr>
             <tr class="upsent_table_data">
                 <td><?php echo $result->task_name?></td>
                 <td><?php echo $result->task_address?></td>
-                <td><a class="description">Descrição</a></td>
+                <td><a class="description button">Descrição</a></td>
                 <td><?php echo $result->states?></td>
                 <td><?php echo $result->funcionaro_responsavel?></td>
                 <td><a class="employee_position">Ver posição atual</a></td>
                 <td><button class="change_btn button">alterar</button></td>
                 <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
-                <?php if($result->concluida!=0):?>
-                    <td class="comprovante"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></td>
-                <?php endif?>
-                <?php if($result->entregue!=0):?>
-                    <td><div class="finish"></div></td>
-                <?php endif?>
+                <td class="comprovante"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></td>
+                <td><div class="finish"></div></td>
                 <td><div class="delete_task"></div></td>
             </tr>
             
@@ -115,19 +111,17 @@
             <div class="table_mobile_main">
                 <div class="upsent-table-item"><span>Nome da Tarefa:</span><span><?php echo $result->task_name?></span></div>
                 <div class="upsent-table-item"><span>Enrereço da Tarefa:</span><span><?php echo $result->task_address?></span></div>
-                <div class="upsent-table-item descriptionMobile"><span>Descrição da tarefa:</span><span><?php echo $result->task_description?></span></div>
+                <div class="upsent-table-item"><span>Descrição da tarefa:</span><span class="descriptionMobile  button"><a>Descrição</a></span></div>
                 <div class="upsent-table-item"><span>Andamento:</span><span><?php echo $result->states?></span></div>
                 <div class="upsent-table-item"><span>Funcionário:</span> <span><?php echo $result->funcionaro_responsavel?></span> </div>
                 <div class="upsent-table-item"><span>posição atual:</span><a class="employee_position_mobile">Ver posição atual</a></div>
                 <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></div>
-                <?php if($result->concluida!=0):?>
-                    <div class="upsent-table-item">Comprovante: 
-                        <div class="comprovanteMobile"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></div>
+                    <div class="upsent-table-item comprovanteMobile">
+                        <div>Comprovante: </div>
+                        <div class="comp_img"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></div>
                     </div>
-                    <div class="upsent-table-item">Reabrir:<div class="finish"></div></div>
-                    <div class="upsent-table-item">Excluir:<div class="delete_task"></div></div>
-                    
-                <?php endif?>
+                <div class="upsent-table-item">Reabrir:<div class="finish"></div></div>
+                <div class="upsent-table-item">Excluir:<div class="delete_task"></div></div>
                 <div class="upsent-table-item"><button class="change_btn_mobile button">alterar</button></div>
                 </div>
             </div>

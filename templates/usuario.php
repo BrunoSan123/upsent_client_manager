@@ -31,6 +31,7 @@
 
             
         <?php foreach($results as $result):?>
+            <input type="hidden" name="concluido" class="conclued" data-target="<?php echo $result->concluida?>">
             <?php $i=0;?>
             <table class="upsent_table table-desk">
             <tr class="upsent_table_head">
@@ -56,9 +57,7 @@
                 <td><a class="client_position">Ver posição</a></td>
                 <td><button class="change_btn button">alterar</button></td>
                 <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
-                <?php if($result->concluida!=0):?>
-                    <td class="comprovante"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></td>
-                <?php endif?>
+                <td class="comprovante"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></td>
                 <td><div class="finish"></div></td>
             </tr>
             

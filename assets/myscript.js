@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     document.body.classList.contains("emt_page_tarefas");
   const page_tarefas_do_funcionario =
     document.body.classList.contains("emt_page_usuario");
+  const tarefas_concluidas=document.body.classList.contains("emt_page_tarefas_concluidas");
   const taskTable = document.querySelectorAll(".upsent_table");
   const taskTableMobile = document.querySelectorAll(".upsent_table-mobile");
   const updatePopup = document.querySelectorAll(".upsent-pop-up");
@@ -24,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   );
   const clientMapPosition = document.querySelectorAll(".map_modal");
   const finishButtonBtn = document.querySelectorAll(".finish");
+  const finishButtonBtnMobile=document.querySelectorAll(".finished")
   const uploadInput = document.querySelectorAll(".upload_button");
   const selectState = document.querySelectorAll(".states");
   const fileInput = document.querySelectorAll('input[type="file"]');
@@ -40,6 +42,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const comprovant_field = document.querySelectorAll(".comprovante");
   const comprovant_filed_mobile =
     document.querySelectorAll(".comprovanteMobile");
+  const taskConclued= document.querySelectorAll(".conclued")
+  
 
   var x = document.getElementById("demo");
 
@@ -85,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   }
 
   // função para renderizar o mapa
-  async function getTaskMap(position, query) {
+  function getTaskMap(position, query) {
     clientMapPosition[position].classList.add("reveal");
     const coord_results = query;
     const map = new google.maps.Map(
@@ -175,19 +179,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   //função para entregar a tarefa
 
-  async function finishTask(element, position) {
-    const current_user = (window.history = usuario);
-    const task_info = await fetch(
-      `http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`
-    );
-    const task_results = await task_info.json();
-    console.log(task_results[position].concluida);
-    element.remove();
-    await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: task_results[position].id, entregue: 1 }),
-    });
+  async function finishTask(element, position,query) {
+   if(query[position].concluida!=1){
+      alert("é preciso concluir primeiro")
+    }else{
+      element.remove();
+      await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: query[position].id, entregue: 1 }),
+      });
+    }
+
   }
 
  // evento de elteração de estatus
@@ -257,34 +260,38 @@ document.addEventListener("DOMContentLoaded", function (event) {
   //eventos para a página do funcionario
 
   if (page_tarefas_do_funcionario) {
-    clientMapBtn.forEach((e, i) => {
-      e.addEventListener("click", async () => {
-        const current_user = (window.history = usuario);
-        console.log(current_user);
+    clientMapBtn.forEach(async (e, i) => {
+      const current_user = (window.history = usuario);
+      const coordinates = await fetch(
+        `http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`
+      );
+      const coord_results = await coordinates.json();
+      e.addEventListener("click", () => {
         clientMapPosition[i].classList.add("reveal");
-        const coordinates = await fetch(
-          `http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`
-        );
-        const coord_results = await coordinates.json();
         getTaskMap(i, coord_results);
       });
     });
 
-    clientMapBtnMobile.forEach((e, i) => {
-      e.addEventListener("click", async () => {
-        const current_user = (window.history = usuario);
-        clientMapPosition[i].classList.add("reveal");
-        const coordinates = await fetch(
-          `http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`
-        );
-        const coord_results = await coordinates.json();
-        getTaskMap(i,coord_results);
+    clientMapBtnMobile.forEach(async (e, i) => {
+      const current_user = (window.history = usuario);
+      const coordinates = await fetch(
+        `http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`
+      );
+      const coord_results = await coordinates.json();
+      e.addEventListener("click", () => {
+      clientMapPosition[i].classList.add("reveal");
+      getTaskMap(i,coord_results);
       });
     });
 
     taskTable.forEach((e, i) => {
       finishButtonBtn[i].addEventListener("click", async () => {
-        finishTask(i);
+        const current_user = (window.history = usuario);
+        const coordinates = await fetch(
+          `http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`
+        );
+        const coord_results = await coordinates.json();
+        finishTask(e,i,coord_results);
       });
       description[i].addEventListener("click", async () => {
         modelDescription[i].classList.add("reveal");
@@ -292,21 +299,36 @@ document.addEventListener("DOMContentLoaded", function (event) {
           modelDescription[i].classList.remove("reveal");
         });
       });
-      comprovant_field[i].addEventListener("click", () => {
-        img_pop_up[i].classList.add("reveal");
-        closeBtnImg[i].addEventListener("click", () => {
-          img_pop_up[i].classList.remove("reveal");
+      if(taskConclued[i].getAttribute("data-target")==1){
+        comprovant_field[i].classList.add("reveal")
+        comprovant_field[i].addEventListener("click", () => {
+          img_pop_up[i].classList.add("reveal");
+          closeBtnImg[i].addEventListener("click", () => {
+            img_pop_up[i].classList.remove("reveal");
+          });
         });
-      });
+
+      }
     });
 
     taskTableMobile.forEach((e, i) => {
-      comprovant_filed_mobile[i].addEventListener("click", () => {
-        img_pop_up[i].classList.add("reveal");
-        closeBtnImg[i].addEventListener("click", () => {
-          img_pop_up[i].classList.remove("reveal");
-        });
+      finishButtonBtnMobile[i].addEventListener("click", async () => {
+        const current_user = (window.history = usuario);
+        const coordinates = await fetch(
+          `http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`
+        );
+        const coord_results = await coordinates.json();
+        finishTask(e,i,coord_results);
       });
+      if(taskConclued[i].getAttribute("data-target")==1){
+        comprovant_filed_mobile[i].addEventListener("click", () => {
+          img_pop_up[i].classList.add("reveal");
+          closeBtnImg[i].addEventListener("click", () => {
+            img_pop_up[i].classList.remove("reveal");
+          });
+        });
+      }
+   
       descriptionMobile[i].addEventListener("click", async () => {
         modelDescription[i].classList.add("reveal");
         closeBtnDesc[i].addEventListener("click", () => {
@@ -366,7 +388,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     taskTable.forEach((e, i) => {
       deleteTask(e, i);
-
+  
       finishButtonBtn[i].addEventListener("click", async (e) => {
         reopenTask(finishButtonBtn[i], i);
       });
@@ -377,12 +399,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
           modelDescription[i].classList.remove("reveal");
         });
       });
-      comprovant_field[i].addEventListener("click", () => {
-        img_pop_up[i].classList.add("reveal");
-        closeBtnImg[i].addEventListener("click", () => {
-          img_pop_up[i].classList.remove("reveal");
-        });
-      });
+
+
+          if(taskConclued[i].getAttribute("data-target")==1){
+            comprovant_field[i].classList.add("reveal")
+            comprovant_field[i].addEventListener("click", () => {
+              img_pop_up[i].classList.add("reveal");
+              closeBtnImg[i].addEventListener("click", () => {
+                img_pop_up[i].classList.remove("reveal");
+              });
+            });
+
+          }  
+
+        
     });
 
     taskTableMobile.forEach((e, i) => {
@@ -442,5 +472,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
     clientAddress.addEventListener("change", (e) => {
       getClientCoords(e.target.value);
     });
+  }
+
+  if(tarefas_concluidas){
+    taskTable.forEach((e, i) => {
+      deleteTask(e, i);
+      finishButtonBtn[i].addEventListener("click", async () => {
+          reopenTask(e,i);
+      });
+    })
   }
 });

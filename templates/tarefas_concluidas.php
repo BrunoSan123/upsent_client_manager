@@ -29,7 +29,6 @@
 
 
         ?>
-        <input type="hidden" name="filtro" class="filter_selection" value="" data-target="<?php echo $state?>">
         <?php foreach($results as $result):?>
            <table class="upsent_table table-desk">
             <tr class="upsent_table_head">

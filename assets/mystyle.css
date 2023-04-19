@@ -170,11 +170,15 @@
 }
 
 .comprovanteMobile{
-    width: 45px !important;
+    display: none;
 }
 
 .comprovanteMobile img{
     width:100%;
+}
+
+.comp_img{
+    width: 45px !important;
 }
 
 .finish{
@@ -202,8 +206,12 @@
 }
 
 .comprovante{
-    width:10px;
-    height:10px;
+    width: 45px !important;
+    height:auto;
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
 }
 
 .comprovante img{
@@ -435,7 +443,7 @@
     
   }
 
-  .description,{
+  .description{
     cursor: pointer;
     text-decoration: none;
     color: #000;
