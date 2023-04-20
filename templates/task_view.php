@@ -115,11 +115,12 @@
                 <div class="upsent-table-item"><span>Andamento:</span><span><?php echo $result->states?></span></div>
                 <div class="upsent-table-item"><span>Funcionário:</span> <span><?php echo $result->funcionaro_responsavel?></span> </div>
                 <div class="upsent-table-item"><span>posição atual:</span><a class="employee_position_mobile">Ver posição atual</a></div>
-                <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></div>
+                
                     <div class="comprovanteMobile">
                         <div>Comprovante: </div>
                         <div class="comp_img">Abrir</div>
                     </div>
+                    <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></div>
                 <div class="upsent-table-item">Excluir:<div class="delete_task_mobile"></div></div>
                 <div class="upsent-table-item"><button class="change_btn_mobile button">alterar</button></div>
                 </div>
@@ -225,14 +226,14 @@
         </div>
         <button class="upsent_close_button_description">X</button>
      </div>
-     <?php if($resulte->concluida!=0):?>
+     
      <div class="img_comprovante">
         <div style="width:400px; height:400px;">
         <img style="width:100%;" src="<?php echo PLUGIN_URL."/uploads/".$resulte->conclued_img ?>" alt="description-img">
         </div>
         <button class="upsent_close_button_img">X</button>
     </div>
-     <?php endif?>
+     
      <?php $i++;?>
     <?php 
      $maped[]=$resulte->funcionaro_responsavel;

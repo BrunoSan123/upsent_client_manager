@@ -71,13 +71,14 @@
                <div class="upsent-table-item"><span>Andamento:</span><span><?php echo $result->states?></span></div>
                 <div class="upsent-table-item"><span>Funcionário:</span> <span><?php echo $result->funcionaro_responsavel?></span> </div>
                 <div class="upsent-table-item"><span>posição atual:</span><a class="client_position_mobile">Ver posição atual</a></div>
-                <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></div>
+                
                 
                     <div class="comprovanteMobile">
                         <div>Comprovante: </div>
                         <div class="comp_img">Abrir</div>
                     </div>
-                
+
+                <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></div>
                 <div class="upsent-table-item">Entregar:<div class="finished"></div></div>
                 <div class="upsent-table-item"><button class="change_btn_mobile button">alterar</button></div>
                 </div>

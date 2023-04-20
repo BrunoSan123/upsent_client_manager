@@ -54,7 +54,7 @@
                 <td><button class="change_btn button">alterar</button></td>
                 <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
                 <?php if($result->entregue!=0):?>
-                    <td><div class="finished"></div></td>
+                    <td><div class="finish"></div></td>
                 <?php endif?>
                 <td><div class="delete_task"></div></td>
             </tr>
@@ -69,8 +69,8 @@
                 <div class="upsent-table-item"><span>Funcionário:</span> <span><?php echo $result->funcionaro_responsavel?></span> </div>
                 <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></div>
                 <?php if($result->concluida!=0):?>
-                    <div class="upsent-table-item">Reabrir:<div class="finish"></div></div>
-                    <div class="upsent-table-item">Excluir:<div class="delete_task"></div></div>
+                    <div class="upsent-table-item">Reabrir:<div class="finished"></div></div>
+                    <div class="upsent-table-item">Excluir:<div class="delete_task_mobile"></div></div>
                     
                 <?php endif?>
                 <div class="upsent-table-item"><button class="change_btn_mobile button">alterar</button></div>

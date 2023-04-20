@@ -212,15 +212,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   // função para reabrir a tarefa
 
-  async function reopenTask(element, position) {
+  async function reopenTask(position) {
     const por_pag = (window.history = per_page);
     const atual_page = (window.history = actual_page);
     const task_info = (task = await fetch(
       `http://localhost:8080/wp-json/upsent-api/v1/tasks/finished/?page=${atual_page}&per_page=${por_pag}&entregue=1`
     ));
+    //element.remove();
     const task_results = await task_info.json();
     console.log(task_results[position].concluida);
-    element.remove();
     await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -454,7 +454,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 
           if(taskConclued[i].getAttribute("data-target")==1){
-            console.log(taskConclued[i].getAttribute("data-target"))
             comprovant_field[i].classList.add("reveal")
             comprovant_field[i].addEventListener("click", () => {
               img_pop_up[i].classList.add("reveal");
@@ -543,14 +542,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
     taskTable.forEach((e, i) => {
       deleteTask(e, i);
       finishButtonBtn[i].addEventListener("click", async () => {
-          reopenTask(e,i);
+        e.remove();  
+        reopenTask(i);
       });
     })
     taskTableMobile.forEach((e,i)=>{
-      console.log(deleteButton[i])
       delete_task_mobile(e,i)
       finishButtonBtnMobile[i].addEventListener("click", async()=>{
-        reopenTask(e,i);
+        e.remove()
+        reopenTask(i);
       })
 
     })
