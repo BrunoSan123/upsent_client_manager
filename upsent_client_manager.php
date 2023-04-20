@@ -61,6 +61,18 @@ function get_task_data_by_status($request){
     return $task_data;
 }
 
+function get_task_delivered($request){
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'my_tasks';
+    $page = $request->get_param('page') ? absint($request->get_param('page')) : 1;
+    $per_page = $request->get_param('per_page') ? absint($request->get_param('per_page')) : 10;
+    $entregue=$request->get_param('entregue');
+    $offset = ($page - 1) * $per_page;
+    $task_data = $wpdb->get_results("SELECT * FROM $table_name WHERE entregue=$entregue LIMIT $per_page OFFSET $offset");
+    return $task_data;
+
+} 
+
 
 function get_task_by_name($request)
 {
@@ -173,6 +185,14 @@ add_action('rest_api_init', function(){
     register_rest_route('upsent-api/v1','tasks/filter',array(
         'methods' => 'GET',
         'callback' => 'get_task_data_by_status',
+        'permission_callback' => '__return_true' 
+    ));
+});
+
+add_action('rest_api_init', function(){
+    register_rest_route('upsent-api/v1','tasks/finished',array(
+        'methods' => 'GET',
+        'callback' => 'get_task_delivered',
         'permission_callback' => '__return_true' 
     ));
 });

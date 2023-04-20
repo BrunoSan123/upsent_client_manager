@@ -74,6 +74,8 @@
        
         <?php foreach($results as $result):?>
             <input type="hidden" name="concluido" class="conclued" data-target="<?php echo $result->concluida?>">
+            <input type="hidden" name="concluido" class="conclued-mobile" data-target="<?php echo $result->concluida?>">
+
            <table class="upsent_table table-desk">
             <tr class="upsent_table_head">
                 <th>Nome da Tarefa</th>
@@ -87,7 +89,6 @@
                 <?php if($result->concluida!=0):?>
                     <th>Comprovante</th>
                 <?php endif?>
-                <th>Reabrir</th>
                 <th>Excluir</th>
 
             </tr>
@@ -101,7 +102,6 @@
                 <td><button class="change_btn button">alterar</button></td>
                 <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
                 <td class="comprovante"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></td>
-                <td><div class="finish"></div></td>
                 <td><div class="delete_task"></div></td>
             </tr>
             
@@ -116,12 +116,11 @@
                 <div class="upsent-table-item"><span>Funcionário:</span> <span><?php echo $result->funcionaro_responsavel?></span> </div>
                 <div class="upsent-table-item"><span>posição atual:</span><a class="employee_position_mobile">Ver posição atual</a></div>
                 <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></div>
-                    <div class="upsent-table-item comprovanteMobile">
+                    <div class="comprovanteMobile">
                         <div>Comprovante: </div>
-                        <div class="comp_img"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></div>
+                        <div class="comp_img">Abrir</div>
                     </div>
-                <div class="upsent-table-item">Reabrir:<div class="finish"></div></div>
-                <div class="upsent-table-item">Excluir:<div class="delete_task"></div></div>
+                <div class="upsent-table-item">Excluir:<div class="delete_task_mobile"></div></div>
                 <div class="upsent-table-item"><button class="change_btn_mobile button">alterar</button></div>
                 </div>
             </div>

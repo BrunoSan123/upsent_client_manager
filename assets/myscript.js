@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const page_tarefas_do_funcionario =
     document.body.classList.contains("emt_page_usuario");
   const tarefas_concluidas=document.body.classList.contains("emt_page_tarefas_concluidas");
+  const cadastroDeTarefas =document.body.classList.contains("emt_page_cadastro")
   const taskTable = document.querySelectorAll(".upsent_table");
   const taskTableMobile = document.querySelectorAll(".upsent_table-mobile");
   const updatePopup = document.querySelectorAll(".upsent-pop-up");
@@ -33,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const coord_x = document.getElementById("coord_x");
   const coord_y = document.getElementById("coord_y");
   const deleteButton = document.querySelectorAll(".delete_task");
+  const deleteButtonMobile =document.querySelectorAll(".delete_task_mobile")
   const employerSubmitButton = document.querySelectorAll(".button_upsent");
   const form = document.querySelectorAll(".upload_button");
   const description = document.querySelectorAll(".description");
@@ -119,6 +121,53 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   async function deleteTask(element, position) {
     deleteButton[position].addEventListener("click", async () => {
+      const filter = document.querySelector(".filter_selection");
+      const filter_selection = filter.getAttribute("data-target");
+      const por_pag = (window.history = per_page);
+      const atual_page = (window.history = actual_page);
+      switch (filter_selection) {
+        case "parado":
+          task = await fetch(
+            `http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`
+          );
+          task_results = await task.json();
+          break;
+        case "em_andamento":
+          task = await fetch(
+            `http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`
+          );
+          task_results = await task.json();
+          break;
+        case "concluida":
+          task = await fetch(
+            `http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=completa`
+          );
+          task_results = await task.json();
+          break;
+
+        default:
+          task = await fetch(
+            `http://localhost:8080/wp-json/upsent-api/v1/tasks/?per_page=${por_pag}&page=${atual_page}`
+          );
+          task_results = await task.json();
+          break;
+      }
+      
+      element.remove();
+      await fetch(
+        `http://localhost:8080/wp-json/upsent-api/v1/tasks/delete?id=${task_results[position].id}`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    });
+  }
+  
+  async function delete_task_mobile(element,position){
+    deleteButtonMobile[position].addEventListener("click", async () => {
+      const filter = document.querySelector(".filter_selection");
+      const filter_selection = filter.getAttribute("data-target");
       const por_pag = (window.history = per_page);
       const atual_page = (window.history = actual_page);
       switch (filter_selection) {
@@ -158,6 +207,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
       );
     });
+
   }
 
   // função para reabrir a tarefa
@@ -166,7 +216,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const por_pag = (window.history = per_page);
     const atual_page = (window.history = actual_page);
     const task_info = (task = await fetch(
-      `http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=completa`
+      `http://localhost:8080/wp-json/upsent-api/v1/tasks/finished/?page=${atual_page}&per_page=${por_pag}&entregue=1`
     ));
     const task_results = await task_info.json();
     console.log(task_results[position].concluida);
@@ -177,6 +227,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
       body: JSON.stringify({ id: task_results[position].id, entregue: 0 }),
     });
   }
+
 
   //função para entregar a tarefa
 
@@ -300,6 +351,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
           modelDescription[i].classList.remove("reveal");
         });
       });
+      
       if(taskConclued[i].getAttribute("data-target")==1){
         comprovant_field[i].classList.add("reveal")
         comprovant_field[i].addEventListener("click", () => {
@@ -322,7 +374,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         finishTask(e,i,coord_results);
       });
       if(taskConclued[i].getAttribute("data-target")==1){
-        comprovant_filed_mobile[i].addEventListener("click", () => {
+          comprovant_filed_mobile[i].classList.add("upsent-table-item")
+          comprovant_filed_mobile[i].addEventListener("click", () => {
           img_pop_up[i].classList.add("reveal");
           closeBtnImg[i].addEventListener("click", () => {
             img_pop_up[i].classList.remove("reveal");
@@ -343,12 +396,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
   //evventos para a pagina de tarefas do admin
   if (page_tarefas_cadastradas) {
     var user_maped = (window.history = usuario_maped);
-    console.log(user_maped);
     const filter = document.querySelector(".filter_selection");
     const filter_selection = filter.getAttribute("data-target");
 
     employeeMapBtn.forEach(async (e, i) => {
-      console.log(filter_selection);
       let task = null;
       let task_results = null;
       const por_pag = (window.history = per_page);
@@ -390,9 +441,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
     taskTable.forEach((e, i) => {
       deleteTask(e, i);
   
-      finishButtonBtn[i].addEventListener("click", async (e) => {
+     /*  finishButtonBtn[i].addEventListener("click", async (e) => {
         reopenTask(finishButtonBtn[i], i);
-      });
+      }); */
 
       description[i].addEventListener("click", async () => {
         modelDescription[i].classList.add("reveal");
@@ -403,6 +454,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 
           if(taskConclued[i].getAttribute("data-target")==1){
+            console.log(taskConclued[i].getAttribute("data-target"))
             comprovant_field[i].classList.add("reveal")
             comprovant_field[i].addEventListener("click", () => {
               img_pop_up[i].classList.add("reveal");
@@ -417,18 +469,26 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
 
     taskTableMobile.forEach((e, i) => {
-      comprovant_filed_mobile[i].addEventListener("click", () => {
-        img_pop_up[i].classList.add("reveal");
-        closeBtnImg[i].addEventListener("click", () => {
-          img_pop_up[i].classList.remove("reveal");
+      if(taskConclued[i].getAttribute("data-target")==1){
+        console.log(taskConclued[i].getAttribute("data-target"))
+        comprovant_filed_mobile[i].classList.add("upsent-table-item")
+        comprovant_filed_mobile[i].addEventListener("click", () => {
+          img_pop_up[i].classList.add("reveal");
+          closeBtnImg[i].addEventListener("click", () => {
+            img_pop_up[i].classList.remove("reveal");
+          });
         });
-      });
+
+      }
+   
       descriptionMobile[i].addEventListener("click", async () => {
         modelDescription[i].classList.add("reveal");
         closeBtnDesc[i].addEventListener("click", () => {
           modelDescription[i].classList.remove("reveal");
         });
       });
+      console.log(deleteButton[i])
+      delete_task_mobile(e,i)
     });
     employerMapBtnMobile.forEach((e, i) => {
       e.addEventListener("click", async () => {
@@ -473,9 +533,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   }
 
-  clientAddress.addEventListener("change", (e) => {
-    getClientCoords(e.target.value);
-  });
+  if(cadastroDeTarefas){
+    clientAddress.addEventListener("change", (e) => {
+      getClientCoords(e.target.value);
+    });
+  }
 
   if(tarefas_concluidas){
     taskTable.forEach((e, i) => {
@@ -483,6 +545,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
       finishButtonBtn[i].addEventListener("click", async () => {
           reopenTask(e,i);
       });
+    })
+    taskTableMobile.forEach((e,i)=>{
+      console.log(deleteButton[i])
+      delete_task_mobile(e,i)
+      finishButtonBtnMobile[i].addEventListener("click", async()=>{
+        reopenTask(e,i);
+      })
+
     })
   }
 });

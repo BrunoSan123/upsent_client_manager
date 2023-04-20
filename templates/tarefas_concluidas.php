@@ -54,7 +54,7 @@
                 <td><button class="change_btn button">alterar</button></td>
                 <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
                 <?php if($result->entregue!=0):?>
-                    <td><div class="finish"></div></td>
+                    <td><div class="finished"></div></td>
                 <?php endif?>
                 <td><div class="delete_task"></div></td>
             </tr>
@@ -169,6 +169,11 @@
     <?php 
      $img_path[]= PLUGIN_URL."/uploads/".$resulte->conclued_img;  
     endforeach;?>
- 
+    <script>
+        const per_page=<?php echo $itens_por_pagina?>
+    </script>
+    <script>
+         const actual_page=<?php echo $pagina_atual?>
+    </script>
 </body>
-</html>
+</html> 

@@ -72,11 +72,12 @@
                 <div class="upsent-table-item"><span>Funcionário:</span> <span><?php echo $result->funcionaro_responsavel?></span> </div>
                 <div class="upsent-table-item"><span>posição atual:</span><a class="client_position_mobile">Ver posição atual</a></div>
                 <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></div>
-                <?php if($result->concluida!=0):?>
-                    <div class="upsent-table-item">Comprovante: 
-                        <div class="comprovanteMobile"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></div>
+                
+                    <div class="comprovanteMobile">
+                        <div>Comprovante: </div>
+                        <div class="comp_img">Abrir</div>
                     </div>
-                <?php endif?>
+                
                 <div class="upsent-table-item">Entregar:<div class="finished"></div></div>
                 <div class="upsent-table-item"><button class="change_btn_mobile button">alterar</button></div>
                 </div>
@@ -113,7 +114,7 @@
           <section>
         <form action="" method="post" class="upsent_main" enctype="multipart/form-data">
             <div class=""upsent_plugin_form">
-            <section class="section_form">
+            <section class="section_form flex">
             <select name="estados-<?php echo $i?>" id="states-<?php echo $i?>" class="states">
                     <option value="parado" <?php selected($result->states, 'parado'); ?>>parado</option>
                     <option value="em_andamento" <?php selected($result->states, 'em_andamento'); ?>>em andamento</option>
@@ -125,7 +126,7 @@
             </section>
             </div>
          
-            <input type="submit" value="Atualizar" name="submit-<?php echo $i?>" class="button_upsent">
+            <input type="submit" value="Atualizar" name="submit-<?php echo $i?>" class="button_upsent consumer_button">
         </form>
 
 
