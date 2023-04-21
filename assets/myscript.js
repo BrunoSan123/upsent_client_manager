@@ -45,7 +45,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const comprovant_filed_mobile =
     document.querySelectorAll(".comprovanteMobile");
   const taskConclued= document.querySelectorAll(".conclued")
-  
+  const site_url =window.history=siteUrl;
+  console.log(site_url);
 
   var x = document.getElementById("demo");
 
@@ -234,12 +235,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const por_pag = (window.history = per_page);
     const atual_page = (window.history = actual_page);
     const task_info = (task = await fetch(
-      `http://localhost:8080/wp-json/upsent-api/v1/tasks/finished/?page=${atual_page}&per_page=${por_pag}&entregue=1`
+      `${site_url}/wp-json/upsent-api/v1/tasks/finished/?page=${atual_page}&per_page=${por_pag}&entregue=1`
     ));
-    element.remove();
+    //element.remove();
     const task_results = await task_info.json();
     console.log(task_results[position].concluida);
-    await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/`, {
+    await fetch(`${site_url}/wp-json/upsent-api/v1/tasks/`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: task_results[position].id, entregue: 0 }),
@@ -254,7 +255,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
       alert("é preciso concluir primeiro")
     }else{
       element.remove();
-      await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/`, {
+      await fetch(`${site_url}/wp-json/upsent-api/v1/tasks/`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: query[position].id, entregue: 1 }),
@@ -333,7 +334,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     clientMapBtn.forEach(async (e, i) => {
       const current_user = (window.history = usuario);
       const coordinates = await fetch(
-        `http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`
+        `${site_url}/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`
       );
       const coord_results = await coordinates.json();
       e.addEventListener("click", () => {
@@ -345,7 +346,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     clientMapBtnMobile.forEach(async (e, i) => {
       const current_user = (window.history = usuario);
       const coordinates = await fetch(
-        `http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`
+        `${site_url}/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`
       );
       const coord_results = await coordinates.json();
       e.addEventListener("click", () => {
@@ -358,7 +359,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
       finishButtonBtn[i].addEventListener("click", async () => {
         const current_user = (window.history = usuario);
         const coordinates = await fetch(
-          `http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`
+          `${site_url}/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`
         );
         const coord_results = await coordinates.json();
         finishTask(e,i,coord_results);
@@ -386,7 +387,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
       finishButtonBtnMobile[i].addEventListener("click", async () => {
         const current_user = (window.history = usuario);
         const coordinates = await fetch(
-          `http://localhost:8080/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`
+          `${site_url}/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`
         );
         const coord_results = await coordinates.json();
         finishTask(e,i,coord_results);
@@ -458,10 +459,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     taskTable.forEach((e, i) => {
       deleteTask(e, i);
-  
-     /*  finishButtonBtn[i].addEventListener("click", async (e) => {
-        reopenTask(finishButtonBtn[i], i);
-      }); */
 
       description[i].addEventListener("click", async () => {
         modelDescription[i].classList.add("reveal");
@@ -518,26 +515,26 @@ document.addEventListener("DOMContentLoaded", function (event) {
         switch (filter_selection) {
           case "parado":
             task = await fetch(
-              `http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`
+              `${site_url}/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`
             );
             task_results = await task.json();
             break;
           case "em_andamento":
             task = await fetch(
-              `http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`
+              `${site_url}/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`
             );
             task_results = await task.json();
             break;
           case "concluida":
             task = await fetch(
-              `http://localhost:8080/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=completa`
+              `${site_url}/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=completa`
             );
             task_results = await task.json();
             break;
 
           default:
             task = await fetch(
-              `http://localhost:8080/wp-json/upsent-api/v1/tasks/?per_page=${por_pag}&page=${atual_page}`
+              `${site_url}/wp-json/upsent-api/v1/tasks/?per_page=${por_pag}&page=${atual_page}`
             );
             task_results = await task.json();
             break;

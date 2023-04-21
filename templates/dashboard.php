@@ -8,6 +8,7 @@
 </head>
 <body>
     <section class="dashboard">
+     
         <?php
          global $wpdb;
          $table_name =$wpdb->prefix.'my_tasks';

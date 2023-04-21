@@ -227,6 +227,7 @@
     <script>
         const usuario ='<?php echo $current_user->user_nicename?>';
     </script>
+    <?php require_once PLUGIN_PATH.'templates/partials/site_url.php';?>
     
 </body>
 </html>

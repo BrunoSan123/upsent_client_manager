@@ -175,5 +175,6 @@
     <script>
          const actual_page=<?php echo $pagina_atual?>
     </script>
+    <?php require_once PLUGIN_PATH.'templates/partials/site_url.php';?>
 </body>
 </html> 
