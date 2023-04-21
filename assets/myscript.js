@@ -210,6 +210,24 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   }
 
+  async function delete_finish_task(element,position){
+    const por_pag = (window.history = per_page);
+    const atual_page = (window.history = actual_page)
+    const task_info = (task = await fetch(
+      `http://localhost:8080/wp-json/upsent-api/v1/tasks/finished/?page=${atual_page}&per_page=${por_pag}&entregue=1`
+    ));
+    const task_results = await task_info.json();
+    element.remove();
+    await fetch(
+      `http://localhost:8080/wp-json/upsent-api/v1/tasks/delete?id=${task_results[position].id}`,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+  }
+
   // função para reabrir a tarefa
 
   async function reopenTask(position) {
@@ -218,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const task_info = (task = await fetch(
       `http://localhost:8080/wp-json/upsent-api/v1/tasks/finished/?page=${atual_page}&per_page=${por_pag}&entregue=1`
     ));
-    //element.remove();
+    element.remove();
     const task_results = await task_info.json();
     console.log(task_results[position].concluida);
     await fetch(`http://localhost:8080/wp-json/upsent-api/v1/tasks/`, {
@@ -540,14 +558,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   if(tarefas_concluidas){
     taskTable.forEach((e, i) => {
-      deleteTask(e, i);
+      deleteButton[i].addEventListener('click',()=>{
+        delete_finish_task(e,i);
+      })
+      
       finishButtonBtn[i].addEventListener("click", async () => {
         e.remove();  
         reopenTask(i);
       });
     })
     taskTableMobile.forEach((e,i)=>{
-      delete_task_mobile(e,i)
+      deleteButtonMobile[i].addEventListener("click",()=>{
+        delete_finish_task(e,i);
+      })
+      
       finishButtonBtnMobile[i].addEventListener("click", async()=>{
         e.remove()
         reopenTask(i);
