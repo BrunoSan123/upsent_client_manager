@@ -84,7 +84,11 @@
 
        
     </section>
+<<<<<<< HEAD
     <?php require_once PLUGIN_PATH.'templates/partials/site_url.php';?>
+=======
+    
+>>>>>>> 0b49318973cc90445932d739409e7aae7cb17128
 </body>
 </html>
 
