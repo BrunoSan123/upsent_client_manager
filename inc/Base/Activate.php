@@ -12,6 +12,7 @@
         self::create_client();
         self::create_sub_task();
         self::create_task();
+        self::create_table_image();
         self::create_logs();
         self::user_coords();
         self::create_role();
@@ -21,8 +22,6 @@
     public static function create_task(){
         global $wpdb;
         $table_name = $wpdb->prefix . 'my_tasks';
-        $table_reference_client ='wp_clients(id)';
-        $table_reference_subtasks='wp_my_subtasks(id)';
         $sql = "CREATE TABLE IF NOT EXISTS $table_name (
                 id mediumint(9) NOT NULL AUTO_INCREMENT,
                 task_name VARCHAR(50) NOT NULL,
@@ -39,9 +38,7 @@
                 entregue  BOOLEAN NOT NULL DEFAULT 0,
                 employeer_position_x FLOAT(50) NOT NULL,
                 employeer_position_Y FLOAT(50) NOT NULL,
-                conclued_img  VARCHAR(50) NOT NULL,
-                FOREIGN KEY (client) REFERENCES $table_reference_client ON DELETE CASCADE,
-                FOREIGN KEY (subtasks) REFERENCES $table_reference_subtasks ON DELETE CASCADE,  
+                conclued_img  JSON NOT NULL,
                 PRIMARY KEY  (id)
                 );";
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -108,6 +105,20 @@
         require_once(ABSPATH.'wp-admin/includes/upgrade.php');
         dbDelta($sql_user_subtasks);
 
+    }
+
+    public static function create_table_image(){
+        global $wpdb;
+        $table_name=$wpdb->prefix.'my_task_images';
+        $sql_image_query="CREATE TABLE IF NOT EXISTS $table_name(
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            nome VARCHAR(255) NOT NULL,
+            task_id mediumint(9) NOT NULL,
+            PRIMARY KEY(id),
+            FOREIGN KEY(task_id) REFERENCES wp_my_tasks(id)
+        )";
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        dbDelta($sql_image_query);
     }
 
 
