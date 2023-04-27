@@ -27,10 +27,12 @@
             $user_result=$wpdb->get_results("SELECT * FROM $user_table");
             $logs_table_name=$wpdb->prefix.'logs';
             $user_coords_table=$wpdb->prefix.'user_coords';
+            $task_image_table=$wpdb->prefix.'my_task_images';
             ?>
 
-            
+                    
         <?php foreach($results as $result):?>
+
             <input type="hidden" name="concluido" class="conclued" data-target="<?php echo $result->concluida?>">
             <?php $i=0;?>
             <table class="upsent_table table-desk">
@@ -57,7 +59,7 @@
                 <td><a class="client_position">Ver posição</a></td>
                 <td><button class="change_btn button">alterar</button></td>
                 <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
-                <td class="comprovante"><img src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img?>" alt="comprovante"></td>
+                <td class="comprovante comp_img">Abrir Galeria</td>
                 <td><div class="finish"></div></td>
             </tr>
             
@@ -122,7 +124,8 @@
                     <option value="completa" <?php selected($result->states, 'completa'); ?>>completo</option>
             </select>
             <div class="upload_button">
-                <input type="file" name="upload_file-<?php echo $i?>" id="picture_upload-<?php echo $i?>" value="Comprovante">
+                <label class="upload_Button_label" for="picture_upload-<?php echo $i?>">Enviar arquivo</label>
+                <input type="file" name="upload_file-<?php echo $i?>[]" multiple  id="picture_upload-<?php echo $i?>">
             </div>
             </section>
             </div>
@@ -135,13 +138,12 @@
 
              if(isset($_POST['estados-'.$i])){
                 $current_state=$_POST['estados-'.$i];
-                $file=isset($_FILES['upload_file-'.$i])?$_FILES['upload_file-'.$i]:'';
                 $sinal;
                 $finished=0;
-                $fileNew=explode('.',$file["name"]);
-                $targetDirectory = PLUGIN_PATH.'/uploads/';
-                $targetFile = $targetDirectory . basename($file["name"]);
-                move_uploaded_file($file['tmp_name'],$targetFile);
+
+                //$fileNew=explode('.',$file["name"]);
+                
+                
 
                 switch($current_state){
                     case 'parado':
@@ -162,15 +164,43 @@
 
              
               if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit-'.$i])){
+                if(isset($_FILES['upload_file-'.$i])){
+                    $file=$_FILES['upload_file-'.$i];
+                    foreach($file["tmp_name"] as $key=>$tmp_name){
+                        $name=$file["name"][$key];
+                        $targetDirectory = PLUGIN_PATH.'/uploads/';
+                        $targetFile = $targetDirectory . basename($name);
+                        move_uploaded_file($tmp_name,$targetFile);
+                        $wpdb->insert(
+                            $task_image_table,
+                            array(
+                                'nome'=>$name,
+                                'task_id'=>$result->id
+                            )
+                        );
+                    }
+                    $task_image_results=$wpdb->get_results("SELECT * FROM $task_image_table WHERE task_id=$result->id");
+                    $image_json=[];
+                    foreach($task_image_results as $task_img){
+                        $imagem=[
+                            'id'=>$task_img->id,
+                            'image_name'=>$task_img->nome,     
+                        ];
+                        $image_json[]=$imagem;
+                    
+                    }
+
+                }
                     $coord_x=$_COOKIE['coord_x'];
                     $coord_y=$_COOKIE['coord_y'];
+                    $task_images_json=json_encode($image_json);
                     $wpdb->update(
                     $table_name,
                     array(
                         'states'=>$current_state,
                         'concluida'=>$finished,
-                        'conclued_img'=>$file["name"],
                         'employeer_position_x'=>$coord_x,
+                        'conclued_img'=>$task_images_json,
                         'employeer_position_Y'=>$coord_y,
                     ),
                     array(
@@ -213,12 +243,19 @@
         <button class="upsent_close_button_description">X</button>
      </div>
      <?php if($result->concluida!=0):?>
+     <?php $arr =json_decode($result->conclued_img); ?>
+    
      <div class="img_comprovante">
-        <div style="width:400px; height:400px;">
-        <img style="width:100%;" src="<?php echo PLUGIN_URL."/uploads/".$result->conclued_img ?>" alt="description-img">
+        <div class="work_proof_container">
+        <?php   foreach($arr as $image_result):?>
+            <div>
+            <img src="<?php echo PLUGIN_URL."/uploads/".$image_result->image_name ?>" alt="description-img">
+            </div>
+        <?php endforeach?>
         </div>
         <button class="upsent_close_button_img">X</button>
     </div>
+   
     <?php endif?>
     <?php $i++;?>
     <?php endforeach;?>

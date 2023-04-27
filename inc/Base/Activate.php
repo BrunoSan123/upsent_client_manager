@@ -38,7 +38,7 @@
                 entregue  BOOLEAN NOT NULL DEFAULT 0,
                 employeer_position_x FLOAT(50) NOT NULL,
                 employeer_position_Y FLOAT(50) NOT NULL,
-                conclued_img  JSON NOT NULL,
+                conclued_img  JSON,
                 PRIMARY KEY  (id)
                 );";
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
