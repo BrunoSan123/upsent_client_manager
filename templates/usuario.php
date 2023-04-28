@@ -247,7 +247,7 @@
     
      <div class="img_comprovante">
         <div class="work_proof_container">
-        <?php   foreach($arr as $image_result):?>
+        <?php foreach($arr as $image_result):?>
             <div>
             <img src="<?php echo PLUGIN_URL."/uploads/".$image_result->image_name ?>" alt="description-img">
             </div>

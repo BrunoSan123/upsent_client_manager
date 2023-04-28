@@ -329,13 +329,24 @@ document.addEventListener("DOMContentLoaded", function (event) {
         e.value = "";
         return false;
       } else {
-        var tmppath = URL.createObjectURL(evt.target.files[0]);
-        console.log(tmppath);
-        const uploadImage = document.createElement("img");
-        uploadImage.setAttribute("src", tmppath);
-        uploadImage.setAttribute("width", "200");
-        uploadImage.setAttribute("height", "200");
-        form[i].appendChild(uploadImage);
+        
+        const images =evt.target.files;
+        ArrayImages=Array.from(images)
+        console.log(ArrayImages);
+        const divContainerImages=document.createElement("div")
+        divContainerImages.classList.add("container_images")
+        ArrayImages.forEach((j,k)=>{
+          console.log(j);
+          const divImage=document.createElement("div")
+          const uploadImage = document.createElement("img");
+          uploadImage.setAttribute("src", URL.createObjectURL(j));
+          uploadImage.setAttribute("width", "200");
+          uploadImage.setAttribute("height", "200");
+          divImage.appendChild(uploadImage);
+          divContainerImages.appendChild(divImage)
+          form[i].appendChild(divContainerImages);
+        })
+
       }
     });
   });
