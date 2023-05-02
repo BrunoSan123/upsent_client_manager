@@ -9,8 +9,27 @@
 <body>
     <header>
         <nav><h1>Tarefas Cadastradas</h1></nav>
+    </header>
+        <div class="filters">
+        
+        <form action="" method="post">
+          <div class="filter-div">
+            <label for="user_filter">Filtrar por Usuario</label>
+            <input type="text" name="user_filter" id="user_filter" class="input-paddings-1">
+            <input type="submit" value="filtrar usuario" name='user_filter_button' style="padding: 2% !important;">
+          </div>
+        </form>
         <form action="" method="post">
         <div class="filter-div">
+            <label for="company_filter">Filtrar por empresa</label>
+            <input type="text" name="company_filter" id="company_filter" class="input-paddings-1">
+            <input type="submit" value="filtrar empresa" name='company_filter_button' style="padding: 2% !important;">
+        </div >
+        </form>
+        
+        <form action="" method="post">
+        <div class="filter-div">
+        <label for="filter_selection">Filtrar por estados</label>
             <select name="filter_selection" id="filter" class="filter">
                 <option value="" class="filter-item" selected></option>
                 <option value="parado" class="filter-item">parado</option>
@@ -22,14 +41,15 @@
         </div>
             
         </form> 
-    </header>
+        </div>
+    
 
     <section>
 
 
         <?php 
             global $wpdb;
-            $itens_por_pagina = 3;
+            $itens_por_pagina = 10;
             isset($_GET['pagina'])? $pagina_atual=$_GET['pagina']:$pagina_atual=1;
             isset($_POST['filter_selection'])?$filter=$_POST['filter_selection']:'';
             $posicao_inicial = ($pagina_atual - 1) * $itens_por_pagina;
@@ -41,10 +61,31 @@
             $user_result=$wpdb->get_results("SELECT * FROM $user_table");
             $state=null;
 
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_filter'])){
+                $results=null;
+                $total_tasks=null;
+                $total_pages=null;
+                $user_param=$_POST['user_filter'];
+                $results=$wpdb->get_results("SELECT * FROM $table_name WHERE funcionaro_responsavel='$user_param' LIMIT $posicao_inicial, $itens_por_pagina");
+                $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE funcionaro_responsavel='$user_param'");
+                $total_pages = ceil($total_tasks / $itens_por_pagina);
+            }
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['company_filter'])){
+                $results=null;
+                $total_tasks=null;
+                $total_pages=null;
+                $company_param=$_POST['company_filter'];
+                $results=$wpdb->get_results("SELECT * FROM $table_name WHERE company='$company_param' LIMIT $posicao_inicial, $itens_por_pagina");
+                $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE company='$company_param'");
+                $total_pages = ceil($total_tasks / $itens_por_pagina);
+            }
+
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['filtro'])){
                 $results=null;
                 $total_tasks=null;
                 $total_pages=null;
+
                 switch ($filter) {
                     case 'parado':
                         $results=$wpdb->get_results("SELECT * FROM $table_name WHERE states='$filter' LIMIT $posicao_inicial, $itens_por_pagina");
@@ -78,14 +119,15 @@
 
            <table class="upsent_table table-desk">
             <tr class="upsent_table_head">
-                <th>Nome da Tarefa</th>
-                <th>Enrereço da Tarefa</th>
-                <th>Descrição da tarefa</th>
+                <th>Chamado</th>
+                <th>Nome da Empresa</th>
+                <th>Enrereço do Cliente</th>
+                <th>Escopo</th>
                 <th>Andamento</th>
-                <th>Funcionário</th>
+                <th>Técnico</th>
                 <th>posição atual</th>
                 <th></th>
-                <th>Concluida</th>
+                <th>Status</th>
                 <?php if($result->concluida!=0):?>
                     <th>Comprovante</th>
                 <?php endif?>
@@ -94,6 +136,7 @@
             </tr>
             <tr class="upsent_table_data">
                 <td><?php echo $result->task_name?></td>
+                <td><?php echo $result->company?></td>
                 <td><?php echo $result->task_address?></td>
                 <td><a class="description button">Descrição</a></td>
                 <td><?php echo $result->states?></td>
@@ -159,6 +202,7 @@
             <div class="upsent_plugin_form">
             <section class="section_form">
             <input type="text" name="nome_da_tarefa-<?php echo $i?>" id="name-<?php echo $i?>" placeholder="nome da tarefa" value="<?php echo esc_attr($resulte->task_name)?>">
+            <input type="text" name="nome_da_empresa-<?php echo $i?>" id="company_name" placeholder="Nome da Empresa" value="<?php echo esc_attr($resulte->company)?>">
             <textarea name="descrição-<?php echo $i?>" id="description" cols="20" rows="10" placeholder="descrição"><?php echo esc_html($resulte->task_description)?></textarea>
             </section>
             
@@ -191,6 +235,7 @@
               $current_state=isset($_POST['estados-'.$i])?$_POST['estados-'.$i]:'';
               $address=isset($_POST['endereço-'.$i])?$_POST['endereço-'.$i]:'';
               $user_responseble = isset($_POST['usuarios-'.$i])?$_POST['usuarios-'.$i]:'';
+              $company=isset($_POST['nome_da_empresa-'.$i])?$_POST['nome_da_empresa-'.$i]:'';
               
               if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit-'.$i])){
                 $wpdb->update(
@@ -204,6 +249,7 @@
                         'coord_y'=>$coord_y,
                         'states'=>$current_state,
                         'funcionaro_responsavel'=>$user_responseble,
+                        'company'=>$company
                     ),
                     array(
                         'id'=>$resulte->id

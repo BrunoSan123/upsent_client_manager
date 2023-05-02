@@ -8,7 +8,7 @@
 </head>
 <body class="upsent_plugin_manager">
     <header>
-        <h1>Cadastro de Tarefas</h1>
+        <h1>Cadastro de Atividades</h1>
     </header>
   
 
@@ -22,22 +22,24 @@
         
         <form action="" method="post" class="upsent_main">
             <div class="upsent_plugin_form">
-            <section class="section_form">
-            <input type="text" name="nome_da_tarefa" id="name" placeholder="nome da tarefa">
-            <textarea name="descrição" id="description" cols="20" rows="7" placeholder="descrição"></textarea>
-            </section>
-            
             <section class="section_form" id="locate_state_form">
+            <input type="text" name="nome_da_tarefa" id="name" placeholder="chamado">
+            <input type="text" name="nome_da_empresa" id="company_name" placeholder="Nome da Empresa">
+            <input type="text" name="nome_do_cliente" id="client_name" placeholder="Nome do Cliente">
+            <textarea name="descrição" id="description" cols="20" rows="7" placeholder="descrição"></textarea>
+            
+           
             <!-- <input type="text" name="coord_X" id="coord_x" placeholder="cordenada x">
             <input type="text" name="coord_y" id="coord_x" placeholder="cordenada y"> -->
             <input type="text" name="endereço" id="address" placeholder="endereço: Rua Cidade Estado">
+            <input type="text" name="cep_input" id="cep_field" placeholder="Digite o CEP" >
             <select name="estados" id="states">
-                <option value="parado">parado</option>
-                <option value="em_andamento">em andamento</option>
-                <option value="completa">completo</option>
+                <option value="parado">Aguardando</option>
+                <option value="em_andamento">Em atendimento</option>
+                <option value="completa">Concluida</option>
             </select>
                 <select name="usuarios" id="users">
-                    <option value="empty"></option>
+                    <option disabled selected value="empty">Usuario para alocar</option>
                     <?php foreach($user_result as $usuario):?>
                     <option value="<?php echo esc_attr($usuario->user_login); ?>" <?php selected($usuario->user_login); ?>><?php echo esc_html($usuario->user_login); ?></option>
                     <?php endforeach;?>
@@ -45,7 +47,7 @@
             </section>
             </div>
             
-            <input type="submit" value="Cadastrar" name="submit" class="button_upsent">  
+            <input type="submit" value="Cadastrar" name="submit" class="button_upsent button-left-10">  
         </form>
         
         <?php 
@@ -56,6 +58,9 @@
             $current_state=isset($_POST['estados'])?$_POST['estados']:'';
             $address=isset($_POST['endereço'])?$_POST['endereço']:'';
             $user_responseble=isset($_POST['usuarios'])?$_POST['usuarios']:'';
+            $company_name=isset($_POST['nome_da_empresa'])?$_POST['nome_da_empresa']:'';
+            $cep=isset($_POST['cep_input'])?$_POST['cep_input']:'';
+            $client=isset($_POST['nome_do_cliente'])?$_POST['nome_do_cliente']:'';
 
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
@@ -71,6 +76,9 @@
                         'coord_y'=>$coord_y,
                         'states'=>$current_state,
                         'funcionaro_responsavel'=>$user_responseble,
+                        'company'=>$company_name,
+                        'cep'=>$cep,
+                        'client'=>$client
                         )
                     );?>
 
