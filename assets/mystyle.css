@@ -508,10 +508,12 @@
     justify-content: center;
     gap: 5%;
     align-items: center;
+    flex-wrap:wrap;
   }
   .work_proof_container>div{
-    width: 300px;
-    height: 300px !important;
+    width: 200px;
+    height: 200px !important;
+    margin-bottom:3%;
   }
 
   .work_proof_container img{

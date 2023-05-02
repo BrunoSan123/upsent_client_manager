@@ -19,6 +19,8 @@
         <span><?php echo $result->task_name?></span>
         <span><?php echo $result->log_description?></span>
         <span><div class="<?php if($result->sign=="RED"):?> conclued_bullet <?php elseif($result->sign=="YELLOW"):?>bullet-yellow<?php else:?> bullet-green <?php endif?>"></div></span>
+        <span>Horário de inicio:   <?php echo $result->task_start_time?></span>
+        <span>Horário de conclusão: <?php echo $result->task_end_time?></span>
       </h4>
       <?php endforeach?>
     

@@ -9,8 +9,17 @@
 <body>
 
     <header>
-        <nav><h1>Tarefas Cadastradas</h1></nav>
+        <nav><h1>Atividade do funcionário</h1></nav>
     </header>
+    <div class="filters">
+    <form action="" method="post">
+        <div class="filter-div">
+            <label for="company_filter">Filtrar por empresa</label>
+            <input type="text" name="company_filter" id="company_filter" class="input-paddings-1">
+            <input type="submit" value="filtrar empresa" name='company_filter_button' style="padding: 2% !important;">
+        </div >
+    </form>
+    </div>
 
     <section>
         <?php
@@ -28,7 +37,20 @@
             $logs_table_name=$wpdb->prefix.'logs';
             $user_coords_table=$wpdb->prefix.'user_coords';
             $task_image_table=$wpdb->prefix.'my_task_images';
+
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['company_filter'])){
+                $results=null;
+                $total_tasks=null;
+                $total_pages=null;
+                $company_param=$_POST['company_filter'];
+                $results=$wpdb->get_results("SELECT * FROM $table_name WHERE company='$company_param' LIMIT $posicao_inicial, $itens_por_pagina");
+                $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE company='$company_param'");
+                $total_pages = ceil($total_tasks / $itens_por_pagina);
+            }
             ?>
+
+            
 
                     
         <?php foreach($results as $result):?>
@@ -37,14 +59,14 @@
             <?php $i=0;?>
             <table class="upsent_table table-desk">
             <tr class="upsent_table_head">
-                <th>Nome da Tarefa</th>
-                <th>Enrereço da Tarefa</th>
-                <th>Descrição da tarefa</th>
+                <th>Chamado</th>
+                <th>Enrereço do Cliente</th>
+                <th>Escopo</th>
                 <th>Andamento</th>
-                <th>Funcionário</th>
-                <th>Posição</th>
+                <th>Técnico</th>
+                <th>Posição do cliente</th>
                 <th></th>
-                <th>Concluida</th>
+                <th>Status</th>
                 <?php if($result->concluida!=0):?>
                     <th>Comprovante</th>
                 <?php endif?>
@@ -140,6 +162,8 @@
                 $current_state=$_POST['estados-'.$i];
                 $sinal;
                 $finished=0;
+                $initial_time='';
+                $finish_time='';
 
                 //$fileNew=explode('.',$file["name"]);
                 
@@ -151,10 +175,12 @@
                         break;
                     case 'em_andamento':
                         $sinal='YELLOW';
+                        $initial_time=date('H:i:s');
                         break;
                     case 'completa':
                         $sinal= 'GREEN';
                         $finished=1;
+                        $finish_time=date('H:i:s');
                         break;
                     }
                     echo $finished;
@@ -182,11 +208,16 @@
                     $task_image_results=$wpdb->get_results("SELECT * FROM $task_image_table WHERE task_id=$result->id");
                     $image_json=[];
                     foreach($task_image_results as $task_img){
-                        $imagem=[
-                            'id'=>$task_img->id,
-                            'image_name'=>$task_img->nome,     
-                        ];
-                        $image_json[]=$imagem;
+                        if($task_img->id=="" && $task_img->nome==""){
+                            return;
+                        }else{
+                            $imagem=[
+                                'id'=>$task_img->id,
+                                'image_name'=>$task_img->nome,     
+                            ];
+                            $image_json[]=$imagem;
+                        }
+
                     
                     }
 
@@ -214,6 +245,8 @@
                           'user'=>$result->funcionaro_responsavel,
                           'log_description'=>"usuario ".$result->funcionaro_responsavel." mudou o estado da tarefa para",
                           'task_name'=>$result->task_name,
+                          'task_start_time'=>$initial_time,
+                          'task_end_time'=>$finish_time,
                           'sign'=>$sinal
                           )
                         );

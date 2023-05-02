@@ -13,6 +13,7 @@
         self::create_sub_task();
         self::create_task();
         self::create_table_image();
+        self::create_report_table();
         self::create_logs();
         self::user_coords();
         self::create_role();
@@ -123,6 +124,22 @@
         )";
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql_image_query);
+    }
+
+    public static function create_report_table(){
+        global $wpdb;
+        $table_name=$wpdb->prefix.'employer_report';
+        $sql_report="CREATE TABLE IF NOT EXISTS $table_name(
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            vigent_month VARCHAR(50) NOT NULL,
+            employer_name VARCHAR(50) NOT NULL,
+            task_id mediumint(9),
+            month_total_time mediumint(9),
+            PRIMARY KEY (id),
+            FOREIGN KEY(task_id) REFERENCES wp_my_tasks(id)
+        )";
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        dbDelta($sql_report);
     }
 
 
