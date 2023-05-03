@@ -145,6 +145,9 @@
                     <option value="em_andamento" <?php selected($result->states, 'em_andamento'); ?>>em andamento</option>
                     <option value="completa" <?php selected($result->states, 'completa'); ?>>completo</option>
             </select>
+            <div class="employer-describe">
+                <textarea name="employer_describe" id="emp_describe" rows="10" placeholder="Descrição do trabalho"></textarea>
+            </div>
             <div class="upload_button">
                 <label class="upload_Button_label" for="picture_upload-<?php echo $i?>">Enviar arquivo</label>
                 <input type="file" name="upload_file-<?php echo $i?>[]" multiple  id="picture_upload-<?php echo $i?>">

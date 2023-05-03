@@ -131,10 +131,25 @@
         $table_name=$wpdb->prefix.'employer_report';
         $sql_report="CREATE TABLE IF NOT EXISTS $table_name(
             id mediumint(9) NOT NULL AUTO_INCREMENT,
+            call_number FLOAT(50) NOT NULL,
             vigent_month VARCHAR(50) NOT NULL,
             employer_name VARCHAR(50) NOT NULL,
             task_id mediumint(9),
             month_total_time mediumint(9),
+            date_ VARCHAR(50) NOT NULL,
+            project VARCHAR(50) NOT NULL,
+            incoming_value FLOAT(50) NOT NULL,
+            aditional_value_per_hour VARCHAR(50) NOT NULL,
+            km FLOAT(50) NOT NULL,
+            incoming_value_per_km FLOAT(50) NOT NULL,
+            aditional_cousts FLOAT(50) NOT NULL,
+            status_budget  FLOAT(50) NOT NULL,
+            value_budget FLOAT(50) NOT NULL,
+            value_per_km VARCHAR(50) NOT NULL,
+            employer_featured_value VARCHAR(50) NOT NULL,
+            address_ VARCHAR(50) NOT NULL,
+            client_observation VARCHAR(50) NOT NULL,
+            solution_observation VARCHAR(50) NOT NULL,
             PRIMARY KEY (id),
             FOREIGN KEY(task_id) REFERENCES wp_my_tasks(id)
         )";

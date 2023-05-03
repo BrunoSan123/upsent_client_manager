@@ -58,6 +58,15 @@ class Admin
             array($this,'tasks_finished'),
             '5'
         );
+        add_submenu_page(
+            'employer_management',
+            __( 'Relatórios', 'textdomain' ),
+            __( 'Relatórios', 'textdomain' ),
+            'administrator',
+            'relatórios',
+            array($this,'reports'),
+            '7'
+        );
         
     
        add_submenu_page(
@@ -95,5 +104,9 @@ class Admin
 
     public function tasks_finished(){
         require_once PLUGIN_PATH.'templates/tarefas_concluidas.php';
+    }
+
+    public function reports(){
+        require_once PLUGIN_PATH.'templates/relatórios.php';
     }
 }

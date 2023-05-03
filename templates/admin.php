@@ -45,6 +45,20 @@
                     <?php endforeach;?>
                 </select>
             </section>
+            
+            <section class="section_form">
+                <input type="text" name="valor_orçamento" id="orçamento" placeholder="orçamento">
+                <input type="text" name="projeto" id="project" placeholder="projeto">
+                <input type="text" name="valor_receber" id="valor_receber" placeholder="valor a receber">
+                <input type="text" name="valor_adicional" id="valor_adicional" placeholder="valor adicional">
+                <input type="text" name="km" id="km" placeholder="km">
+                <input type="text" name="valor_em_km" id="valor_em_km" placeholder="valor em KM">
+                <input type="text" name="custos_adicionais" id="custos_adicionais" placeholder="Custos adicionais">
+                <input type="text" name="valor_orcamento" id="valor_orcamento" placeholder="Valor do Orçamento">
+                <input type="date" name="data_da_atividade" id="data_da_atividade">
+
+            </section>
+
             </div>
             
             <input type="submit" value="Cadastrar" name="submit" class="button_upsent button-left-10">  
@@ -61,10 +75,20 @@
             $company_name=isset($_POST['nome_da_empresa'])?$_POST['nome_da_empresa']:'';
             $cep=isset($_POST['cep_input'])?$_POST['cep_input']:'';
             $client=isset($_POST['nome_do_cliente'])?$_POST['nome_do_cliente']:'';
+            $orcamento=isset($_POST['valor_orçamento'])?$_POST['valor_orçamento']:'';
+            $projeto=isset($_POST['projeto'])?$_POST['projeto']:'';
+            $valor_receber=isset($_POST['valor_receber'])?$_POST['valor_receber']:'';
+            $valor_adicional=isset($_POST['valor_adicional'])?$_POST['valor_adicional']:'';
+            $km=isset($_POST['km'])?$_POST['km']:'';
+            $valor_em_km=isset($_POST['valor_em_km'])?$_POST['valor_em_km']:'';
+            $custo_adicional=isset($_POST['custos_adicionais'])?$_POST['custos_adicionais']:'';
+            $valor_orcamento=isset($_POST['valor_orcamento'])?$_POST['valor_orcamento']:'';
+            $data=isset($_POST['data_da_atividade'])?$_POST['data_da_atividade']:'';
 
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
                $table_name = $wpdb->prefix . 'my_tasks';
+               $table_report=$wpdb->prefix. 'employer_report';
                 $wpdb->insert(
                     $table_name,
                     array(
@@ -80,7 +104,24 @@
                         'cep'=>$cep,
                         'client'=>$client
                         )
-                    );?>
+                    );
+                $wpdb->insert(
+                    $table_report,
+                    array(
+                        'call_number'=>floatval($nome),
+                        'employer_name'=>$user_responseble,
+                        'project'=>$projeto,
+                        'incoming_value'=>floatval($valor_receber),
+                        'aditional_value_per_hour'=>floatval($valor_adicional),
+                        'km'=>floatval($km),
+                        'incoming_value_per_km'=>floatval($valor_em_km),
+                        'aditional_cousts'=>floatval($custo_adicional),
+                        'date_'=>$data,
+                        'value_budget'=>floatval($valor_orcamento)
+                        )
+                );
+                    
+                    ?>
 
                 <div class="notice notice-warning">
                     <p>Cadastro realizado com sucesso</p>

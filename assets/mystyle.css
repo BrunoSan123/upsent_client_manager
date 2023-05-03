@@ -58,7 +58,7 @@
 
 .upsent_plugin_form{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     gap:3em;
@@ -544,6 +544,14 @@
   .input-paddings-1{
     padding-bottom: 1px !important;
     padding-top: 1px !important;
+  }
+
+  .employer-describe{
+    display: none;
+  }
+
+  #emp_describe{
+    width: 100%;
   }
 
   

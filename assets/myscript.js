@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     document.querySelectorAll(".comprovanteMobile");
   const taskConclued= document.querySelectorAll(".conclued")
   const site_url =window.history=siteUrl;
-  console.log(site_url);
+  const employerDescription = document.querySelectorAll(".employer-describe")
 
   var x = document.getElementById("demo");
 
@@ -312,8 +312,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
       console.log(e.selectedOptions[0].value);
       if (e.selectedOptions[0].value == "completa") {
         uploadInput[i].classList.add("reveal");
+        employerDescription[i].classList.add("reveal")
       } else {
         uploadInput[i].classList.remove("reveal");
+        employerDescription[i].classList.remove("reveal");
       }
     });
   });
