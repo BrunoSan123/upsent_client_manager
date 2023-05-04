@@ -24,7 +24,7 @@
     <section>
         <?php
             global $wpdb;
-            $itens_por_pagina = 3;
+            $itens_por_pagina = 10;
             isset($_GET['pagina'])? $pagina_atual=$_GET['pagina']:$pagina_atual=1;
             $posicao_inicial = ($pagina_atual - 1) * $itens_por_pagina;
             $current_user= wp_get_current_user();
@@ -37,6 +37,7 @@
             $logs_table_name=$wpdb->prefix.'logs';
             $user_coords_table=$wpdb->prefix.'user_coords';
             $task_image_table=$wpdb->prefix.'my_task_images';
+            $report_table=$wpdb->prefix.'employer_report';
 
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['company_filter'])){
@@ -145,16 +146,14 @@
                     <option value="em_andamento" <?php selected($result->states, 'em_andamento'); ?>>em andamento</option>
                     <option value="completa" <?php selected($result->states, 'completa'); ?>>completo</option>
             </select>
-            <div class="employer-describe">
-                <textarea name="employer_describe" id="emp_describe" rows="10" placeholder="Descrição do trabalho"></textarea>
-            </div>
+
             <div class="upload_button">
                 <label class="upload_Button_label" for="picture_upload-<?php echo $i?>">Enviar arquivo</label>
                 <input type="file" name="upload_file-<?php echo $i?>[]" multiple  id="picture_upload-<?php echo $i?>">
             </div>
             </section>
+                <div class="desc_button button_upsent">Observações</div>
             </div>
-         
             <input type="submit" value="Atualizar" name="submit-<?php echo $i?>" class="button_upsent consumer_button">
         </form>
 
@@ -167,8 +166,6 @@
                 $finished=0;
                 $initial_time='';
                 $finish_time='';
-
-                //$fileNew=explode('.',$file["name"]);
                 
                 
 
@@ -227,6 +224,11 @@
                 }
                     $coord_x=$_COOKIE['coord_x'];
                     $coord_y=$_COOKIE['coord_y'];
+                    $emp_description=$_COOKIE['descricao_do_usuario'];
+                    $task_begin_hour=$_COOKIE['hora_de_inici'];
+                    $end_hour=$_COOKIE['hora_da_conclusão'];
+                    $emp_observation=$_COOKIE['observacoes_do_tecnico'];
+                    $total_horas=intval($task_begin_hour)+intval($end_hour);
                     $task_images_json=json_encode($image_json);
                     $wpdb->update(
                     $table_name,
@@ -262,12 +264,40 @@
                             'user'=>$result->funcionaro_responsavel
                         )
                     );
+                    $wpdb->update(
+                        $report_table,
+                        array(
+                            'month_total_time'=>$total_horas,
+                            'start_time'=>$task_begin_hour,
+                            'end_time'=>$end_hour,
+                            'call_descritive'=>$emp_description,
+                        )
+                    );
                     }
             ?>
     
     </section> 
     <button class="upsent_close_button">X</button> 
     </div>
+
+    <div class="upsent-pop-up-desc" id="upsent-<?php echo $i?>">
+        <section>
+            <form action="" method="post">
+            <div class="employer-describe">
+                <textarea class="employer_describe" name="employer_describe" id="emp_describe" rows="10" placeholder="Descrição do trabalho"></textarea>
+            </div>
+            <div class="quantity_hour">
+                <input class="begin_hour" type="time" name="hora_de_inicio" placeholder="Hora de Inicio da Tarefa">
+                <input class="finish_hour" type="time" name="hora_de_conclusão" placeholder="Hora de Conclusão da tarefa">
+            </div>
+            <div class="employer_observation">
+                <input class="employer-observation" type="text" name="observacao" placeholder="Observação">
+            </div>
+            </form>
+        </section>
+        <button class="upsent_close_button-desc">X</button>
+    </div>
+
     <div class="map_modal">
         <div class="map" ></div>
     <button class="upsent_close_button_map">X</button> 

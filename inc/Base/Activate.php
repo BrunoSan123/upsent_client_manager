@@ -150,6 +150,15 @@
             address_ VARCHAR(50) NOT NULL,
             client_observation VARCHAR(50) NOT NULL,
             solution_observation VARCHAR(50) NOT NULL,
+            aprovement_responseble VARCHAR(50) NOT NULL,
+            budget_describe VARCHAR(50) NOT NULL,
+            employer_value_already_featured VARCHAR(50) NOT NULL,
+            city VARCHAR(50) NOT NULL,
+            uf VARCHAR(50) NOT NULL,
+            start_time FLOAT(50) NOT NULL,
+            end_time FLOAT(50) NOT NULL,
+            call_descritive VARCHAR(50) NOT NULL,
+            service_order  VARCHAR(50) NOT NULL,
             PRIMARY KEY (id),
             FOREIGN KEY(task_id) REFERENCES wp_my_tasks(id)
         )";

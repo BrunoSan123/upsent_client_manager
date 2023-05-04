@@ -105,6 +105,7 @@
                        $total_pages = ceil($total_tasks / $itens_por_pagina);
                        $state=$filter;
                        break;
+                    
                 }
 
             } 

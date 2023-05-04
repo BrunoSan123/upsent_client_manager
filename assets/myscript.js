@@ -10,9 +10,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const taskTable = document.querySelectorAll(".upsent_table");
   const taskTableMobile = document.querySelectorAll(".upsent_table-mobile");
   const updatePopup = document.querySelectorAll(".upsent-pop-up");
+  const updatePopDesc=document.querySelectorAll(".upsent-pop-up-desc");
   const closeBtn = document.querySelectorAll(".upsent_close_button");
   const closeBtnMap = document.querySelectorAll(".upsent_close_button_map");
   const closeBtnImg = document.querySelectorAll(".upsent_close_button_img");
+  const closeButtonObservation= document.querySelectorAll(".upsent_close_button-desc")
   const closeBtnDesc = document.querySelectorAll(
     ".upsent_close_button_description"
   );
@@ -47,6 +49,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const taskConclued= document.querySelectorAll(".conclued")
   const site_url =window.history=siteUrl;
   const employerDescription = document.querySelectorAll(".employer-describe")
+  const employerTime = document.querySelectorAll(".quantity_hour")
+  const employerObservation =document.querySelectorAll(".employer_observation")
+  const observationButton= document.querySelectorAll(".desc_button")
+  const emp_describe= document.querySelector(".employer_describe")
+  const begin_hour =document.querySelector(".begin_hour")
+  const finishHour = document.querySelector(".finish_hour")
+  const emp_observation =document.querySelector(".employer-observation")
+
 
   var x = document.getElementById("demo");
 
@@ -224,7 +234,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
           task_results = await task.json();
           break;
       }
-      console.log(element);
       element.remove();
       await fetch(
         `${site_url}/wp-json/upsent-api/v1/tasks/delete?id=${task_results[position].id}`,
@@ -313,9 +322,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
       if (e.selectedOptions[0].value == "completa") {
         uploadInput[i].classList.add("reveal");
         employerDescription[i].classList.add("reveal")
+        employerTime[i].classList.add("reveal")
+        employerObservation[i].classList.add("reveal")
+        observationButton[i].classList.add("reveal")
       } else {
         uploadInput[i].classList.remove("reveal");
         employerDescription[i].classList.remove("reveal");
+        employerTime[i].classList.remove("reveal");
+        employerObservation[i].classList.remove("reveal")
+        observationButton[i].classList.remove("reveal")
       }
     });
   });
@@ -367,6 +382,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
   });
 
+
   //eventos para a página do funcionario
 
   if (page_tarefas_do_funcionario) {
@@ -381,6 +397,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
         getTaskMapClient(i, coord_results);
       });
     });
+
+    observationButton.forEach((e,i)=>{
+      e.addEventListener("click",()=>{
+        updatePopDesc[i].classList.add("reveal")
+        closeButtonObservation[i].addEventListener("click",()=>{
+          document.cookie=`descricao_do_usuario=${emp_describe.value}`;
+          document.cookie=`hora_de_inicio=${begin_hour.value}`;
+          document.cookie=`hora_da_conclusão=${finishHour.value}`;
+          document.cookie=`observacoes_do_tecnico=${emp_observation.value}`;
+          updatePopDesc[i].classList.remove("reveal")
+        })
+
+      })
+    })
 
     clientMapBtnMobile.forEach(async (e, i) => {
       const current_user = (window.history = usuario);
