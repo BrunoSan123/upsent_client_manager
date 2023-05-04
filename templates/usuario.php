@@ -225,8 +225,8 @@
                     $coord_x=$_COOKIE['coord_x'];
                     $coord_y=$_COOKIE['coord_y'];
                     $emp_description=$_COOKIE['descricao_do_usuario'];
-                    $task_begin_hour=$_COOKIE['hora_de_inici'];
-                    $end_hour=$_COOKIE['hora_da_conclusão'];
+                    $task_begin_hour=$_COOKIE['hora_de_inicio'];
+                    $end_hour=$_COOKIE['hora_da_conclusao'];
                     $emp_observation=$_COOKIE['observacoes_do_tecnico'];
                     $total_horas=intval($task_begin_hour)+intval($end_hour);
                     $task_images_json=json_encode($image_json);
@@ -271,6 +271,9 @@
                             'start_time'=>$task_begin_hour,
                             'end_time'=>$end_hour,
                             'call_descritive'=>$emp_description,
+                        ),
+                        array(
+                            'task_id'=>$result->id
                         )
                     );
                     }

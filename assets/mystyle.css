@@ -552,7 +552,7 @@
   }
 
   .employer-describe{
-    //display: none;
+    display: none;
     display:flex;
   }
   .desc_button{
@@ -563,7 +563,7 @@
     border-radius: 5px !important;
   }
   .quantity_hour,.employer_observation{
-    //display:none;
+    display:none;
     display:flex;
     justify-content: space-evenly;
   }
@@ -599,6 +599,7 @@
     justify-content: space-between;
     width: 100%;
   }
+
 
   
 

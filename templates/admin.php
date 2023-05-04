@@ -105,21 +105,28 @@
                         'client'=>$client
                         )
                     );
-                $wpdb->insert(
-                    $table_report,
-                    array(
-                        'call_number'=>floatval($nome),
-                        'employer_name'=>$user_responseble,
-                        'project'=>$projeto,
-                        'incoming_value'=>floatval($valor_receber),
-                        'aditional_value_per_hour'=>floatval($valor_adicional),
-                        'km'=>floatval($km),
-                        'incoming_value_per_km'=>floatval($valor_em_km),
-                        'aditional_cousts'=>floatval($custo_adicional),
-                        'date_'=>$data,
-                        'value_budget'=>floatval($valor_orcamento)
-                        )
-                );
+                $task_result=$wpdb->get_results("SELECT * FROM $table_name ORDER BY id DESC LIMIT 1");
+
+                foreach($task_result as $task){
+                    $wpdb->insert(
+                        $table_report,
+                        array(
+                            'call_number'=>floatval($nome),
+                            'employer_name'=>$user_responseble,
+                            'project'=>$projeto,
+                            'incoming_value'=>floatval($valor_receber),
+                            'aditional_value_per_hour'=>floatval($valor_adicional),
+                            'km'=>floatval($km),
+                            'incoming_value_per_km'=>floatval($valor_em_km),
+                            'aditional_cousts'=>floatval($custo_adicional),
+                            'date_'=>$data,
+                            'value_budget'=>floatval($valor_orcamento),
+                            'task_id'=>$task->id
+                            )
+                    );
+
+                }
+
                     
                     ?>
 

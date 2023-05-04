@@ -1,3 +1,4 @@
+<?php ob_start()?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -74,6 +75,7 @@
         $output .= "</table>";
         header('Content-Type:application/xls');
         header('Content-Disposition:attachment=reports.xls');
+        ob_end_flush();
         echo $output;
 
         exit;

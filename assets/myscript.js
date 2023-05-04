@@ -404,7 +404,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         closeButtonObservation[i].addEventListener("click",()=>{
           document.cookie=`descricao_do_usuario=${emp_describe.value}`;
           document.cookie=`hora_de_inicio=${begin_hour.value}`;
-          document.cookie=`hora_da_conclusão=${finishHour.value}`;
+          document.cookie=`hora_da_conclusao=${finishHour.value}`;
           document.cookie=`observacoes_do_tecnico=${emp_observation.value}`;
           updatePopDesc[i].classList.remove("reveal")
         })

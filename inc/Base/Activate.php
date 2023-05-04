@@ -120,7 +120,7 @@
             nome VARCHAR(255) NOT NULL,
             task_id mediumint(9) NOT NULL,
             PRIMARY KEY(id),
-            FOREIGN KEY(task_id) REFERENCES wp_my_tasks(id)
+            FOREIGN KEY(task_id) REFERENCES wp_my_tasks(id) ON DELETE CASCADE
         )";
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql_image_query);
@@ -160,7 +160,7 @@
             call_descritive VARCHAR(50) NOT NULL,
             service_order  VARCHAR(50) NOT NULL,
             PRIMARY KEY (id),
-            FOREIGN KEY(task_id) REFERENCES wp_my_tasks(id)
+            FOREIGN KEY(task_id) REFERENCES wp_my_tasks(id) ON DELETE CASCADE
         )";
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql_report);
