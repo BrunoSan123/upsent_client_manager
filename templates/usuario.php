@@ -229,6 +229,7 @@
                     $end_hour=$_COOKIE['hora_da_conclusao'];
                     $emp_observation=$_COOKIE['observacoes_do_tecnico'];
                     $total_horas=intval($task_begin_hour)+intval($end_hour);
+                    echo $total_horas;
                     $task_images_json=json_encode($image_json);
                     $wpdb->update(
                     $table_name,
@@ -285,7 +286,7 @@
 
     <div class="upsent-pop-up-desc" id="upsent-<?php echo $i?>">
         <section>
-            <form action="" method="post">
+            <div>
             <div class="employer-describe">
                 <textarea class="employer_describe" name="employer_describe" id="emp_describe" rows="10" placeholder="Descrição do trabalho"></textarea>
             </div>
@@ -296,7 +297,7 @@
             <div class="employer_observation">
                 <input class="employer-observation" type="text" name="observacao" placeholder="Observação">
             </div>
-            </form>
+                </div>
         </section>
         <button class="upsent_close_button-desc">X</button>
     </div>

@@ -52,10 +52,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const employerTime = document.querySelectorAll(".quantity_hour")
   const employerObservation =document.querySelectorAll(".employer_observation")
   const observationButton= document.querySelectorAll(".desc_button")
-  const emp_describe= document.querySelector(".employer_describe")
-  const begin_hour =document.querySelector(".begin_hour")
-  const finishHour = document.querySelector(".finish_hour")
-  const emp_observation =document.querySelector(".employer-observation")
+
 
 
   var x = document.getElementById("demo");
@@ -402,10 +399,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
       e.addEventListener("click",()=>{
         updatePopDesc[i].classList.add("reveal")
         closeButtonObservation[i].addEventListener("click",()=>{
-          document.cookie=`descricao_do_usuario=${emp_describe.value}`;
-          document.cookie=`hora_de_inicio=${begin_hour.value}`;
-          document.cookie=`hora_da_conclusao=${finishHour.value}`;
-          document.cookie=`observacoes_do_tecnico=${emp_observation.value}`;
+          const emp_describe= document.querySelectorAll(".employer_describe")
+          const begin_hour =document.querySelectorAll(".begin_hour")
+          const finishHour = document.querySelectorAll(".finish_hour")
+          const emp_observation =document.querySelectorAll(".employer-observation")
+          document.cookie=`descricao_do_usuario=${emp_describe[i].value}`;
+          document.cookie=`hora_de_inicio=${begin_hour[i].value}`;
+          document.cookie=`hora_da_conclusao=${finishHour[i].value}`;
+          document.cookie=`observacoes_do_tecnico=${emp_observation[i].value}`;
           updatePopDesc[i].classList.remove("reveal")
         })
 
