@@ -139,6 +139,59 @@ function get_employer_position()
     return $employer_position;
 }
 
+function custom_xls_download() {
+    // Verificar se a query string 'xls_download' está presente
+    if (isset($_GET['xls_download'])) {
+        // Iniciar o buffer de saída
+        ob_start();
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'employer_report';
+        $employer = isset($_POST['employer_filter']) ? $_POST['employer_filter'] : '';
+        $output = "";
+    
+        
+            $results = $wpdb->get_results("SELECT * FROM $table_name WHERE employer_name='$employer'");
+        
+    
+    
+            $customers_data = array(array('customers_id' => '1', 'customers_firstname' => 'Chris', 'customers_lastname' => 'Cavagin', 'customers_email' => 'chriscavagin@gmail.com', 'customers_telephone' => '9911223388'), array('customers_id' => '2', 'customers_firstname' => 'Richard', 'customers_lastname' => 'Simmons', 'customers_email' => 'rsimmons@media.com', ' clientes_telefone' => '9911224455'), array('customers_id' => '3', 'customers_firstname' => 'Steve', 'customers_lastname' => 'Beaven', 'customers_email' => 'ateavebeaven@gmail.com', 'customers_telephone' => '8855223388'), array('customers_id' => '4', 'customers_firstname' => 'Howard', 'customers_lastname' => 'Rawson', 'customers_email' => 'howardraw@gmail. com', 'customers_telephone' => '9911334488'), array('customers_id' => '5', 'customers_firstname' => 'Rachel', 'customers_lastname' => 'Dyson', 'customers_email' => 'racheldyson@ gmail.com', 'customers_telephone' => '9912345388'));
+            $output .= "
+                  <table>
+                  <th style='border:1px solid black; background:red;'>custumer_id</th>
+                  <th style='border:1px solid black; background:red;'>custumer_firstname</th>
+                ";
+    
+            foreach ($customers_data as $costumer) {
+                $output .= "
+                        <tr>
+                        <td>" . $costumer['customers_id'] . "</td>
+                        <td>" . $costumer['customers_firstname'] . "</td>
+                        </tr>
+                    ";
+    
+            }
+            $output .= "</table>";
+            echo $output;
+
+                    // Definir cabeçalhos para forçar o download do arquivo XLS
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename=reports.xls');
+
+        // Seu código PHP que gera o conteúdo do arquivo XLS
+
+        // Encerrar o buffer de saída e enviar o arquivo XLS para o navegador
+        ob_end_flush();
+
+        // Encerrar a execução do script para evitar o carregamento da página
+        exit();
+    
+
+        }
+
+
+    
+}
+
 
 
 add_action('rest_api_init', function () {
@@ -196,6 +249,8 @@ add_action('rest_api_init', function(){
         'permission_callback' => '__return_true' 
     ));
 });
+
+add_action('init', 'custom_xls_download');
 
 if (class_exists('Inc\\Init')) {
     Inc\Init::register_services();

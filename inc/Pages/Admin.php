@@ -67,7 +67,7 @@ class Admin
             array($this,'reports'),
             '7'
         );
-        
+
     
        add_submenu_page(
                 'employer_management',
@@ -109,4 +109,5 @@ class Admin
     public function reports(){
         require_once PLUGIN_PATH.'templates/relatórios.php';
     }
+
 }
