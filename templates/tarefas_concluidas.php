@@ -213,6 +213,7 @@
     <script>
          const actual_page=<?php echo $pagina_atual?>
     </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <?php require_once PLUGIN_PATH.'templates/partials/site_url.php';?>
 </body>
 </html> 

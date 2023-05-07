@@ -153,92 +153,128 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   // função para deletar tarefa
 
-  async function deleteTask(element, position) {
-    deleteButton[position].addEventListener("click", async () => {
-      const filter = document.querySelector(".filter_selection");
-      const filter_selection = filter.getAttribute("data-target");
-      const por_pag = (window.history = per_page);
-      const atual_page = (window.history = actual_page);
-      switch (filter_selection) {
-        case "parado":
-          task = await fetch(
-            `${site_url}/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`
+  function deleteTask(element, position) {
+    deleteButton[position].addEventListener("click", () => {
+      swal({
+        title: "tem certeza?",
+        text: "uma vez deletada não pode ser realocada",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then(async (willDelete) => {
+        if (willDelete) {
+          swal("Tarefa deletada", {
+            icon: "success",
+          });
+          const filter = document.querySelector(".filter_selection");
+          const filter_selection = filter.getAttribute("data-target");
+          const por_pag = (window.history = per_page);
+          const atual_page = (window.history = actual_page);
+          switch (filter_selection) {
+            case "parado":
+              task = await fetch(
+                `${site_url}/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`
+              );
+              task_results = await task.json();
+              break;
+            case "em_andamento":
+              task = await fetch(
+                `${site_url}/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`
+              );
+              task_results = await task.json();
+              break;
+            case "concluida":
+              task = await fetch(
+                `${site_url}/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=completa`
+              );
+              task_results = await task.json();
+              break;
+    
+            default:
+              task = await fetch(
+                `${site_url}/wp-json/upsent-api/v1/tasks/?per_page=${por_pag}&page=${atual_page}`
+              );
+              task_results = await task.json();
+              break;
+          }
+          
+          element.remove();
+          await fetch(
+            `${site_url}/wp-json/upsent-api/v1/tasks/delete?id=${task_results[position].id}`,
+            {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+            }
           );
-          task_results = await task.json();
-          break;
-        case "em_andamento":
-          task = await fetch(
-            `${site_url}/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`
-          );
-          task_results = await task.json();
-          break;
-        case "concluida":
-          task = await fetch(
-            `${site_url}/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=completa`
-          );
-          task_results = await task.json();
-          break;
-
-        default:
-          task = await fetch(
-            `${site_url}/wp-json/upsent-api/v1/tasks/?per_page=${por_pag}&page=${atual_page}`
-          );
-          task_results = await task.json();
-          break;
-      }
-      
-      element.remove();
-      await fetch(
-        `${site_url}/wp-json/upsent-api/v1/tasks/delete?id=${task_results[position].id}`,
-        {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
+        } else {
+          swal("não deletada");
         }
-      );
+      });
+
     });
   }
   
-  async function delete_task_mobile(element,position){
-    deleteButtonMobile[position].addEventListener("click", async () => {
-      const filter = document.querySelector(".filter_selection");
-      const filter_selection = filter.getAttribute("data-target");
-      const por_pag = (window.history = per_page);
-      const atual_page = (window.history = actual_page);
-      switch (filter_selection) {
-        case "parado":
-          task = await fetch(
-            `${site_url}/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`
-          );
-          task_results = await task.json();
-          break;
-        case "em_andamento":
-          task = await fetch(
-            `${site_url}/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`
-          );
-          task_results = await task.json();
-          break;
-        case "concluida":
-          task = await fetch(
-            `${site_url}/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=completa`
-          );
-          task_results = await task.json();
-          break;
+  function delete_task_mobile(element,position){
+    deleteButtonMobile[position].addEventListener("click", () => {
+      swal({
+        title: "Tem certeza??",
+        text: "Uma vez deletada não pode mais ser realocada",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then(async (willDelete) => {
+        if (willDelete) {
+          swal("Tarefa deletada com sucesso", {
+            icon: "success",
+          });
 
-        default:
-          task = await fetch(
-            `${site_url}/wp-json/upsent-api/v1/tasks/?per_page=${por_pag}&page=${atual_page}`
+          const filter = document.querySelector(".filter_selection");
+          const filter_selection = filter.getAttribute("data-target");
+          const por_pag = (window.history = per_page);
+          const atual_page = (window.history = actual_page);
+          switch (filter_selection) {
+            case "parado":
+              task = await fetch(
+                `${site_url}/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`
+              );
+              task_results = await task.json();
+              break;
+            case "em_andamento":
+              task = await fetch(
+                `${site_url}/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=${filter_selection}`
+              );
+              task_results = await task.json();
+              break;
+            case "concluida":
+              task = await fetch(
+                `${site_url}/wp-json/upsent-api/v1/tasks/filter?per_page=${por_pag}&page=${atual_page}&status=completa`
+              );
+              task_results = await task.json();
+              break;
+    
+            default:
+              task = await fetch(
+                `${site_url}/wp-json/upsent-api/v1/tasks/?per_page=${por_pag}&page=${atual_page}`
+              );
+              task_results = await task.json();
+              break;
+          }
+          element.remove();
+          await fetch(
+            `${site_url}/wp-json/upsent-api/v1/tasks/delete?id=${task_results[position].id}`,
+            {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+            }
           );
-          task_results = await task.json();
-          break;
-      }
-      element.remove();
-      await fetch(
-        `${site_url}/wp-json/upsent-api/v1/tasks/delete?id=${task_results[position].id}`,
-        {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
+        } else {
+          swal("não deletada");
         }
-      );
+      });
+
+ 
     });
 
   }
@@ -626,7 +662,24 @@ document.addEventListener("DOMContentLoaded", function (event) {
   if(tarefas_concluidas){
     taskTable.forEach((e, i) => {
       deleteButton[i].addEventListener('click',()=>{
-        delete_finish_task(e,i);
+        swal({
+          title: "Tem certeza?",
+          text: "Uma vez deletada não poderar realocar mais",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            delete_finish_task(e,i);
+            swal("tarefa deletada com sucesso", {
+              icon: "success",
+            });
+          } else {
+            swal("Não deletada");
+          }
+        });
+        
       })
       
       finishButtonBtn[i].addEventListener("click", async () => {
@@ -636,7 +689,23 @@ document.addEventListener("DOMContentLoaded", function (event) {
     })
     taskTableMobile.forEach((e,i)=>{
       deleteButtonMobile[i].addEventListener("click",()=>{
-        delete_finish_task(e,i);
+        swal({
+          title: "Tem certeza?",
+          text: "Uma vez deletada não poderar realocar mais",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            delete_finish_task(e,i);
+            swal("tarefa deletada com sucesso", {
+              icon: "success",
+            });
+          } else {
+            swal("Não deletada");
+          }
+        });
       })
       
       finishButtonBtnMobile[i].addEventListener("click", async()=>{

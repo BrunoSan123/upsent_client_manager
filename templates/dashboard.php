@@ -17,9 +17,9 @@
          $results_stoped=$wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE states='parado'");
          //print_r(get_role('funcionario'));
         ?>
-        <div class="dashboard_info dashboard_info_finished">Tarefas concluidas: <p class="task_total"><?php echo $results_finished?></p></div>
-        <div class="dashboard_info dashboard_info_incoming">Tarefas em Andamento: <p class="task_total"><?php echo $results_incoming?></p></div>
-        <div class="dashboard_info dashboard_info_stoped">Tarefas a começar: <p class="task_total"><?php echo $results_stoped?></p></div>
+        <div class="dashboard_info dashboard_info_finished">Tarefas/funcionário concluidas: <p class="task_total"><?php echo $results_finished?></p></div>
+        <div class="dashboard_info dashboard_info_incoming">Tarefas/funcionário em Andamento: <p class="task_total"><?php echo $results_incoming?></p></div>
+        <div class="dashboard_info dashboard_info_stoped">Tarefas/funcionários a começar: <p class="task_total"><?php echo $results_stoped?></p></div>
     </section>
         <div>
             <canvas id="myChart"></canvas>

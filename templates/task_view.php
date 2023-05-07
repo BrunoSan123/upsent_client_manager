@@ -303,6 +303,7 @@
     endforeach;?>
 
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChwlr0dGv_YSZfJkVdblKgIV47MK3tkks&callback=initMap"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
        const usuario_maped =<?php echo json_encode($maped)?> 
     </script>
