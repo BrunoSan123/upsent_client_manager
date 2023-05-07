@@ -228,7 +228,7 @@
                     $task_begin_hour=$_COOKIE['hora_de_inicio'];
                     $end_hour=$_COOKIE['hora_da_conclusao'];
                     $emp_observation=$_COOKIE['observacoes_do_tecnico'];
-                    $total_horas=intval($task_begin_hour)+intval($end_hour);
+                    $total_horas=floatval($task_begin_hour)+floatval($end_hour);
                     echo $total_horas;
                     $task_images_json=json_encode($image_json);
                     $wpdb->update(
@@ -253,7 +253,8 @@
                           'task_name'=>$result->task_name,
                           'task_start_time'=>$initial_time,
                           'task_end_time'=>$finish_time,
-                          'sign'=>$sinal
+                          'sign'=>$sinal,
+                          'states'=>$current_state
                           )
                         );
 

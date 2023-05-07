@@ -56,6 +56,10 @@
                 <input type="text" name="custos_adicionais" id="custos_adicionais" placeholder="Custos adicionais">
                 <input type="text" name="valor_orcamento" id="valor_orcamento" placeholder="Valor do Orçamento">
                 <input type="date" name="data_da_atividade" id="data_da_atividade">
+                <input type="text" name="cidade" id="cidade" placeholder="cidade">
+                <input type="text" name="uf" id="uf" placeholder="UF">
+                <input type="text" name="responsavel_aprovacao" id="approvement" placeholder="Responsavel pela aprovação">
+                <input type="text" name="descricao_orcamento" id="descicao_orcamento" placeholder="Descrição do orçamento">
 
             </section>
 
@@ -84,11 +88,20 @@
             $custo_adicional=isset($_POST['custos_adicionais'])?$_POST['custos_adicionais']:'';
             $valor_orcamento=isset($_POST['valor_orcamento'])?$_POST['valor_orcamento']:'';
             $data=isset($_POST['data_da_atividade'])?$_POST['data_da_atividade']:'';
+            $city=isset($_POST['cidade'])?$_POST['cidade']:'';
+            $uf=isset($_POST['uf'])?$_POST['uf']:'';
+            $approvment_responseble=isset($_POST['responsavel_aprovacao'])?$_POST['responsavel_aprovacao']:'';
+            $budget_description=isset($_POST['descricao_orcamento'])?$_POST['descricao_orcamento']:'';
+
 
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
                $table_name = $wpdb->prefix . 'my_tasks';
                $table_report=$wpdb->prefix. 'employer_report';
+               $month=explode("-",$data);
+               $dateobj=DateTime::createFromFormat('!m',$month[1]);
+               $monthName=$dateobj->format('F');
+               $realMonth=date_parse($monthName);
                 $wpdb->insert(
                     $table_name,
                     array(
@@ -111,7 +124,7 @@
                     $wpdb->insert(
                         $table_report,
                         array(
-                            'call_number'=>floatval($nome),
+                            'call_number'=>$nome,
                             'employer_name'=>$user_responseble,
                             'project'=>$projeto,
                             'incoming_value'=>floatval($valor_receber),
@@ -121,7 +134,15 @@
                             'aditional_cousts'=>floatval($custo_adicional),
                             'date_'=>$data,
                             'value_budget'=>floatval($valor_orcamento),
-                            'task_id'=>$task->id
+                            'task_id'=>$task->id,
+                            'company'=>$company_name,
+                            'city'=>$city,
+                            'uf'=>$uf,
+                            'address_'=>$address,
+                            'aprovement_responseble'=>$approvment_responseble,
+                            'budget_describe'=>$budget_description,
+                            'client'=>$client,
+                            'month_'=>$realMonth['month']
                             )
                     );
 

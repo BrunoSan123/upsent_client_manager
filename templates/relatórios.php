@@ -22,18 +22,18 @@
             </div>
             <div class="">
                 <select name="meses" id="meses" class="filter">
-                    <option value="janeiro">Janeiro</option>
-                    <option value="fevereiro">Fevereiro</option>
-                    <option value="marco">Março</option>
-                    <option value="abril">Abril</option>
-                    <option value="maio">Maio</option>
-                    <option value="junho">Junho</option>
-                    <option value="julho">Julho</option>
-                    <option value="agosto">Agosto</option>
-                    <option value="setembro">setembro</option>
-                    <option value="outubro">Outubro</option>
-                    <option value="novembro">Novembro</option>
-                    <option value="dezembro">Dezembro</option>
+                    <option value="January">Janeiro</option>
+                    <option value="February">Fevereiro</option>
+                    <option value="March">Março</option>
+                    <option value="April">Abril</option>
+                    <option value="May">Maio</option>
+                    <option value="June">Junho</option>
+                    <option value="July">Julho</option>
+                    <option value="August">Agosto</option>
+                    <option value="September">setembro</option>
+                    <option value="October">Outubro</option>
+                    <option value="November">Novembro</option>
+                    <option value="December">Dezembro</option>
                 </select>
             </div>
             <input type="submit" value="Gerar Relatório" name="submit">

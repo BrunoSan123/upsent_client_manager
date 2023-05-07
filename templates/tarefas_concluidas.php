@@ -11,12 +11,29 @@
         <nav><h1>Tarefas entregues</h1></nav>
     </header>
 
+    <div class="filters">
+        <form action="" method="post">
+          <div class="filter-div">
+            <label for="user_filter">Filtrar por Usuario</label>
+            <input type="text" name="user_filter" id="user_filter" class="input-paddings-1">
+            <input type="submit" value="filtrar usuario" name='user_filter_button' style="padding: 2% !important;">
+          </div>
+        </form>
+        <form action="" method="post">
+        <div class="filter-div">
+            <label for="company_filter">Filtrar por empresa</label>
+            <input type="text" name="company_filter" id="company_filter" class="input-paddings-1">
+            <input type="submit" value="filtrar empresa" name='company_filter_button' style="padding: 2% !important;">
+        </div >
+        </form>
+    </div>
+
     <section>
 
 
         <?php 
             global $wpdb;
-            $itens_por_pagina = 3;
+            $itens_por_pagina = 10;
             isset($_GET['pagina'])? $pagina_atual=$_GET['pagina']:$pagina_atual=1;
             isset($_POST['filter_selection'])?$filter=$_POST['filter_selection']:'';
             $posicao_inicial = ($pagina_atual - 1) * $itens_por_pagina;
@@ -26,6 +43,27 @@
             $total_pages = ceil($total_tasks / $itens_por_pagina);
             $user_table=$wpdb->prefix.'users';
             $user_result=$wpdb->get_results("SELECT * FROM $user_table");
+
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['company_filter'])){
+                $results=null;
+                $total_tasks=null;
+                $total_pages=null;
+                $company_param=$_POST['company_filter'];
+                $results=$wpdb->get_results("SELECT * FROM $table_name WHERE company='$company_param' AND entregue=1 LIMIT $posicao_inicial, $itens_por_pagina");
+                $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE company='$company_param' AND entregue=1");
+                $total_pages = ceil($total_tasks / $itens_por_pagina);
+            }
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['company_filter'])){
+                $results=null;
+                $total_tasks=null;
+                $total_pages=null;
+                $company_param=$_POST['company_filter'];
+                $results=$wpdb->get_results("SELECT * FROM $table_name WHERE company='$company_param' AND entregue=1 LIMIT $posicao_inicial, $itens_por_pagina");
+                $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE company='$company_param' AND entregue=1");
+                $total_pages = ceil($total_tasks / $itens_por_pagina);
+            }
 
 
         ?>

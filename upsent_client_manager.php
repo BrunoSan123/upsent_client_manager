@@ -147,25 +147,84 @@ function custom_xls_download() {
         global $wpdb;
         $table_name = $wpdb->prefix . 'employer_report';
         $employer = isset($_POST['employer_filter']) ? $_POST['employer_filter'] : '';
+        $month=isset($_POST['meses'])?$_POST['meses']:'';
+        $month_number=date_parse($month)['month'];
+        
+
         $output = "";
     
         
-            $results = $wpdb->get_results("SELECT * FROM $table_name WHERE employer_name='$employer'");
+            $results = $wpdb->get_results("SELECT * FROM $table_name WHERE employer_name='$employer' AND month_='$month_number'");
         
     
     
-            $customers_data = array(array('customers_id' => '1', 'customers_firstname' => 'Chris', 'customers_lastname' => 'Cavagin', 'customers_email' => 'chriscavagin@gmail.com', 'customers_telephone' => '9911223388'), array('customers_id' => '2', 'customers_firstname' => 'Richard', 'customers_lastname' => 'Simmons', 'customers_email' => 'rsimmons@media.com', ' clientes_telefone' => '9911224455'), array('customers_id' => '3', 'customers_firstname' => 'Steve', 'customers_lastname' => 'Beaven', 'customers_email' => 'ateavebeaven@gmail.com', 'customers_telephone' => '8855223388'), array('customers_id' => '4', 'customers_firstname' => 'Howard', 'customers_lastname' => 'Rawson', 'customers_email' => 'howardraw@gmail. com', 'customers_telephone' => '9911334488'), array('customers_id' => '5', 'customers_firstname' => 'Rachel', 'customers_lastname' => 'Dyson', 'customers_email' => 'racheldyson@ gmail.com', 'customers_telephone' => '9912345388'));
+            //$customers_data = array(array('customers_id' => '1', 'customers_firstname' => 'Chris', 'customers_lastname' => 'Cavagin', 'customers_email' => 'chriscavagin@gmail.com', 'customers_telephone' => '9911223388'), array('customers_id' => '2', 'customers_firstname' => 'Richard', 'customers_lastname' => 'Simmons', 'customers_email' => 'rsimmons@media.com', ' clientes_telefone' => '9911224455'), array('customers_id' => '3', 'customers_firstname' => 'Steve', 'customers_lastname' => 'Beaven', 'customers_email' => 'ateavebeaven@gmail.com', 'customers_telephone' => '8855223388'), array('customers_id' => '4', 'customers_firstname' => 'Howard', 'customers_lastname' => 'Rawson', 'customers_email' => 'howardraw@gmail. com', 'customers_telephone' => '9911334488'), array('customers_id' => '5', 'customers_firstname' => 'Rachel', 'customers_lastname' => 'Dyson', 'customers_email' => 'racheldyson@ gmail.com', 'customers_telephone' => '9912345388'));
             $output .= "
                   <table>
-                  <th style='border:1px solid black; background:red;'>custumer_id</th>
-                  <th style='border:1px solid black; background:red;'>custumer_firstname</th>
+                  <th style='border:1px solid black; background:yellow;'>DATA</th>
+                  <th style='border:1px solid black; background:yellow;'>EMPRESA</th>
+                  <th style='border:1px solid black; background:yellow;'>PROJETO</th>
+                  <th style='border:1px solid black; background:yellow;'>CLIENTE</th>
+                  <th style='border:1px solid black; background:yellow;'>N° CHAMADO</th>
+                  <th style='border:1px solid black; background:lightgreen;'>VALOR A RECEBER</th>
+                  <th style='border:1px solid black; background:lightgreen;'>VALOR HORA ADICIONAL</th>
+                  <th style='border:1px solid black; background:lightgreen;'>VALOR KM A RECEBER</th>
+                  <th style='border:1px solid black; background:yellow;'>CUSTOS ADICIONAIS</th>
+                  <th style='border:1px solid black; background:lightgreen;'>DESCRITIVO ORÇAMENTO</th>
+                  <th style='border:1px solid black; background:lightgreen;'>STATUS DO ORÇAMENTO</th>
+                  <th style='border:1px solid black; background:lightgreen;'>RESPONSAVEL APROVAÇÃO</th>
+                  <th style='border:1px solid black; background:lightgreen;'>VALOR ORÇAMENTO</th>
+                  <th style='border:1px solid black; background: #00B0F0;'>NOME TÉCNICO</th>
+                  <th style='border:1px solid black; background: #00B0F0;'>VALOR A RECEBER</th>
+                  <th style='border:1px solid black; background: #00B0F0;'>vALOR KM</th>
+                  <th style='border:1px solid black; background: #00B0F0;'>HE TEC</th>
+                  <th style='border:1px solid black; background: #00B0F0;'>CUSTOS ADICIONAIS</th>
+                  <th style='border:1px solid black; background: #00B0F0;'>VALOR ORÇAMENTO</th>
+                  <th style='border:1px solid black; background: #FF0000;'>VALOR TEC JÁ FATURADO</th>
+                  <th style='border:1px solid black; background: yellow;'>CIDADE/UF</th>
+                  <th style='border:1px solid black; background: yellow;'>ENDEREÇO</th>
+                  <th style='border:1px solid black; background: yellow;'>OBSERVAÇÃO DO CLIENTE</th>
+                  <th style='border:1px solid black; background: yellow;'>OBSERVAÇÃO DA SOLUTION</th>
+                  <th style='border:1px solid black; background: #D000FF;'>HORA DE INICIO</th>
+                  <th style='border:1px solid black; background: #D000FF;'>HORA DE TERMINO</th>
+                  <th style='border:1px solid black; background: #D000FF;'>QUANTIDADE DE HORAS</th>
+                  <th style='border:1px solid black; background: #D000FF;'>DESCRITIVO ATENDIMENTO</th>
+                  <th style='border:1px solid black; background: #D000FF;'>ORDEM DE SERVIÇO(RAT)</th>
+
                 ";
     
-            foreach ($customers_data as $costumer) {
+            foreach ($results as $result) {
                 $output .= "
                         <tr>
-                        <td>" . $costumer['customers_id'] . "</td>
-                        <td>" . $costumer['customers_firstname'] . "</td>
+                          <td>$result->date_</td>
+                          <td>$result->company</td>
+                          <td>$result->project</td>
+                          <td>$result->client</td>
+                          <td>$result->call_number</td>
+                          <td>$result->incoming_value</td>
+                          <td>$result->aditional_value_per_hour</td>
+                          <td>$result->incoming_value_per_km</td>
+                          <td>$result->aditional_cousts</td>
+                          <td>$result->descritive_budget</td>
+                          <td>$result->status_budget</td>
+                          <td>$result->aprovement_responseble</td>
+                          <td>$result->value_budget</td>
+                          <td>$result->employer_name</td>
+                          <td>$result->incoming_value/td>
+                          <td>$result->value_km</td>
+                          <td>$result->he_tec</td>
+                          <td>$result->aditional_cousts</td>
+                          <td>$result->value_budget</td>
+                          <td>$result->employer_featured_value</td>
+                          <td>$result->city/$result->uf</td>
+                          <td>$result->address_</td>
+                          <td>$result->client_observation</td>
+                          <td>$result->solution_observation</td>
+                          <td>$result->start_time</td>
+                          <td>$result->end_time</td>
+                          <td>$result->month_total_time</td>
+                          <td>$result->call_descritive</td>
+                          <td>$result->service_order</td>
                         </tr>
                     ";
     
@@ -175,7 +234,7 @@ function custom_xls_download() {
 
                     // Definir cabeçalhos para forçar o download do arquivo XLS
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment; filename=reports.xls');
+        header("Content-Disposition: attachment; filename=reports-$employer-$month.xls");
 
         // Seu código PHP que gera o conteúdo do arquivo XLS
 

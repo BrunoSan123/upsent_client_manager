@@ -74,6 +74,7 @@
             log_description VARCHAR(50) NOT NULL,
             task_name VARCHAR(50) NOT NULL,
             sign VARCHAR(50) NOT NULL,
+            states VARCHAR(50) NOT NULL,
             PRIMARY KEY(id)
         )";
         require_once(ABSPATH.'wp-admin/includes/upgrade.php');
@@ -131,7 +132,9 @@
         $table_name=$wpdb->prefix.'employer_report';
         $sql_report="CREATE TABLE IF NOT EXISTS $table_name(
             id mediumint(9) NOT NULL AUTO_INCREMENT,
-            call_number FLOAT(50) NOT NULL,
+            call_number VARCHAR(50) NOT NULL,
+            company VARCHAR(50) NOT NULL,
+            client VARCHAR(50) NOT NULL,
             vigent_month VARCHAR(50) NOT NULL,
             employer_name VARCHAR(50) NOT NULL,
             task_id mediumint(9),
@@ -146,6 +149,9 @@
             status_budget  FLOAT(50) NOT NULL,
             value_budget FLOAT(50) NOT NULL,
             value_per_km VARCHAR(50) NOT NULL,
+            value_km VARCHAR(50) NOT NULL,
+            he_tec VARCHAR(50) NOT NULL,
+            descritive_budget VARCHAR(50) NOT NULL,
             employer_featured_value VARCHAR(50) NOT NULL,
             address_ VARCHAR(50) NOT NULL,
             client_observation VARCHAR(50) NOT NULL,
@@ -159,6 +165,7 @@
             end_time FLOAT(50) NOT NULL,
             call_descritive VARCHAR(50) NOT NULL,
             service_order  VARCHAR(50) NOT NULL,
+            month_ VARCHAR(50) NOT NULL,
             PRIMARY KEY (id),
             FOREIGN KEY(task_id) REFERENCES wp_my_tasks(id) ON DELETE CASCADE
         )";
