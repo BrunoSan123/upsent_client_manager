@@ -52,6 +52,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const employerTime = document.querySelectorAll(".quantity_hour")
   const employerObservation =document.querySelectorAll(".employer_observation")
   const observationButton= document.querySelectorAll(".desc_button")
+  const reportButton = document.querySelectorAll(".report_button")
+
 
 
 
@@ -520,7 +522,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   
   //evventos para a pagina de tarefas do admin
   if (page_tarefas_cadastradas) {
-    var user_maped = (window.history = usuario_maped);
+    //var user_maped = (window.history = usuario_maped);
     const filter = document.querySelector(".filter_selection");
     const filter_selection = filter.getAttribute("data-target");
 
@@ -562,6 +564,43 @@ document.addEventListener("DOMContentLoaded", function (event) {
         getTaskMap(i, task_results);
       });
     });
+
+    reportButton.forEach((e,i)=>{
+      e.addEventListener('click',()=>{
+        updatePopDesc[i].classList.add("reveal");
+        closeButtonObservation[i].addEventListener('click',()=>{
+          const emp_budget=document.querySelectorAll(".valor_orçamento")
+          const emp_project = document.querySelectorAll(".projeto")
+          const emp_value_incoming =document.querySelectorAll(".valor_receber")
+          const emp_aditional_value= document.querySelectorAll(".valor_adicional")
+          const emp_km=document.querySelectorAll(".km")
+          const emp_km_value=document.querySelectorAll(".valor_em_km")
+          const emp_aditional_coust=document.querySelectorAll(".custos_adicionais")
+          const emp_budget_value= document.querySelectorAll(".valor_orcamento")
+          const task_date=document.querySelectorAll(".data_da_atividade")
+          const city= document.querySelectorAll(".cidade")
+          const uf= document.querySelectorAll(".uf")
+          const emp_paprovment_responseble=document.querySelectorAll(".responsavel_aprovacao")
+          const  budget_describe = document.querySelectorAll(".descricao_orcamento")
+
+          document.cookie=`descritivo_ortcamento=${emp_budget[i].value}`
+          document.cookie=`projeto=${emp_project[i].value}`
+          document.cookie=`valor_a_receber=${emp_value_incoming[i].value}`
+          document.cookie=`valor_adicional=${emp_aditional_value[i].value}`
+          document.cookie=`km=${emp_km[i].value}`
+          document.cookie=`valor_km=${emp_km_value[i].value}`
+          document.cookie=`custo_adicional=${emp_aditional_coust[i].value}`
+          document.cookie=`valor-orcamento=${emp_budget_value[i].value}`
+          document.cookie=`data_da_atividade=${task_date[i].value}`
+          document.cookie=`cidade=${city[i].value}`
+          document.cookie=`uf=${uf[i].value}`
+          document.cookie=`aprovacao_responsavel=${emp_paprovment_responseble[i].value}`
+          document.cookie=`orcamento_descricao=${budget_describe[i].value}`
+          updatePopDesc[i].classList.remove("reveal");
+        })
+      })
+      
+    })
 
     taskTable.forEach((e, i) => {
       deleteTask(e, i);

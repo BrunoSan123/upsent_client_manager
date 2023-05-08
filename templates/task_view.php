@@ -224,8 +224,10 @@
              </select>
             </section>
              </div>
-         
+            <div class="buttons_container" style="padding-left: 14%; padding-top: 2%;">
+             <div class="report_button button_upsent" style="display:inline-block;">Atualizar Relatório</div>        
             <input type="submit" value="Atualizar" name="submit-<?php echo $i?>" class="button_upsent">
+            </div>
         </form>
 
         <?php
@@ -280,6 +282,25 @@
         </div>
         <button class="upsent_close_button_img">X</button>
     </div>
+    
+    <div class="upsent-pop-up-desc" id="upsent-<?php echo $i?>">
+            <section class="section_form">
+                <input type="text" name="valor_orçamento" class="valor_orçamento" id="orçamento" placeholder="orçamento">
+                <input type="text" name="projeto" class="projeto" id="project" placeholder="projeto">
+                <input type="text" name="valor_receber" class="valor_receber" id="valor_receber" placeholder="valor a receber">
+                <input type="text" name="valor_adicional" class="valor_adicional" id="valor_adicional" placeholder="valor adicional">
+                <input type="text" name="km"  class="km" id="km" placeholder="km">
+                <input type="text" name="valor_em_km" class="valor_em_km" id="valor_em_km" placeholder="valor em KM">
+                <input type="text" name="custos_adicionais" class="custos_adicionais" id="custos_adicionais" placeholder="Custos adicionais">
+                <input type="text" name="valor_orcamento" class="valor_orcamento" id="valor_orcamento" placeholder="Valor do Orçamento">
+                <input type="date" name="data_da_atividade" class="data_da_atividade" id="data_da_atividade">
+                <input type="text" name="cidade" id="cidade" class="cidade" placeholder="cidade">
+                <input type="text" name="uf" class="uf" id="uf" placeholder="UF">
+                <input type="text" name="responsavel_aprovacao" class="responsavel_aprovacao" id="approvement" placeholder="Responsavel pela aprovação">
+                <input type="text" name="descricao_orcamento" class="descricao_orcamento" id="descicao_orcamento" placeholder="Descrição do orçamento">
+            </section>
+          <button class="upsent_close_button-desc">X</button>
+    </div>
     <?php if($result->concluida!=0):?>
      <?php $arr =json_decode($result->conclued_img); ?>
     
@@ -292,6 +313,7 @@
         <?php endforeach?>
         </div>
         <button class="upsent_close_button_img">X</button>
+
     </div>
    
     <?php endif?>
