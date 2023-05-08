@@ -5,16 +5,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
     document.body.classList.contains("emt_page_tarefas");
   const page_tarefas_do_funcionario =
     document.body.classList.contains("emt_page_usuario");
-  const tarefas_concluidas=document.body.classList.contains("emt_page_tarefas_concluidas");
-  const cadastroDeTarefas =document.body.classList.contains("emt_page_cadastro")
+  const tarefas_concluidas = document.body.classList.contains(
+    "emt_page_tarefas_concluidas"
+  );
+  const cadastroDeTarefas =
+    document.body.classList.contains("emt_page_cadastro");
   const taskTable = document.querySelectorAll(".upsent_table");
   const taskTableMobile = document.querySelectorAll(".upsent_table-mobile");
   const updatePopup = document.querySelectorAll(".upsent-pop-up");
-  const updatePopDesc=document.querySelectorAll(".upsent-pop-up-desc");
+  const updatePopDesc = document.querySelectorAll(".upsent-pop-up-desc");
   const closeBtn = document.querySelectorAll(".upsent_close_button");
   const closeBtnMap = document.querySelectorAll(".upsent_close_button_map");
   const closeBtnImg = document.querySelectorAll(".upsent_close_button_img");
-  const closeButtonObservation= document.querySelectorAll(".upsent_close_button-desc")
+  const closeButtonObservation = document.querySelectorAll(
+    ".upsent_close_button-desc"
+  );
   const closeBtnDesc = document.querySelectorAll(
     ".upsent_close_button_description"
   );
@@ -28,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   );
   const clientMapPosition = document.querySelectorAll(".map_modal");
   const finishButtonBtn = document.querySelectorAll(".finish");
-  const finishButtonBtnMobile=document.querySelectorAll(".finished")
+  const finishButtonBtnMobile = document.querySelectorAll(".finished");
   const uploadInput = document.querySelectorAll(".upload_button");
   const selectState = document.querySelectorAll(".states");
   const fileInput = document.querySelectorAll('input[type="file"]');
@@ -36,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const coord_x = document.getElementById("coord_x");
   const coord_y = document.getElementById("coord_y");
   const deleteButton = document.querySelectorAll(".delete_task");
-  const deleteButtonMobile =document.querySelectorAll(".delete_task_mobile")
+  const deleteButtonMobile = document.querySelectorAll(".delete_task_mobile");
   const employerSubmitButton = document.querySelectorAll(".button_upsent");
   const form = document.querySelectorAll(".upload_button");
   const description = document.querySelectorAll(".description");
@@ -46,16 +51,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const comprovant_field = document.querySelectorAll(".comprovante");
   const comprovant_filed_mobile =
     document.querySelectorAll(".comprovanteMobile");
-  const taskConclued= document.querySelectorAll(".conclued")
-  const site_url =window.history=siteUrl;
-  const employerDescription = document.querySelectorAll(".employer-describe")
-  const employerTime = document.querySelectorAll(".quantity_hour")
-  const employerObservation =document.querySelectorAll(".employer_observation")
-  const observationButton= document.querySelectorAll(".desc_button")
-  const reportButton = document.querySelectorAll(".report_button")
-
-
-
+  const taskConclued = document.querySelectorAll(".conclued");
+  const site_url = (window.history = siteUrl);
+  const employerDescription = document.querySelectorAll(".employer-describe");
+  const employerTime = document.querySelectorAll(".quantity_hour");
+  const employerObservation = document.querySelectorAll(
+    ".employer_observation"
+  );
+  const observationButton = document.querySelectorAll(".desc_button");
+  const reportButton = document.querySelectorAll(".report_button");
 
   var x = document.getElementById("demo");
 
@@ -80,7 +84,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
       `https://maps.googleapis.com/maps/api/geocode/json?address=${value}&key=AIzaSyChwlr0dGv_YSZfJkVdblKgIV47MK3tkks`
     );
     const localeResponse = await localeRequest.json();
-    console.log(localeResponse.results[0])
     if (coord_x && coord_y) {
       return;
     } else {
@@ -105,7 +108,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
   function getTaskMap(position, query) {
     clientMapPosition[position].classList.add("reveal");
     const coord_results = query;
-    console.log(coord_results[position].employeer_position_x,coord_results[position].employeer_position_Y)
     const map = new google.maps.Map(
       document.querySelectorAll(".map")[position],
       {
@@ -163,8 +165,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         icon: "warning",
         buttons: true,
         dangerMode: true,
-      })
-      .then(async (willDelete) => {
+      }).then(async (willDelete) => {
         if (willDelete) {
           swal("Tarefa deletada", {
             icon: "success",
@@ -192,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
               );
               task_results = await task.json();
               break;
-    
+
             default:
               task = await fetch(
                 `${site_url}/wp-json/upsent-api/v1/tasks/?per_page=${por_pag}&page=${atual_page}`
@@ -200,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
               task_results = await task.json();
               break;
           }
-          
+
           element.remove();
           await fetch(
             `${site_url}/wp-json/upsent-api/v1/tasks/delete?id=${task_results[position].id}`,
@@ -213,11 +214,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
           swal("não deletada");
         }
       });
-
     });
   }
-  
-  function delete_task_mobile(element,position){
+
+  function delete_task_mobile(element, position) {
     deleteButtonMobile[position].addEventListener("click", () => {
       swal({
         title: "Tem certeza??",
@@ -225,8 +225,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         icon: "warning",
         buttons: true,
         dangerMode: true,
-      })
-      .then(async (willDelete) => {
+      }).then(async (willDelete) => {
         if (willDelete) {
           swal("Tarefa deletada com sucesso", {
             icon: "success",
@@ -255,7 +254,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
               );
               task_results = await task.json();
               break;
-    
+
             default:
               task = await fetch(
                 `${site_url}/wp-json/upsent-api/v1/tasks/?per_page=${por_pag}&page=${atual_page}`
@@ -275,15 +274,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
           swal("não deletada");
         }
       });
-
- 
     });
-
   }
 
-  async function delete_finish_task(element,position){
+  async function delete_finish_task(element, position) {
     const por_pag = (window.history = per_page);
-    const atual_page = (window.history = actual_page)
+    const atual_page = (window.history = actual_page);
     const task_info = (task = await fetch(
       `${site_url}/wp-json/upsent-api/v1/tasks/finished/?page=${atual_page}&per_page=${por_pag}&entregue=1`
     ));
@@ -296,7 +292,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
         headers: { "Content-Type": "application/json" },
       }
     );
-
   }
 
   // função para reabrir a tarefa
@@ -309,7 +304,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     ));
     //element.remove();
     const task_results = await task_info.json();
-    console.log(task_results[position].concluida);
     await fetch(`${site_url}/wp-json/upsent-api/v1/tasks/`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -317,13 +311,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
 
-
   //função para entregar a tarefa
 
-  async function finishTask(element, position,query) {
-   if(query[position].concluida!=1){
-      alert("é preciso concluir primeiro")
-    }else{
+  async function finishTask(element, position, query) {
+    if (query[position].concluida != 1) {
+      alert("é preciso concluir primeiro");
+    } else {
       element.remove();
       await fetch(`${site_url}/wp-json/upsent-api/v1/tasks/`, {
         method: "PUT",
@@ -331,10 +324,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
         body: JSON.stringify({ id: query[position].id, entregue: 1 }),
       });
     }
-
   }
 
- // evento de elteração de estatus
+  // evento de elteração de estatus
   changeButton.forEach((e, i) => {
     e.addEventListener("click", () => {
       updatePopup[i].classList.add("reveal");
@@ -353,19 +345,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
   // seleção de estados
   selectState.forEach((e, i) => {
     e.addEventListener("change", () => {
-      console.log(e.selectedOptions[0].value);
       if (e.selectedOptions[0].value == "completa") {
         uploadInput[i].classList.add("reveal");
-        employerDescription[i].classList.add("reveal")
-        employerTime[i].classList.add("reveal")
-        employerObservation[i].classList.add("reveal")
-        observationButton[i].classList.add("reveal")
+        employerDescription[i].classList.add("reveal");
+        employerTime[i].classList.add("reveal");
+        employerObservation[i].classList.add("reveal");
+        observationButton[i].classList.add("reveal");
       } else {
         uploadInput[i].classList.remove("reveal");
         employerDescription[i].classList.remove("reveal");
         employerTime[i].classList.remove("reveal");
-        employerObservation[i].classList.remove("reveal")
-        observationButton[i].classList.remove("reveal")
+        employerObservation[i].classList.remove("reveal");
+        observationButton[i].classList.remove("reveal");
       }
     });
   });
@@ -381,24 +372,24 @@ document.addEventListener("DOMContentLoaded", function (event) {
         e.value = "";
         return false;
       } else {
-        
-        const images =evt.target.files;
-        ArrayImages=Array.from(images)
-        console.log(ArrayImages);
-        const divContainerImages=document.createElement("div")
-        divContainerImages.classList.add("container_images")
-        ArrayImages.forEach((j,k)=>{
-          console.log(j);
-          const divImage=document.createElement("div")
+        const images = evt.target.files;
+        ArrayImages = Array.from(images);
+        const divContainerImages = document.createElement("div");
+        divContainerImages.classList.add("container_images");
+        ArrayImages.forEach((j, k) => {
+          const divImage = document.createElement("div");
           const uploadImage = document.createElement("img");
           uploadImage.setAttribute("src", URL.createObjectURL(j));
-          uploadImage.setAttribute("width", "200");
-          uploadImage.setAttribute("height", "200");
+          uploadImage.setAttribute("width", "200")
+            ? screen.width == 900
+            : uploadImage.setAttribute("width", "100");
+          uploadImage.setAttribute("height", "200")
+            ? screen.width == 900
+            : uploadImage.setAttribute("height", "100");
           divImage.appendChild(uploadImage);
-          divContainerImages.appendChild(divImage)
+          divContainerImages.appendChild(divImage);
           form[i].appendChild(divContainerImages);
-        })
-
+        });
       }
     });
   });
@@ -417,7 +408,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
   });
 
-
   //eventos para a página do funcionario
 
   if (page_tarefas_do_funcionario) {
@@ -433,23 +423,24 @@ document.addEventListener("DOMContentLoaded", function (event) {
       });
     });
 
-    observationButton.forEach((e,i)=>{
-      e.addEventListener("click",()=>{
-        updatePopDesc[i].classList.add("reveal")
-        closeButtonObservation[i].addEventListener("click",()=>{
-          const emp_describe= document.querySelectorAll(".employer_describe")
-          const begin_hour =document.querySelectorAll(".begin_hour")
-          const finishHour = document.querySelectorAll(".finish_hour")
-          const emp_observation =document.querySelectorAll(".employer-observation")
-          document.cookie=`descricao_do_usuario=${emp_describe[i].value}`;
-          document.cookie=`hora_de_inicio=${begin_hour[i].value}`;
-          document.cookie=`hora_da_conclusao=${finishHour[i].value}`;
-          document.cookie=`observacoes_do_tecnico=${emp_observation[i].value}`;
-          updatePopDesc[i].classList.remove("reveal")
-        })
-
-      })
-    })
+    observationButton.forEach((e, i) => {
+      e.addEventListener("click", () => {
+        updatePopDesc[i].classList.add("reveal");
+        closeButtonObservation[i].addEventListener("click", () => {
+          const emp_describe = document.querySelectorAll(".employer_describe");
+          const begin_hour = document.querySelectorAll(".begin_hour");
+          const finishHour = document.querySelectorAll(".finish_hour");
+          const emp_observation = document.querySelectorAll(
+            ".employer-observation"
+          );
+          document.cookie = `descricao_do_usuario=${emp_describe[i].value}`;
+          document.cookie = `hora_de_inicio=${begin_hour[i].value}`;
+          document.cookie = `hora_da_conclusao=${finishHour[i].value}`;
+          document.cookie = `observacoes_do_tecnico=${emp_observation[i].value}`;
+          updatePopDesc[i].classList.remove("reveal");
+        });
+      });
+    });
 
     clientMapBtnMobile.forEach(async (e, i) => {
       const current_user = (window.history = usuario);
@@ -458,8 +449,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
       );
       const coord_results = await coordinates.json();
       e.addEventListener("click", () => {
-      clientMapPosition[i].classList.add("reveal");
-      getTaskMapClient(i,coord_results);
+        clientMapPosition[i].classList.add("reveal");
+        getTaskMapClient(i, coord_results);
       });
     });
 
@@ -470,7 +461,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
           `${site_url}/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`
         );
         const coord_results = await coordinates.json();
-        finishTask(e,i,coord_results);
+        finishTask(e, i, coord_results);
       });
       description[i].addEventListener("click", async () => {
         modelDescription[i].classList.add("reveal");
@@ -478,16 +469,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
           modelDescription[i].classList.remove("reveal");
         });
       });
-      
-      if(taskConclued[i].getAttribute("data-target")==1){
-        comprovant_field[i].classList.add("reveal")
+
+      if (taskConclued[i].getAttribute("data-target") == 1) {
+        comprovant_field[i].classList.add("reveal");
         comprovant_field[i].addEventListener("click", () => {
           img_pop_up[i].classList.add("reveal");
           closeBtnImg[i].addEventListener("click", () => {
             img_pop_up[i].classList.remove("reveal");
           });
         });
-
       }
     });
 
@@ -498,18 +488,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
           `${site_url}/wp-json/upsent-api/v1/tasks_employee/?funcionaro_responsavel=${current_user}&entregue=0`
         );
         const coord_results = await coordinates.json();
-        finishTask(e,i,coord_results);
+        finishTask(e, i, coord_results);
       });
-      if(taskConclued[i].getAttribute("data-target")==1){
-          comprovant_filed_mobile[i].classList.add("upsent-table-item")
-          comprovant_filed_mobile[i].addEventListener("click", () => {
+      if (taskConclued[i].getAttribute("data-target") == 1) {
+        comprovant_filed_mobile[i].classList.add("upsent-table-item");
+        comprovant_filed_mobile[i].addEventListener("click", () => {
           img_pop_up[i].classList.add("reveal");
           closeBtnImg[i].addEventListener("click", () => {
             img_pop_up[i].classList.remove("reveal");
           });
         });
       }
-   
+
       descriptionMobile[i].addEventListener("click", async () => {
         modelDescription[i].classList.add("reveal");
         closeBtnDesc[i].addEventListener("click", () => {
@@ -517,9 +507,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
       });
     });
-    
   }
-  
+
   //evventos para a pagina de tarefas do admin
   if (page_tarefas_cadastradas) {
     //var user_maped = (window.history = usuario_maped);
@@ -565,42 +554,49 @@ document.addEventListener("DOMContentLoaded", function (event) {
       });
     });
 
-    reportButton.forEach((e,i)=>{
-      e.addEventListener('click',()=>{
+    reportButton.forEach((e, i) => {
+      e.addEventListener("click", () => {
         updatePopDesc[i].classList.add("reveal");
-        closeButtonObservation[i].addEventListener('click',()=>{
-          const emp_budget=document.querySelectorAll(".valor_orçamento")
-          const emp_project = document.querySelectorAll(".projeto")
-          const emp_value_incoming =document.querySelectorAll(".valor_receber")
-          const emp_aditional_value= document.querySelectorAll(".valor_adicional")
-          const emp_km=document.querySelectorAll(".km")
-          const emp_km_value=document.querySelectorAll(".valor_em_km")
-          const emp_aditional_coust=document.querySelectorAll(".custos_adicionais")
-          const emp_budget_value= document.querySelectorAll(".valor_orcamento")
-          const task_date=document.querySelectorAll(".data_da_atividade")
-          const city= document.querySelectorAll(".cidade")
-          const uf= document.querySelectorAll(".uf")
-          const emp_paprovment_responseble=document.querySelectorAll(".responsavel_aprovacao")
-          const  budget_describe = document.querySelectorAll(".descricao_orcamento")
+        closeButtonObservation[i].addEventListener("click", () => {
+          const emp_budget = document.querySelectorAll(".valor_orçamento");
+          const emp_project = document.querySelectorAll(".projeto");
+          const emp_value_incoming =
+            document.querySelectorAll(".valor_receber");
+          const emp_aditional_value =
+            document.querySelectorAll(".valor_adicional");
+          const emp_km = document.querySelectorAll(".km");
+          const emp_km_value = document.querySelectorAll(".valor_em_km");
+          const emp_aditional_coust =
+            document.querySelectorAll(".custos_adicionais");
+          const emp_budget_value =
+            document.querySelectorAll(".valor_orcamento");
+          const task_date = document.querySelectorAll(".data_da_atividade");
+          const city = document.querySelectorAll(".cidade");
+          const uf = document.querySelectorAll(".uf");
+          const emp_paprovment_responseble = document.querySelectorAll(
+            ".responsavel_aprovacao"
+          );
+          const budget_describe = document.querySelectorAll(
+            ".descricao_orcamento"
+          );
 
-          document.cookie=`descritivo_ortcamento=${emp_budget[i].value}`
-          document.cookie=`projeto=${emp_project[i].value}`
-          document.cookie=`valor_a_receber=${emp_value_incoming[i].value}`
-          document.cookie=`valor_adicional=${emp_aditional_value[i].value}`
-          document.cookie=`km=${emp_km[i].value}`
-          document.cookie=`valor_km=${emp_km_value[i].value}`
-          document.cookie=`custo_adicional=${emp_aditional_coust[i].value}`
-          document.cookie=`valor-orcamento=${emp_budget_value[i].value}`
-          document.cookie=`data_da_atividade=${task_date[i].value}`
-          document.cookie=`cidade=${city[i].value}`
-          document.cookie=`uf=${uf[i].value}`
-          document.cookie=`aprovacao_responsavel=${emp_paprovment_responseble[i].value}`
-          document.cookie=`orcamento_descricao=${budget_describe[i].value}`
+          document.cookie = `descritivo_ortcamento=${emp_budget[i].value}`;
+          document.cookie = `projeto=${emp_project[i].value}`;
+          document.cookie = `valor_a_receber=${emp_value_incoming[i].value}`;
+          document.cookie = `valor_adicional=${emp_aditional_value[i].value}`;
+          document.cookie = `km=${emp_km[i].value}`;
+          document.cookie = `valor_km=${emp_km_value[i].value}`;
+          document.cookie = `custo_adicional=${emp_aditional_coust[i].value}`;
+          document.cookie = `valor-orcamento=${emp_budget_value[i].value}`;
+          document.cookie = `data_da_atividade=${task_date[i].value}`;
+          document.cookie = `cidade=${city[i].value}`;
+          document.cookie = `uf=${uf[i].value}`;
+          document.cookie = `aprovacao_responsavel=${emp_paprovment_responseble[i].value}`;
+          document.cookie = `orcamento_descricao=${budget_describe[i].value}`;
           updatePopDesc[i].classList.remove("reveal");
-        })
-      })
-      
-    })
+        });
+      });
+    });
 
     taskTable.forEach((e, i) => {
       deleteTask(e, i);
@@ -612,42 +608,35 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
       });
 
-
-          if(taskConclued[i].getAttribute("data-target")==1){
-            comprovant_field[i].classList.add("reveal")
-            comprovant_field[i].addEventListener("click", () => {
-              img_pop_up[i].classList.add("reveal");
-              closeBtnImg[i].addEventListener("click", () => {
-                img_pop_up[i].classList.remove("reveal");
-              });
-            });
-
-          }  
-
-        
+      if (taskConclued[i].getAttribute("data-target") == 1) {
+        comprovant_field[i].classList.add("reveal");
+        comprovant_field[i].addEventListener("click", () => {
+          img_pop_up[i].classList.add("reveal");
+          closeBtnImg[i].addEventListener("click", () => {
+            img_pop_up[i].classList.remove("reveal");
+          });
+        });
+      }
     });
 
     taskTableMobile.forEach((e, i) => {
-      if(taskConclued[i].getAttribute("data-target")==1){
-        console.log(taskConclued[i].getAttribute("data-target"))
-        comprovant_filed_mobile[i].classList.add("upsent-table-item")
+      if (taskConclued[i].getAttribute("data-target") == 1) {
+        comprovant_filed_mobile[i].classList.add("upsent-table-item");
         comprovant_filed_mobile[i].addEventListener("click", () => {
           img_pop_up[i].classList.add("reveal");
           closeBtnImg[i].addEventListener("click", () => {
             img_pop_up[i].classList.remove("reveal");
           });
         });
-
       }
-   
+
       descriptionMobile[i].addEventListener("click", async () => {
         modelDescription[i].classList.add("reveal");
         closeBtnDesc[i].addEventListener("click", () => {
           modelDescription[i].classList.remove("reveal");
         });
       });
-      console.log(deleteButton[i])
-      delete_task_mobile(e,i)
+      delete_task_mobile(e, i);
     });
     employerMapBtnMobile.forEach((e, i) => {
       e.addEventListener("click", async () => {
@@ -688,29 +677,26 @@ document.addEventListener("DOMContentLoaded", function (event) {
         getTaskMap(i, task_results);
       });
     });
-
-
   }
 
-  if(cadastroDeTarefas){
+  if (cadastroDeTarefas) {
     clientAddress.addEventListener("change", (e) => {
       getClientCoords(e.target.value);
     });
   }
 
-  if(tarefas_concluidas){
+  if (tarefas_concluidas) {
     taskTable.forEach((e, i) => {
-      deleteButton[i].addEventListener('click',()=>{
+      deleteButton[i].addEventListener("click", () => {
         swal({
           title: "Tem certeza?",
           text: "Uma vez deletada não poderar realocar mais",
           icon: "warning",
           buttons: true,
           dangerMode: true,
-        })
-        .then((willDelete) => {
+        }).then((willDelete) => {
           if (willDelete) {
-            delete_finish_task(e,i);
+            delete_finish_task(e, i);
             swal("tarefa deletada com sucesso", {
               icon: "success",
             });
@@ -718,26 +704,24 @@ document.addEventListener("DOMContentLoaded", function (event) {
             swal("Não deletada");
           }
         });
-        
-      })
-      
+      });
+
       finishButtonBtn[i].addEventListener("click", async () => {
-        e.remove();  
+        e.remove();
         reopenTask(i);
       });
-    })
-    taskTableMobile.forEach((e,i)=>{
-      deleteButtonMobile[i].addEventListener("click",()=>{
+    });
+    taskTableMobile.forEach((e, i) => {
+      deleteButtonMobile[i].addEventListener("click", () => {
         swal({
           title: "Tem certeza?",
           text: "Uma vez deletada não poderar realocar mais",
           icon: "warning",
           buttons: true,
           dangerMode: true,
-        })
-        .then((willDelete) => {
+        }).then((willDelete) => {
           if (willDelete) {
-            delete_finish_task(e,i);
+            delete_finish_task(e, i);
             swal("tarefa deletada com sucesso", {
               icon: "success",
             });
@@ -745,13 +729,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
             swal("Não deletada");
           }
         });
-      })
-      
-      finishButtonBtnMobile[i].addEventListener("click", async()=>{
-        e.remove()
-        reopenTask(i);
-      })
+      });
 
-    })
+      finishButtonBtnMobile[i].addEventListener("click", async () => {
+        e.remove();
+        reopenTask(i);
+      });
+    });
   }
 });
