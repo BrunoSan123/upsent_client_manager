@@ -59,6 +59,7 @@
             $total_pages = ceil($total_tasks / $itens_por_pagina);
             $user_table=$wpdb->prefix.'users';
             $user_result=$wpdb->get_results("SELECT * FROM $user_table");
+            $emplyer_report=$wpdb->prefix.'employer_report';
             $state=null;
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_filter'])){
@@ -239,6 +240,19 @@
               $address=isset($_POST['endereço-'.$i])?$_POST['endereço-'.$i]:'';
               $user_responseble = isset($_POST['usuarios-'.$i])?$_POST['usuarios-'.$i]:'';
               $company=isset($_POST['nome_da_empresa-'.$i])?$_POST['nome_da_empresa-'.$i]:'';
+              $budget_value=$_COOKIE['descritivo_ortcamento'];
+              $project=$_COOKIE['projeto'];
+              $incoming_value=$_COOKIE['valor_a_receber'];
+              $aditional_value=$_COOKIE['valor_adicional'];
+              $km=$_COOKIE['km'];
+              $km_value=$_COOKIE['valor_km'];
+              $aditional_coust=$_COOKIE['custo_adicional'];
+              $budget_value=$_COOKIE['valor-orcamento'];
+              $task_date_value=$_COOKIE['data_da_atividade'];
+              $city=$_COOKIE['cidade'];
+              $uf=$_COOKIE['uf'];
+              $aprovement_responseble=$_COOKIE['aprovacao_responsavel'];
+              $budget_describe=$_COOKIE['orcamento_descricao'];
               
               if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit-'.$i])){
                 $wpdb->update(
@@ -258,6 +272,27 @@
                         'id'=>$resulte->id
                     )
                     );
+
+                
+
+                $wpdb->update(
+                    $emplyer_report,
+                    array(
+                        'descritive_budget'=>$budget_value,
+                        'project'=>$project,
+                        'incoming_value'=>$incoming_value,
+                        'aditional_cousts'=>$aditional_coust,
+                        'value_budget'=>$budget_value,
+                        'date_'=>$task_date_value,
+                        'city'=>$city,
+                        'uf'=>$uf,
+                        'aprovement_responseble'=>$aprovement_responseble,
+                        'budget_describe'=>$budget_describe
+                    ),
+                    array(
+                        'task_id'=>$resulte->id
+                    )
+                );
               }
         
         ?>
