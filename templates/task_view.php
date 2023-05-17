@@ -147,7 +147,7 @@
                 <td class="client-description"><a class="button">Abrir</a></td>
                 <td><a class="employee_position">Ver posição atual</a></td>
                 <td><button class="change_btn button">alterar</button></td>
-                <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php elseif($result->states=='em_andamento'):?>bullet-yellow<?php else:?> bullet-green <?php endif?>"></div></td>
+                <td><div class="<?php if($result->states=="parado"):?> conclued_bullet <?php elseif($result->states=='em_andamento'):?>bullet-yellow<?php else:?> bullet-green <?php endif?>"></div></td>
                 <td class="comprovante comp_img">Abrir Galeria</td>
                 <td><div class="delete_task"></div></td>
             </tr>
@@ -168,7 +168,7 @@
                         <div>Comprovante:</div>
                         <div class="comp_img">Abrir</div>
                     </div>
-                    <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->concluida==0):?> conclued_bullet<?php elseif($result->states=="em_andamento"):?>bullet-yellow<?php else:?> bullet-green <?php endif?>"></div></div>
+                    <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->states=="parado"):?> conclued_bullet<?php elseif($result->states=="em_andamento"):?>bullet-yellow<?php else:?> bullet-green <?php endif?>"></div></div>
                 <div class="upsent-table-item">Excluir:<div class="delete_task_mobile"></div></div>
                 <div class="upsent-table-item"><button class="change_btn_mobile button">alterar</button></div>
                 </div>
