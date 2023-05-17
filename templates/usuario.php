@@ -61,10 +61,10 @@
             <?php $i=0;?>
             <table class="upsent_table table-desk">
             <tr class="upsent_table_head">
-                <th>Chamado</th>
-                <th>Enrereço do Cliente</th>
+                <th>N° do chamado</th>
+                <th>Endereço do Cliente</th>
                 <th>Escopo</th>
-                <th>Andamento</th>
+                <th>Status</th>
                 <th>Técnico</th>
                 <?php if($result->concluida!=0):?>
                     <th>Descrição do tecnico</th>
@@ -75,7 +75,7 @@
                 <?php if($result->concluida!=0):?>
                     <th>Comprovante</th>
                 <?php endif?>
-                <th>Entregar</th>
+                <th>Finalizar chamado</th>
             </tr>
             <tr class="upsent_table_data">
                 <td><?php echo $result->task_name?></td>
@@ -86,7 +86,7 @@
                 <td class="client-description"><a class="button">Abrir</a></td>
                 <td><a class="client_position">Ver posição</a></td>
                 <td><button class="change_btn button">alterar</button></td>
-                <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
+                <td><div class="<?php if($result->concluida==0):?>conclued_bullet<?php elseif($result->states=="em_andamento"):?>bullet-yellow<?php else:?>bullet-green<?php endif?>"></div></td>
                 <td class="comprovante comp_img">Abrir Galeria</td>
                 <td><div class="finish"></div></td>
             </tr>
@@ -95,11 +95,11 @@
 
         <div class="upsent_table-mobile table-mobile">
             <div class="table_mobile_main">
-                <div class="upsent-table-item"><span>Escopo:</span><span><?php echo $result->task_name?></span></div>
-                <div class="upsent-table-item"><span>Enrereço da Tarefa:</span><span><?php echo $result->task_address?></span></div>
+                <div class="upsent-table-item"><span>N° do chamado:</span><span><?php echo $result->task_name?></span></div>
+                <div class="upsent-table-item"><span>Endereço do cliente:</span><span><?php echo $result->task_address?></span></div>
                 <div class="upsent-table-item descriptionMobile"><span>Escopo:</span><span class="button">Descrição</span></div>
                 <div class="upsent-table-item descriptionMobileEmployer"><span>Descrição do tecnico:</span><span class="button">Abrir</span></div>
-               <div class="upsent-table-item"><span>Andamento:</span><span><?php echo $result->states?></span></div>
+               <div class="upsent-table-item"><span>Status:</span><span><?php echo $result->states?></span></div>
                 <div class="upsent-table-item"><span>Tecnico:</span> <span><?php echo $result->funcionaro_responsavel?></span> </div>
                 <div class="upsent-table-item"><span>posição atual:</span><a class="client_position_mobile">Ver posição atual</a></div>
                 
@@ -110,7 +110,7 @@
                     </div>
 
                 <div class="upsent-table-item"><span>Status:</span><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></div>
-                <div class="upsent-table-item">Entregar:<div class="finished"></div></div>
+                <div class="upsent-table-item">Finalizar chamado:<div class="finished"></div></div>
                 <div class="upsent-table-item"><button class="change_btn_mobile button">alterar</button></div>
                 </div>
             </div>
@@ -315,7 +315,7 @@
                 </div>
             </div>
             <div class="employer_observation">
-                <input class="employer-observation" type="text" name="observacao" placeholder="Observação">
+                <input class="employer-observation" type="text" name="observacao" placeholder="Observação do cliente">
             </div>
                 </div>
         </section>
@@ -334,7 +334,7 @@
      </div>
      <div class="description-pop-employer">
         <div class="text-description ">
-            <h4>Observação do tecnico</h4>
+            <h4>Solução aplicada</h4>
             <p><?php echo $employer_report[0]->call_descritive?></p>
             <h4>Observação do cliente</h4>
             <p><?php echo $employer_report[0]->client_observation?></p>

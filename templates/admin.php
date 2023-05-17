@@ -23,10 +23,10 @@
         <form action="" method="post" class="upsent_main">
             <div class="upsent_plugin_form">
             <section class="section_form" id="locate_state_form">
-            <input type="text" name="nome_da_tarefa" id="name" placeholder="chamado">
+            <input type="text" name="nome_da_tarefa" id="name" placeholder="N° do chamado">
             <input type="text" name="nome_da_empresa" id="company_name" placeholder="Nome da Empresa">
             <input type="text" name="nome_do_cliente" id="client_name" placeholder="Nome do Cliente">
-            <textarea name="descrição" id="description" cols="20" rows="7" placeholder="descrição"></textarea>
+            <textarea name="descrição" id="description" cols="20" rows="7" placeholder="Escopo do chamado"></textarea>
             
            
             <!-- <input type="text" name="coord_X" id="coord_x" placeholder="cordenada x">
@@ -39,7 +39,7 @@
                 <option value="completa">Concluida</option>
             </select>
                 <select name="usuarios" id="users">
-                    <option disabled selected value="empty">Usuario para alocar</option>
+                    <option disabled selected value="empty">Alocar técnico</option>
                     <?php foreach($user_result as $usuario):?>
                     <option value="<?php echo esc_attr($usuario->user_login); ?>" <?php selected($usuario->user_login); ?>><?php echo esc_html($usuario->user_login); ?></option>
                     <?php endforeach;?>

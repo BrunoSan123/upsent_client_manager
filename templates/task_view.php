@@ -121,11 +121,10 @@
 
            <table class="upsent_table table-desk">
             <tr class="upsent_table_head">
-                <th>Chamado</th>
-                <th>Nome da Empresa</th>
-                <th>Enrereço do Cliente</th>
+                <th>N° do Chamado</th>
+                <th>Endereço do Cliente</th>
                 <th>Escopo</th>
-                <th>Andamento</th>
+                <th>Status</th>
                 <th>Técnico</th>
                 <?php if($result->concluida!=0):?>
                     <th>Descrição do tecnico</th>
@@ -141,15 +140,14 @@
             </tr>
             <tr class="upsent_table_data">
                 <td><?php echo $result->task_name?></td>
-                <td><?php echo $result->company?></td>
                 <td><?php echo $result->task_address?></td>
-                <td><a class="description button">Descrição</a></td>
+                <td><a class="description button">Escopo</a></td>
                 <td><?php echo $result->states?></td>
                 <td><?php echo $result->funcionaro_responsavel?></td>
                 <td class="client-description"><a class="button">Abrir</a></td>
                 <td><a class="employee_position">Ver posição atual</a></td>
                 <td><button class="change_btn button">alterar</button></td>
-                <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
+                <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php elseif($result->states=='em_andamento'):?>bullet-yellow<?php else:?> bullet-green <?php endif?>"></div></td>
                 <td class="comprovante comp_img">Abrir Galeria</td>
                 <td><div class="delete_task"></div></td>
             </tr>
@@ -158,19 +156,19 @@
 
         <div class="upsent_table-mobile table-mobile">
             <div class="table_mobile_main">
-                <div class="upsent-table-item"><span>Escopo:</span><span><?php echo $result->task_name?></span></div>
-                <div class="upsent-table-item"><span>Enrereço do Cliente:</span><span><?php echo $result->task_address?></span></div>
-                <div class="upsent-table-item"><span>Descrição da atividade:</span><span class="descriptionMobile  button"><a>Descrição</a></span></div>
+                <div class="upsent-table-item"><span>N° do chamado:</span><span><?php echo $result->task_name?></span></div>
+                <div class="upsent-table-item"><span>Endereço do Cliente:</span><span><?php echo $result->task_address?></span></div>
+                <div class="upsent-table-item"><span>Escopo da atividade:</span><span class="descriptionMobile  button"><a>Descrição</a></span></div>
                 <div class="upsent-table-item descriptionMobileEmployer"><span>Descrição do tecnico:</span><span class="button">Abrir</span></div>
-                <div class="upsent-table-item"><span>Andamento:</span><span class="button"><?php echo $result->states?></span></div>
+                <div class="upsent-table-item"><span>Status:</span><span><?php echo $result->states?></span></div>
                 <div class="upsent-table-item"><span>tecnico:</span> <span><?php echo $result->funcionaro_responsavel?></span> </div>
                 <div class="upsent-table-item"><span>posição atual:</span><a class="employee_position_mobile">Ver posição atual</a></div>
                 
                     <div class="comprovanteMobile">
-                        <div>Comprovante: </div>
+                        <div>Comprovante:</div>
                         <div class="comp_img">Abrir</div>
                     </div>
-                    <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></div>
+                    <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->concluida==0):?> conclued_bullet<?php elseif($result->states=="em_andamento"):?>bullet-yellow<?php else:?> bullet-green <?php endif?>"></div></div>
                 <div class="upsent-table-item">Excluir:<div class="delete_task_mobile"></div></div>
                 <div class="upsent-table-item"><button class="change_btn_mobile button">alterar</button></div>
                 </div>
@@ -343,7 +341,7 @@
     </div>
     <div class="description-pop-employer">
         <div class="text-description ">
-            <h4>Observação do Tecnico</h4>
+            <h4>Solução aplicada</h4>
             <p><?php echo $emp_report[0]->call_descritive?></p>
             <h4>Observação do cliente</h4>
             <p><?php echo $emp_report[0]->client_observation?></p>
