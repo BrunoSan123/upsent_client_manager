@@ -60,6 +60,7 @@
                 <input type="text" name="uf" id="uf" placeholder="UF">
                 <input type="text" name="responsavel_aprovacao" id="approvement" placeholder="Responsavel pela aprovação">
                 <input type="text" name="descricao_orcamento" id="descicao_orcamento" placeholder="Descrição do orçamento">
+                <input type="text" name="he-tec" id="he-tec" placeholder="He-Tec">
 
             </section>
 

@@ -36,6 +36,14 @@
                     <option value="December">Dezembro</option>
                 </select>
             </div>
+            <div>
+                <label for="company">Filtar por empresa</label>
+                <input type="text" name="company" id="company">
+            </div>
+            <div>
+                <label for="task_date">Filtrar por data</label>
+                <input type="date" name="task_date" id="task_date">
+            </div>
             <input type="submit" value="Gerar Relatório" name="submit">
         </form>
 
