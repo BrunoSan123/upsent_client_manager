@@ -60,6 +60,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
   );
   const observationButton = document.querySelectorAll(".desc_button");
   const reportButton = document.querySelectorAll(".report_button");
+  const popEmployerDescritive=document.querySelectorAll(".description-pop-employer")
+  const employerDescriptionButton=document.querySelectorAll(".client-description")
+  const employerButoncloseExplication= document.querySelectorAll(".upsent_close_button_employer_desc")
+  const employerDescriptionexplainMobile=document.querySelectorAll(".descriptionMobileEmployer")
 
   var x = document.getElementById("demo");
 
@@ -326,6 +330,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 
+/*   function money_mask(string,element){
+
+  } */
+
   // evento de elteração de estatus
   changeButton.forEach((e, i) => {
     e.addEventListener("click", () => {
@@ -382,10 +390,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
           uploadImage.setAttribute("src", URL.createObjectURL(j));
           uploadImage.setAttribute("width", "200")
             ? screen.width == 900
-            : uploadImage.setAttribute("width", "100");
+            : uploadImage.setAttribute("width", "50");
           uploadImage.setAttribute("height", "200")
             ? screen.width == 900
-            : uploadImage.setAttribute("height", "100");
+            : uploadImage.setAttribute("height", "50");
           divImage.appendChild(uploadImage);
           divContainerImages.appendChild(divImage);
           form[i].appendChild(divContainerImages);
@@ -470,6 +478,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
       });
 
+
       if (taskConclued[i].getAttribute("data-target") == 1) {
         comprovant_field[i].classList.add("reveal");
         comprovant_field[i].addEventListener("click", () => {
@@ -478,6 +487,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
             img_pop_up[i].classList.remove("reveal");
           });
         });
+        employerDescriptionButton[i].classList.add("reveal")
+        employerDescriptionButton[i].addEventListener("click",()=>{
+          popEmployerDescritive[i].classList.add("reveal");
+          employerButoncloseExplication[i].addEventListener("click",()=>{
+            popEmployerDescritive[i].classList.remove("reveal");
+          })
+        })
       }
     });
 
@@ -491,6 +507,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
         finishTask(e, i, coord_results);
       });
       if (taskConclued[i].getAttribute("data-target") == 1) {
+        employerDescriptionexplainMobile[i].classList.add("upsent-table-item")
+        employerDescriptionexplainMobile[i].addEventListener("click",()=>{
+          popEmployerDescritive[i].classList.add("reveal");
+          employerButoncloseExplication[i].addEventListener("click",()=>{
+            popEmployerDescritive[i].classList.remove("reveal");
+          })
+        })
         comprovant_filed_mobile[i].classList.add("upsent-table-item");
         comprovant_filed_mobile[i].addEventListener("click", () => {
           img_pop_up[i].classList.add("reveal");
@@ -579,6 +602,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
           const budget_describe = document.querySelectorAll(
             ".descricao_orcamento"
           );
+          const solutionObservation=document.querySelectorAll(".solution-observation")
 
           document.cookie = `descritivo_ortcamento=${emp_budget[i].value}`;
           document.cookie = `projeto=${emp_project[i].value}`;
@@ -593,6 +617,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
           document.cookie = `uf=${uf[i].value}`;
           document.cookie = `aprovacao_responsavel=${emp_paprovment_responseble[i].value}`;
           document.cookie = `orcamento_descricao=${budget_describe[i].value}`;
+          document.cookie=`observacao_solution=${solutionObservation[i].value}`
           updatePopDesc[i].classList.remove("reveal");
         });
       });
@@ -616,6 +641,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
             img_pop_up[i].classList.remove("reveal");
           });
         });
+        employerDescriptionButton[i].classList.add("reveal")
+        employerDescriptionButton[i].addEventListener("click",()=>{
+          popEmployerDescritive[i].classList.add("reveal");
+          employerButoncloseExplication[i].addEventListener("click",()=>{
+            popEmployerDescritive[i].classList.remove("reveal");
+          })
+        })
       }
     });
 
@@ -628,6 +660,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
             img_pop_up[i].classList.remove("reveal");
           });
         });
+
+        employerDescriptionexplainMobile[i].classList.add("upsent-table-item")
+        employerDescriptionexplainMobile[i].addEventListener("click",()=>{
+          popEmployerDescritive[i].classList.add("reveal");
+          employerButoncloseExplication[i].addEventListener("click",()=>{
+            popEmployerDescritive[i].classList.remove("reveal");
+          })
+        })
       }
 
       descriptionMobile[i].addEventListener("click", async () => {

@@ -11,7 +11,7 @@
 <body>
     <header>
         <nav>
-            <h1>Atividade do funcionário</h1>
+            <h1>Relatorios</h1>
         </nav>
     </header>
     <div class="">

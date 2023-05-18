@@ -75,6 +75,7 @@
             task_name VARCHAR(50) NOT NULL,
             sign VARCHAR(50) NOT NULL,
             states VARCHAR(50) NOT NULL,
+            task_id mediumint(9) NOT NULL,
             PRIMARY KEY(id)
         )";
         require_once(ABSPATH.'wp-admin/includes/upgrade.php');
@@ -161,8 +162,8 @@
             employer_value_already_featured VARCHAR(50) NOT NULL,
             city VARCHAR(50) NOT NULL,
             uf VARCHAR(50) NOT NULL,
-            start_time FLOAT(50) NOT NULL,
-            end_time FLOAT(50) NOT NULL,
+            start_time TIME NOT NULL,
+            end_time TIME NOT NULL,
             call_descritive VARCHAR(50) NOT NULL,
             service_order  VARCHAR(50) NOT NULL,
             month_ VARCHAR(50) NOT NULL,

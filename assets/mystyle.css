@@ -8,7 +8,7 @@
 select,
 textarea {
   border: none !important;
-  padding: 1% !important;
+  padding: 1%;
   resize: none !important;
 }
 .emt_page_usuario header,
@@ -43,7 +43,7 @@ textarea {
   background: blue !important;
   color: #fff !important;
   border-radius: 15px !important;
-  margin-bottom: 5% !important;
+  //margin-bottom: 5% !important;
   cursor: pointer !important;
   line-height: 1.2 !important;
 }
@@ -53,7 +53,6 @@ textarea {
     display: flex;
     width: 60%;
     justify-content: center;
-    margin-top: 5%;
     padding-bottom: 5% !important;
     padding-top: 5% !important;
     margin-left: auto;
@@ -116,21 +115,38 @@ textarea {
 .upsent-pop-up,
 .map_modal,
 .description-pop,
+.description-pop-employer,
 .img_comprovante,
 .upsent-pop-up-desc {
   display: none;
   width: 100%;
   height: 100vh;
   position: fixed;
+  overflow: scroll;
   top: 0;
   background: rgba(242, 227, 227, 0.8);
   justify-content: center;
   align-items: center;
+  overflow:scroll
+}
+
+.upsent-pop-up-desc section{
+  margin-top: 10%;
+}
+
+.upsent-main{
+  margin-top: 10% !important;
 }
 
 .upsent-pop-up section {
   max-width: 100%;
   width: 71%;
+}
+
+@media(max-width:900px){
+  .upsent-pop-up section{
+    width:100%;
+  }
 }
 
 .reveal {
@@ -172,7 +188,7 @@ textarea {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background-color: yellow;
+  background-color: #e8e812;
   margin-left: auto;
   margin-right: auto;
   display: inline-block;
@@ -188,6 +204,9 @@ textarea {
 
 .comprovanteMobile {
   display: none;
+}
+.descriptionMobileEmployer{
+ display:none;
 }
 
 .comprovanteMobile img {
@@ -234,6 +253,22 @@ textarea {
 .comprovante img {
   max-width: 100%;
 }
+
+.buttons_container{
+  padding-left:14%;
+}
+
+@media(max-width:900px){
+  .buttons_container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    padding-left:0;
+  }
+
+}
+
 
 .upload_button {
   display: none;
@@ -295,11 +330,21 @@ textarea {
   background-image: linear-gradient(145deg, #0039e4, #04dbf1);
 }
 
+.client-description{
+  display:none;
+}
+.client-description>a{
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+
 .upsent_close_button,
 .upsent_close_button_map,
 .upsent_close_button_img,
 .upsent_close_button_description,
-.upsent_close_button-desc {
+.upsent_close_button-desc,
+.upsent_close_button_employer_desc {
   position: absolute;
   top: 10%;
   right: 12%;
@@ -385,7 +430,7 @@ textarea {
   background: #fff;
   font-size: 16px;
   margin-bottom: 4%;
-  width: 80%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
   box-shadow: 5px 1px 3px #9f9595;
@@ -509,7 +554,7 @@ textarea {
 .descriptionMobile {
   cursor: pointer;
   text-decoration: none;
-  color: #fff;
+  color: #000;
 }
 
 .consumer_button {
@@ -519,9 +564,16 @@ textarea {
   border-radius: 5px !important;
 }
 
+
 .flex {
   display: flex;
   flex-direction: column;
+}
+
+@media(min-width:900px){
+  .client-description{
+    transform: translateY(7px);
+  } 
 }
 .work_proof_container {
   display: flex;
@@ -533,8 +585,8 @@ textarea {
   flex-wrap: wrap;
 }
 .work_proof_container > div {
-  width: 200px;
-  height: 200px !important;
+  width: 100px;
+  height: 100px !important;
   margin-bottom: 3%;
 }
 
@@ -544,6 +596,12 @@ textarea {
   max-height: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+@media(max-width:900px){
+  .work_proof_container{
+    margin-top:16%;
+  }
 }
 
 .container_images {
@@ -579,10 +637,23 @@ textarea {
 }
 .desc_button {
   display: none;
-  width: 20% !important;
-  margin-left: 15% !important;
+  width: 20%;
+  margin-left: 15%;
   margin-top: 2% !important;
   border-radius: 5px !important;
+}
+@media(max-width:900px){
+  .desc_button{
+    width:50%;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .consumer_button{
+    width:50%;
+    margin-left:auto;
+    margin-right:auto;
+  }
 }
 .quantity_hour,
 .employer_observation {
@@ -621,4 +692,22 @@ textarea {
   display: flex;
   justify-content: space-between;
   width: 100%;
+}
+
+@media(max-width:900px){
+  .report_button{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+}
+
+.hour_item{
+  width:50%;
+}
+
+.hour_item input{
+  width:100%;
+  text-align:center;
 }

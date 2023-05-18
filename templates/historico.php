@@ -22,6 +22,7 @@
       $itens_por_pagina = 10;
       $employer=isset($_POST['user_filter'])?$_POST['user_filter']:'';
       $logs_table=$wpdb->prefix."logs";
+      $report_table=$wpdb->prefix.'employer_report';
       $logs_table_result=$wpdb->get_results("SELECT * FROM $logs_table");
       $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $logs_table");
       $total_pages = ceil($total_tasks / $itens_por_pagina);
@@ -37,15 +38,19 @@
     }
       ?>
 
-      <?php foreach($logs_table_result as $result):?>
+      <?php foreach($logs_table_result as $result):
+        $report=$wpdb->get_results("SELECT * FROM $report_table WHERE task_id=$result->task_id");
+        ?>
         <h4 class="notice notice-warning upsent-log">
         <span><?php echo $result->id?></span>
         <span><?php echo $result->task_name?></span>
         <span><?php echo $result->log_description?></span>
         <span><?php echo $result->states?></span>
         <span><div class="<?php if($result->sign=="RED"):?> conclued_bullet <?php elseif($result->sign=="YELLOW"):?>bullet-yellow<?php else:?> bullet-green <?php endif?>"></div></span>
-        <span>Horário de inicio:   <?php echo $result->task_start_time?></span>
-        <span>Horário de conclusão: <?php echo $result->task_end_time?></span>
+        <?php if($result->sign=="GREEN"):?>
+        <span>Horário de inicio:   <?php echo $report[0]->start_time?></span>
+        <span>Horário de conclusão: <?php echo $report[0]->end_time?></span>
+        <?php endif?>
       </h4>
       <?php endforeach?>
 

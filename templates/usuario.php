@@ -29,7 +29,7 @@
             $posicao_inicial = ($pagina_atual - 1) * $itens_por_pagina;
             $current_user= wp_get_current_user();
             $table_name=$wpdb->prefix . 'my_tasks';
-            $results=$wpdb->get_results("SELECT * FROM $table_name WHERE funcionaro_responsavel='$current_user->user_nicename' AND entregue=0 LIMIT $posicao_inicial, $itens_por_pagina");
+            $results=$wpdb->get_results("SELECT * FROM $table_name WHERE funcionaro_responsavel='$current_user->user_nicename' AND entregue=0 ORDER BY id DESC LIMIT $posicao_inicial, $itens_por_pagina");
             $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE funcionaro_responsavel='$current_user->user_nicename' AND entregue=0");
             $total_pages = ceil($total_tasks / $itens_por_pagina);
             $user_table=$wpdb->prefix.'users';
@@ -45,7 +45,7 @@
                 $total_tasks=null;
                 $total_pages=null;
                 $company_param=$_POST['company_filter'];
-                $results=$wpdb->get_results("SELECT * FROM $table_name WHERE company='$company_param' LIMIT $posicao_inicial, $itens_por_pagina");
+                $results=$wpdb->get_results("SELECT * FROM $table_name WHERE company='$company_param' ORDER BY id DESC LIMIT $posicao_inicial, $itens_por_pagina");
                 $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE company='$company_param'");
                 $total_pages = ceil($total_tasks / $itens_por_pagina);
             }
@@ -55,33 +55,38 @@
 
                     
         <?php foreach($results as $result):?>
+            
 
             <input type="hidden" name="concluido" class="conclued" data-target="<?php echo $result->concluida?>">
             <?php $i=0;?>
             <table class="upsent_table table-desk">
             <tr class="upsent_table_head">
-                <th>Chamado</th>
-                <th>Enrereço do Cliente</th>
+                <th>N° do chamado</th>
+                <th>Endereço do Cliente</th>
                 <th>Escopo</th>
-                <th>Andamento</th>
+                <th>Status</th>
                 <th>Técnico</th>
+                <?php if($result->concluida!=0):?>
+                    <th>Descrição do tecnico</th>
+                <?php endif?>
                 <th>Posição do cliente</th>
                 <th></th>
                 <th>Status</th>
                 <?php if($result->concluida!=0):?>
                     <th>Comprovante</th>
                 <?php endif?>
-                <th>Entregar</th>
+                <th>Finalizar chamado</th>
             </tr>
             <tr class="upsent_table_data">
                 <td><?php echo $result->task_name?></td>
                 <td><?php echo $result->task_address?></td>
-                <td><a class="description">Descrição</a></td>
+                <td><a class="description button">Descrição</a></td>
                 <td><?php echo $result->states?></td>
                 <td><?php echo $result->funcionaro_responsavel?></td>
+                <td class="client-description"><a class="button">Abrir</a></td>
                 <td><a class="client_position">Ver posição</a></td>
                 <td><button class="change_btn button">alterar</button></td>
-                <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
+                <td><div class="<?php if($result->states=="parado"):?>conclued_bullet<?php elseif($result->states=="em_andamento"):?>bullet-yellow<?php else:?>bullet-green<?php endif?>"></div></td>
                 <td class="comprovante comp_img">Abrir Galeria</td>
                 <td><div class="finish"></div></td>
             </tr>
@@ -90,11 +95,12 @@
 
         <div class="upsent_table-mobile table-mobile">
             <div class="table_mobile_main">
-                <div class="upsent-table-item"><span>Nome da Tarefa:</span><span><?php echo $result->task_name?></span></div>
-                <div class="upsent-table-item"><span>Enrereço da Tarefa:</span><span><?php echo $result->task_address?></span></div>
-                <div class="upsent-table-item descriptionMobile"><span>Descrição da tarefa:</span><span>Descrição</span></div>
-               <div class="upsent-table-item"><span>Andamento:</span><span><?php echo $result->states?></span></div>
-                <div class="upsent-table-item"><span>Funcionário:</span> <span><?php echo $result->funcionaro_responsavel?></span> </div>
+                <div class="upsent-table-item"><span>N° do chamado:</span><span><?php echo $result->task_name?></span></div>
+                <div class="upsent-table-item"><span>Endereço do cliente:</span><span><?php echo $result->task_address?></span></div>
+                <div class="upsent-table-item descriptionMobile"><span>Escopo:</span><span class="button">Descrição</span></div>
+                <div class="upsent-table-item descriptionMobileEmployer"><span>Descrição do tecnico:</span><span class="button">Abrir</span></div>
+               <div class="upsent-table-item"><span>Status:</span><span><?php echo $result->states?></span></div>
+                <div class="upsent-table-item"><span>Tecnico:</span> <span><?php echo $result->funcionaro_responsavel?></span> </div>
                 <div class="upsent-table-item"><span>posição atual:</span><a class="client_position_mobile">Ver posição atual</a></div>
                 
                 
@@ -103,8 +109,8 @@
                         <div class="comp_img">Abrir</div>
                     </div>
 
-                <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></div>
-                <div class="upsent-table-item">Entregar:<div class="finished"></div></div>
+                <div class="upsent-table-item"><span>Status:</span><div class="<?php if($result->states=="parado"):?>conclued_bullet<?php elseif($result->states=="em_andamento"):?>bullet-yellow<?php else:?> bullet-green <?php endif?>"></div></div>
+                <div class="upsent-table-item">Finalizar chamado:<div class="finished"></div></div>
                 <div class="upsent-table-item"><button class="change_btn_mobile button">alterar</button></div>
                 </div>
             </div>
@@ -134,7 +140,9 @@
       ?>
 
     <?php $i=0;?>
-    <?php foreach($results as $result):?>
+    <?php foreach($results as $result):
+            $employer_report =$wpdb->get_results("SELECT * FROM $report_table WHERE task_id=$result->id")
+        ?>
         
         <div class="upsent-pop-up" id="upsent-<?php echo $i?>">
           <section>
@@ -183,13 +191,14 @@
                         $finish_time=date('H:i:s');
                         break;
                     }
-                    echo $finished;
-                    echo $sinal;
+                    //echo $finished;
+                    //echo $sinal;
                 }
 
 
              
               if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit-'.$i])){
+                if($current_state=="completa"){
                 if(isset($_FILES['upload_file-'.$i])){
                     $file=$_FILES['upload_file-'.$i];
                     foreach($file["tmp_name"] as $key=>$tmp_name){
@@ -208,28 +217,30 @@
                     $task_image_results=$wpdb->get_results("SELECT * FROM $task_image_table WHERE task_id=$result->id");
                     $image_json=[];
                     foreach($task_image_results as $task_img){
-                        if($task_img->id=="" && $task_img->nome==""){
-                            return;
-                        }else{
+                        
                             $imagem=[
                                 'id'=>$task_img->id,
                                 'image_name'=>$task_img->nome,     
                             ];
                             $image_json[]=$imagem;
-                        }
+                        
 
                     
                     }
 
-                }
+                }}
                     $coord_x=$_COOKIE['coord_x'];
                     $coord_y=$_COOKIE['coord_y'];
                     $emp_description=$_COOKIE['descricao_do_usuario'];
                     $task_begin_hour=$_COOKIE['hora_de_inicio'];
                     $end_hour=$_COOKIE['hora_da_conclusao'];
                     $emp_observation=$_COOKIE['observacoes_do_tecnico'];
-                    $total_horas=floatval($task_begin_hour)+floatval($end_hour);
-                    echo $total_horas;
+                    $from = new DateTime($task_begin_hour);
+                    $to = new DateTime($end_hour);
+
+                    //echo $from->diff($to)->format('%h.%i'); // 5.10
+
+                    $total_horas= $from->diff($to)->format('%h.%i');
                     $task_images_json=json_encode($image_json);
                     $wpdb->update(
                     $table_name,
@@ -254,7 +265,8 @@
                           'task_start_time'=>$initial_time,
                           'task_end_time'=>$finish_time,
                           'sign'=>$sinal,
-                          'states'=>$current_state
+                          'states'=>$current_state,
+                          'task_id'=>$result->id
                           )
                         );
 
@@ -273,6 +285,7 @@
                             'start_time'=>$task_begin_hour,
                             'end_time'=>$end_hour,
                             'call_descritive'=>$emp_description,
+                            'client_observation'=>$emp_observation
                         ),
                         array(
                             'task_id'=>$result->id
@@ -292,11 +305,17 @@
                 <textarea class="employer_describe" name="employer_describe" id="emp_describe" rows="10" placeholder="Descrição do trabalho"></textarea>
             </div>
             <div class="quantity_hour">
+                <div class="hour_item">
+                <span>Hora inicnial</span>
                 <input class="begin_hour" type="time" name="hora_de_inicio" placeholder="Hora de Inicio da Tarefa">
+                </div>
+                <div class="hour_item">
+                <span>Hora Final</span>
                 <input class="finish_hour" type="time" name="hora_de_conclusão" placeholder="Hora de Conclusão da tarefa">
+                </div>
             </div>
             <div class="employer_observation">
-                <input class="employer-observation" type="text" name="observacao" placeholder="Observação">
+                <input class="employer-observation" type="text" name="observacao" placeholder="Observação do cliente">
             </div>
                 </div>
         </section>
@@ -313,6 +332,15 @@
         </div>
         <button class="upsent_close_button_description">X</button>
      </div>
+     <div class="description-pop-employer">
+        <div class="text-description ">
+            <h4>Solução aplicada</h4>
+            <p><?php echo $employer_report[0]->call_descritive?></p>
+            <h4>Observação do cliente</h4>
+            <p><?php echo $employer_report[0]->client_observation?></p>
+        </div>
+        <button class="upsent_close_button_employer_desc">X</button>
+     </div>
      <?php if($result->concluida!=0):?>
      <?php $arr =json_decode($result->conclued_img); ?>
     
@@ -320,7 +348,9 @@
         <div class="work_proof_container">
         <?php foreach($arr as $image_result):?>
             <div>
+            <a href="<?php echo PLUGIN_URL."/uploads/".$image_result->image_name ?>" download>
             <img src="<?php echo PLUGIN_URL."/uploads/".$image_result->image_name ?>" alt="description-img">
+            </a>
             </div>
         <?php endforeach?>
         </div>

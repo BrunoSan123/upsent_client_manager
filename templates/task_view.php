@@ -54,7 +54,7 @@
             isset($_POST['filter_selection'])?$filter=$_POST['filter_selection']:'';
             $posicao_inicial = ($pagina_atual - 1) * $itens_por_pagina;
             $table_name=$wpdb->prefix . 'my_tasks';
-            $results=$wpdb->get_results("SELECT * FROM $table_name LIMIT $posicao_inicial, $itens_por_pagina");
+            $results=$wpdb->get_results("SELECT * FROM $table_name ORDER BY id DESC LIMIT $posicao_inicial, $itens_por_pagina");
             $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name");
             $total_pages = ceil($total_tasks / $itens_por_pagina);
             $user_table=$wpdb->prefix.'users';
@@ -67,7 +67,7 @@
                 $total_tasks=null;
                 $total_pages=null;
                 $user_param=$_POST['user_filter'];
-                $results=$wpdb->get_results("SELECT * FROM $table_name WHERE funcionaro_responsavel='$user_param' LIMIT $posicao_inicial, $itens_por_pagina");
+                $results=$wpdb->get_results("SELECT * FROM $table_name WHERE funcionaro_responsavel='$user_param' ORDER BY id DESC LIMIT $posicao_inicial, $itens_por_pagina");
                 $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE funcionaro_responsavel='$user_param'");
                 $total_pages = ceil($total_tasks / $itens_por_pagina);
             }
@@ -77,7 +77,7 @@
                 $total_tasks=null;
                 $total_pages=null;
                 $company_param=$_POST['company_filter'];
-                $results=$wpdb->get_results("SELECT * FROM $table_name WHERE company='$company_param' LIMIT $posicao_inicial, $itens_por_pagina");
+                $results=$wpdb->get_results("SELECT * FROM $table_name WHERE company='$company_param' ORDER BY id DESC LIMIT $posicao_inicial, $itens_por_pagina");
                 $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE company='$company_param'");
                 $total_pages = ceil($total_tasks / $itens_por_pagina);
             }
@@ -89,19 +89,19 @@
 
                 switch ($filter) {
                     case 'parado':
-                        $results=$wpdb->get_results("SELECT * FROM $table_name WHERE states='$filter' LIMIT $posicao_inicial, $itens_por_pagina");
+                        $results=$wpdb->get_results("SELECT * FROM $table_name WHERE states='$filter' ORDER BY id DESC LIMIT $posicao_inicial, $itens_por_pagina");
                         $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE states='$filter'");
                         $total_pages = ceil($total_tasks / $itens_por_pagina);
                         $state=$filter;
                         break;
                     case 'em_andamento':
-                        $results=$wpdb->get_results("SELECT * FROM $table_name WHERE states='$filter' LIMIT $posicao_inicial, $itens_por_pagina");
+                        $results=$wpdb->get_results("SELECT * FROM $table_name WHERE states='$filter' ORDER BY id DESC LIMIT $posicao_inicial, $itens_por_pagina");
                         $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE states='$filter'");
                         $total_pages = ceil($total_tasks / $itens_por_pagina);
                         $state=$filter;
                         break;
                     case 'concluido':
-                       $results=$wpdb->get_results("SELECT * FROM $table_name WHERE states='completa' LIMIT $posicao_inicial, $itens_por_pagina");
+                       $results=$wpdb->get_results("SELECT * FROM $table_name WHERE states='completa' ORDER BY id DESC LIMIT $posicao_inicial, $itens_por_pagina");
                        $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE states='completa'");
                        $total_pages = ceil($total_tasks / $itens_por_pagina);
                        $state=$filter;
@@ -121,12 +121,14 @@
 
            <table class="upsent_table table-desk">
             <tr class="upsent_table_head">
-                <th>Chamado</th>
-                <th>Nome da Empresa</th>
-                <th>Enrereço do Cliente</th>
+                <th>N° do Chamado</th>
+                <th>Endereço do Cliente</th>
                 <th>Escopo</th>
-                <th>Andamento</th>
+                <th>Status</th>
                 <th>Técnico</th>
+                <?php if($result->concluida!=0):?>
+                    <th>Descrição do tecnico</th>
+                <?php endif?>
                 <th>posição atual</th>
                 <th></th>
                 <th>Status</th>
@@ -138,14 +140,14 @@
             </tr>
             <tr class="upsent_table_data">
                 <td><?php echo $result->task_name?></td>
-                <td><?php echo $result->company?></td>
                 <td><?php echo $result->task_address?></td>
-                <td><a class="description button">Descrição</a></td>
+                <td><a class="description button">Escopo</a></td>
                 <td><?php echo $result->states?></td>
                 <td><?php echo $result->funcionaro_responsavel?></td>
+                <td class="client-description"><a class="button">Abrir</a></td>
                 <td><a class="employee_position">Ver posição atual</a></td>
                 <td><button class="change_btn button">alterar</button></td>
-                <td><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></td>
+                <td><div class="<?php if($result->states=="parado"):?> conclued_bullet <?php elseif($result->states=='em_andamento'):?>bullet-yellow<?php else:?> bullet-green <?php endif?>"></div></td>
                 <td class="comprovante comp_img">Abrir Galeria</td>
                 <td><div class="delete_task"></div></td>
             </tr>
@@ -154,18 +156,19 @@
 
         <div class="upsent_table-mobile table-mobile">
             <div class="table_mobile_main">
-                <div class="upsent-table-item"><span>Nome da Tarefa:</span><span><?php echo $result->task_name?></span></div>
-                <div class="upsent-table-item"><span>Enrereço da Tarefa:</span><span><?php echo $result->task_address?></span></div>
-                <div class="upsent-table-item"><span>Descrição da tarefa:</span><span class="descriptionMobile  button"><a>Descrição</a></span></div>
-                <div class="upsent-table-item"><span>Andamento:</span><span><?php echo $result->states?></span></div>
-                <div class="upsent-table-item"><span>Funcionário:</span> <span><?php echo $result->funcionaro_responsavel?></span> </div>
+                <div class="upsent-table-item"><span>N° do chamado:</span><span><?php echo $result->task_name?></span></div>
+                <div class="upsent-table-item"><span>Endereço do Cliente:</span><span><?php echo $result->task_address?></span></div>
+                <div class="upsent-table-item"><span>Escopo da atividade:</span><span class="descriptionMobile  button"><a>Descrição</a></span></div>
+                <div class="upsent-table-item descriptionMobileEmployer"><span>Descrição do tecnico:</span><span class="button">Abrir</span></div>
+                <div class="upsent-table-item"><span>Status:</span><span><?php echo $result->states?></span></div>
+                <div class="upsent-table-item"><span>tecnico:</span> <span><?php echo $result->funcionaro_responsavel?></span> </div>
                 <div class="upsent-table-item"><span>posição atual:</span><a class="employee_position_mobile">Ver posição atual</a></div>
                 
                     <div class="comprovanteMobile">
-                        <div>Comprovante: </div>
+                        <div>Comprovante:</div>
                         <div class="comp_img">Abrir</div>
                     </div>
-                    <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->concluida==0):?> conclued_bullet <?php else:?> bullet-green <?php endif?>"></div></div>
+                    <div class="upsent-table-item"><span>Concluida:</span><div class="<?php if($result->states=="parado"):?> conclued_bullet<?php elseif($result->states=="em_andamento"):?>bullet-yellow<?php else:?> bullet-green <?php endif?>"></div></div>
                 <div class="upsent-table-item">Excluir:<div class="delete_task_mobile"></div></div>
                 <div class="upsent-table-item"><button class="change_btn_mobile button">alterar</button></div>
                 </div>
@@ -196,7 +199,9 @@
     <?php 
     $maped=[];
     $img_path=[];
-    foreach($results as $resulte):?>
+    foreach($results as $resulte):
+        $emp_report =$wpdb->get_results("SELECT * FROM $emplyer_report WHERE task_id=$resulte->id")
+    ?>
         
         <div class="upsent-pop-up" id="upsent-<?php echo $i?>">
             <section>
@@ -225,7 +230,7 @@
              </select>
             </section>
              </div>
-            <div class="buttons_container" style="padding-left: 14%; padding-top: 2%;">
+            <div class="buttons_container" style="padding-top: 2%;">
              <div class="report_button button_upsent" style="display:inline-block;">Atualizar Relatório</div>        
             <input type="submit" value="Atualizar" name="submit-<?php echo $i?>" class="button_upsent">
             </div>
@@ -240,26 +245,27 @@
               $address=isset($_POST['endereço-'.$i])?$_POST['endereço-'.$i]:'';
               $user_responseble = isset($_POST['usuarios-'.$i])?$_POST['usuarios-'.$i]:'';
               $company=isset($_POST['nome_da_empresa-'.$i])?$_POST['nome_da_empresa-'.$i]:'';
-              $budget_value=$_COOKIE['descritivo_ortcamento'];
-              $project=$_COOKIE['projeto'];
-              $incoming_value=$_COOKIE['valor_a_receber'];
-              $aditional_value=$_COOKIE['valor_adicional'];
-              $km=$_COOKIE['km'];
-              $km_value=$_COOKIE['valor_km'];
-              $aditional_coust=$_COOKIE['custo_adicional'];
-              $budget_value=$_COOKIE['valor-orcamento'];
-              $task_date_value=$_COOKIE['data_da_atividade'];
-              $city=$_COOKIE['cidade'];
-              $uf=$_COOKIE['uf'];
-              $aprovement_responseble=$_COOKIE['aprovacao_responsavel'];
-              $budget_describe=$_COOKIE['orcamento_descricao'];
+
               
               if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit-'.$i])){
+                    $budget_value=$_COOKIE['descritivo_ortcamento'];
+                    $project=$_COOKIE['projeto'];
+                    $incoming_value=$_COOKIE['valor_a_receber'];
+                    $aditional_value=$_COOKIE['valor_adicional'];
+                    $km=$_COOKIE['km'];
+                    $km_value=$_COOKIE['valor_km'];
+                    $aditional_coust=$_COOKIE['custo_adicional'];
+                    $budget_value=$_COOKIE['valor-orcamento'];
+                    $task_date_value=$_COOKIE['data_da_atividade'];
+                    $city=$_COOKIE['cidade'];
+                    $uf=$_COOKIE['uf'];
+                    $aprovement_responseble=$_COOKIE['aprovacao_responsavel'];
+                    $budget_describe=$_COOKIE['orcamento_descricao'];
+                    $solution_observation=$_COOKIE['observacao_solution'];
                 $wpdb->update(
                     $table_name,
                     array(
                         'task_name'=>$nome,
-                        'creation_data'=> current_time('mysql'),
                         'task_description'=>$description,
                         'task_address'=>$address,
                         'coord_x'=>$coord_x,
@@ -287,7 +293,8 @@
                         'city'=>$city,
                         'uf'=>$uf,
                         'aprovement_responseble'=>$aprovement_responseble,
-                        'budget_describe'=>$budget_describe
+                        'budget_describe'=>$budget_describe,
+                        'solution_observation'=>$solution_observation
                     ),
                     array(
                         'task_id'=>$resulte->id
@@ -311,12 +318,6 @@
         <button class="upsent_close_button_description">X</button>
      </div>
      
-     <div class="img_comprovante">
-        <div style="width:400px; height:400px;">
-        <img style="width:100%;" src="<?php echo PLUGIN_URL."/uploads/".$resulte->conclued_img ?>" alt="description-img">
-        </div>
-        <button class="upsent_close_button_img">X</button>
-    </div>
     
     <div class="upsent-pop-up-desc" id="upsent-<?php echo $i?>">
             <section class="section_form">
@@ -333,17 +334,29 @@
                 <input type="text" name="uf" class="uf" id="uf" placeholder="UF">
                 <input type="text" name="responsavel_aprovacao" class="responsavel_aprovacao" id="approvement" placeholder="Responsavel pela aprovação">
                 <input type="text" name="descricao_orcamento" class="descricao_orcamento" id="descicao_orcamento" placeholder="Descrição do orçamento">
+                <input class="solution-observation" type="text" name="observacao" placeholder="Observação">
             </section>
           <button class="upsent_close_button-desc">X</button>
     </div>
-    <?php if($result->concluida!=0):?>
-     <?php $arr =json_decode($result->conclued_img); ?>
+    <div class="description-pop-employer">
+        <div class="text-description ">
+            <h4>Solução aplicada</h4>
+            <p><?php echo $emp_report[0]->call_descritive?></p>
+            <h4>Observação do cliente</h4>
+            <p><?php echo $emp_report[0]->client_observation?></p>
+        </div>
+        <button class="upsent_close_button_employer_desc">X</button>
+     </div>
+    <?php if($resulte->concluida!=0):?>
+     <?php $arr =json_decode($resulte->conclued_img); ?>
     
      <div class="img_comprovante">
         <div class="work_proof_container">
         <?php foreach($arr as $image_result):?>
             <div>
-                <img src="<?php echo PLUGIN_URL."/uploads/".$image_result->image_name ?>" alt="description-img">
+                <a href="<?php echo PLUGIN_URL."/uploads/".$image_result->image_name ?>" download>
+                    <img src="<?php echo PLUGIN_URL."/uploads/".$image_result->image_name ?>" alt="description-img">
+                </a>
             </div>
         <?php endforeach?>
         </div>
