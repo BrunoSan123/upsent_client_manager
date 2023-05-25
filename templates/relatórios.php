@@ -21,6 +21,7 @@
                 <input type="text" name="employer_filter" id="employer_filter" class="input-paddings-1">
             </div>
             <div class="">
+                <label for="meses">Filtrar por mês</label>
                 <select name="meses" id="meses" class="filter">
                     <option value="January">Janeiro</option>
                     <option value="February">Fevereiro</option>

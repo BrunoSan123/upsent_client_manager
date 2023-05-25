@@ -64,6 +64,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const employerDescriptionButton=document.querySelectorAll(".client-description")
   const employerButoncloseExplication= document.querySelectorAll(".upsent_close_button_employer_desc")
   const employerDescriptionexplainMobile=document.querySelectorAll(".descriptionMobileEmployer")
+  const money_fields = document.querySelectorAll(".money_class")
+ 
 
   var x = document.getElementById("demo");
 
@@ -96,16 +98,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
       <input type="hidden" name="coord_y" id="coord_y" placeholder="cordenada y" value="${localeResponse.results[0].geometry.location.lng}">
       `;
     }
-  }
-
-  async function getTaskQuery() {
-    const por_pag = (window.history = per_page);
-    const atual_page = (window.history = actual_page);
-    const task = await fetch(
-      `http://localhost:8080/wp-json/upsent-api/v1/tasks/?per_page=${por_pag}&page=${atual_page}`
-    );
-    const task_results = await task.json();
-    return task_results;
   }
 
   // função para renderizar o mapa
@@ -330,9 +322,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 
-/*   function money_mask(string,element){
-
-  } */
+  function mascaraFinanceira(element){
+    let valor = `R$ ${element.replace(/[^\d,]/g, "").replace(",", ".")}`;
+    //console.log(valor);
+    return valor;
+     
+    }
 
   // evento de elteração de estatus
   changeButton.forEach((e, i) => {
@@ -534,7 +529,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   //evventos para a pagina de tarefas do admin
   if (page_tarefas_cadastradas) {
-    //var user_maped = (window.history = usuario_maped);
     const filter = document.querySelector(".filter_selection");
     const filter_selection = filter.getAttribute("data-target");
 
@@ -603,6 +597,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
             ".descricao_orcamento"
           );
           const solutionObservation=document.querySelectorAll(".solution-observation")
+          const featuredValue=document.querySelectorAll(".valor_faturado")
+          const budget_state = document.querySelectorAll(".budget_state")
 
           document.cookie = `descritivo_ortcamento=${emp_budget[i].value}`;
           document.cookie = `projeto=${emp_project[i].value}`;
@@ -617,7 +613,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
           document.cookie = `uf=${uf[i].value}`;
           document.cookie = `aprovacao_responsavel=${emp_paprovment_responseble[i].value}`;
           document.cookie = `orcamento_descricao=${budget_describe[i].value}`;
-          document.cookie=`observacao_solution=${solutionObservation[i].value}`
+          document.cookie =`observacao_solution=${solutionObservation[i].value}`;
+          document.cookie =`valor_faturado=${featuredValue[i].value}`;
+          document.cookie =`orcamento_status=${budget_state[i].value}`;
           updatePopDesc[i].classList.remove("reveal");
         });
       });
@@ -723,6 +721,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
     clientAddress.addEventListener("change", (e) => {
       getClientCoords(e.target.value);
     });
+
+    money_fields.forEach((e,i)=>{
+      e.addEventListener("change",(j)=>{
+        j.target.value=mascaraFinanceira(j.target.value);
+      })
+    })
   }
 
   if (tarefas_concluidas) {

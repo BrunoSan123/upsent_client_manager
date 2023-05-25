@@ -43,7 +43,7 @@ class Admin
         add_submenu_page(
             'employer_management',
             __( 'Histórico ', 'textdomain' ),
-            __( 'Histórico dos funcionarios', 'textdomain' ),
+            __( 'Histórico de atividades', 'textdomain' ),
             'administrator',
             'historico',
             array($this,'logs_subpage'),

@@ -131,11 +131,11 @@ textarea {
 }
 
 .upsent-pop-up-desc section{
-  margin-top: 10%;
+  margin-top: 25%;
 }
 
 .upsent-main{
-  margin-top: 10% !important;
+  margin-top: 15% !important;
 }
 
 .upsent-pop-up section {
@@ -515,6 +515,9 @@ textarea {
   .filters {
     flex-direction: column !important;
   }
+  .filters>form{
+    margin-bottom: 5%;
+  }
 }
 .filter-div {
   display: flex;
@@ -693,6 +696,11 @@ textarea {
   justify-content: space-between;
   width: 100%;
 }
+.report>div{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 @media(max-width:900px){
   .report_button{
@@ -700,6 +708,23 @@ textarea {
     margin-right: auto;
     text-align: center;
   }
+  .report{
+    flex-direction: column;
+  }
+
+  .report>div{
+    margin-bottom:5% !important;
+    
+  }
+
+  .report>div input{
+    width:42% !important;
+  }
+
+  .report>div select{
+    width:42% !important;
+  }
+  
 
 }
 

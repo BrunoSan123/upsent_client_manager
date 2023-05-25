@@ -46,7 +46,7 @@ function get_task_data($request)
     $page = $request->get_param('page') ? absint($request->get_param('page')) : 1;
     $per_page = $request->get_param('per_page') ? absint($request->get_param('per_page')) : 10;
     $offset = ($page - 1) * $per_page;
-    $task_data = $wpdb->get_results("SELECT * FROM $table_name LIMIT $per_page OFFSET $offset");
+    $task_data = $wpdb->get_results("SELECT * FROM $table_name ORDER BY id DESC LIMIT $per_page OFFSET $offset");
     return $task_data;
 }
 
@@ -57,7 +57,7 @@ function get_task_data_by_status($request){
     $per_page = $request->get_param('per_page') ? absint($request->get_param('per_page')) : 10;
     $status=$request->get_param('status');
     $offset = ($page - 1) * $per_page;
-    $task_data = $wpdb->get_results("SELECT * FROM $table_name WHERE states='$status' LIMIT $per_page OFFSET $offset");
+    $task_data = $wpdb->get_results("SELECT * FROM $table_name WHERE states='$status' ORDER BY id DESC LIMIT $per_page OFFSET $offset");
     return $task_data;
 }
 
@@ -68,7 +68,7 @@ function get_task_delivered($request){
     $per_page = $request->get_param('per_page') ? absint($request->get_param('per_page')) : 10;
     $entregue=$request->get_param('entregue');
     $offset = ($page - 1) * $per_page;
-    $task_data = $wpdb->get_results("SELECT * FROM $table_name WHERE entregue=$entregue LIMIT $per_page OFFSET $offset");
+    $task_data = $wpdb->get_results("SELECT * FROM $table_name WHERE entregue=$entregue ORDER BY id DESC LIMIT $per_page OFFSET $offset");
     return $task_data;
 
 } 
@@ -84,7 +84,7 @@ function get_task_by_name($request)
     $per_page = $request->get_param('per_page') ? absint($request->get_param('per_page')) : 10;
     $entregue=$request->get_param('entregue');
     $offset = ($page - 1) * $per_page;
-    $task_data_user = $wpdb->get_results("SELECT * FROM $table_name WHERE funcionaro_responsavel='$funcionario' AND entregue=$entregue  LIMIT $per_page OFFSET $offset");
+    $task_data_user = $wpdb->get_results("SELECT * FROM $table_name WHERE funcionaro_responsavel='$funcionario' AND entregue=$entregue ORDER BY id DESC LIMIT $per_page OFFSET $offset");
     $total_tasks = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE funcionaro_responsavel='$funcionario'");
     // Calculate the total number of pages
     $total_pages = ceil($total_tasks / $per_page);
@@ -149,16 +149,18 @@ function custom_xls_download() {
         $employer = isset($_POST['employer_filter']) ? $_POST['employer_filter'] : '';
         $month=isset($_POST['meses'])?$_POST['meses']:'';
         $month_number=date_parse($month)['month'];
+        $company =isset($_POST['company'])?$_POST['company']:'';
+        $date=isset($_POST['task_date'])?$_POST['task_date']:'';
         
 
-        $output = "";
+            $output = "";
     
         
-            $results = $wpdb->get_results("SELECT * FROM $table_name WHERE employer_name='$employer' AND month_='$month_number'");
+            $results = $wpdb->get_results("SELECT * FROM $table_name WHERE (employer_name='$employer' OR month_=$month_number) AND (company='$company' OR date_='$date')");
         
     
     
-            //$customers_data = array(array('customers_id' => '1', 'customers_firstname' => 'Chris', 'customers_lastname' => 'Cavagin', 'customers_email' => 'chriscavagin@gmail.com', 'customers_telephone' => '9911223388'), array('customers_id' => '2', 'customers_firstname' => 'Richard', 'customers_lastname' => 'Simmons', 'customers_email' => 'rsimmons@media.com', ' clientes_telefone' => '9911224455'), array('customers_id' => '3', 'customers_firstname' => 'Steve', 'customers_lastname' => 'Beaven', 'customers_email' => 'ateavebeaven@gmail.com', 'customers_telephone' => '8855223388'), array('customers_id' => '4', 'customers_firstname' => 'Howard', 'customers_lastname' => 'Rawson', 'customers_email' => 'howardraw@gmail. com', 'customers_telephone' => '9911334488'), array('customers_id' => '5', 'customers_firstname' => 'Rachel', 'customers_lastname' => 'Dyson', 'customers_email' => 'racheldyson@ gmail.com', 'customers_telephone' => '9912345388'));
+            
             $output .= "
                   <meta charset='UTF-8'>
                   <table>
@@ -177,7 +179,7 @@ function custom_xls_download() {
                   <th style='border:1px solid black; background:lightgreen;'>VALOR ORÇAMENTO</th>
                   <th style='border:1px solid black; background: #00B0F0;'>NOME TÉCNICO</th>
                   <th style='border:1px solid black; background: #00B0F0;'>VALOR A RECEBER</th>
-                  <th style='border:1px solid black; background: #00B0F0;'>vALOR KM</th>
+                  <th style='border:1px solid black; background: #00B0F0;'>VALOR KM</th>
                   <th style='border:1px solid black; background: #00B0F0;'>HE TEC</th>
                   <th style='border:1px solid black; background: #00B0F0;'>CUSTOS ADICIONAIS</th>
                   <th style='border:1px solid black; background: #00B0F0;'>VALOR ORÇAMENTO</th>
@@ -206,7 +208,7 @@ function custom_xls_download() {
                           <td>$result->aditional_value_per_hour</td>
                           <td>$result->incoming_value_per_km</td>
                           <td>$result->aditional_cousts</td>
-                          <td>$result->descritive_budget</td>
+                          <td>$result->budget_describe</td>
                           <td>$result->status_budget</td>
                           <td>$result->aprovement_responseble</td>
                           <td>$result->value_budget</td>
@@ -223,7 +225,7 @@ function custom_xls_download() {
                           <td>$result->solution_observation</td>
                           <td>$result->start_time</td>
                           <td>$result->end_time</td>
-                          <td>$result->month_total_time</td>
+                          <td>$result->month_total_time min</td>
                           <td>$result->call_descritive</td>
                           <td>$result->service_order</td>
                         </tr>
@@ -233,16 +235,11 @@ function custom_xls_download() {
             $output .= "</table>";
             echo $output;
 
-                    // Definir cabeçalhos para forçar o download do arquivo XLS
         header('Content-Type: application/vnd.ms-excel');
         header("Content-Disposition: attachment; filename=reports-$employer-$month.xls");
 
-        // Seu código PHP que gera o conteúdo do arquivo XLS
-
-        // Encerrar o buffer de saída e enviar o arquivo XLS para o navegador
         ob_end_flush();
 
-        // Encerrar a execução do script para evitar o carregamento da página
         exit();
     
 
