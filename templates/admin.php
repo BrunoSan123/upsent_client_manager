@@ -25,12 +25,24 @@
         <form action="" method="post" class="upsent_main">
             <div class="upsent_plugin_form">
                 <section class="section_form" id="locate_state_form">
-                    <input type="text" name="nome_da_tarefa" id="name" placeholder="N° do chamado">
+                    <input type="date" name="data_da_atividade" id="data_da_atividade">
                     <input type="text" name="nome_da_empresa" id="company_name" placeholder="Nome da Empresa">
+                    <input type="text" name="projeto" id="project" placeholder="projeto">
                     <input type="text" name="nome_do_cliente" id="client_name" placeholder="Nome do Cliente">
+                    <input type="text" name="nome_da_tarefa" id="name" placeholder="N° do chamado">
+                    <input type="text" name="valor_receber" id="valor_receber" placeholder="valor a receber" class="money_class">
+                    <input type="text" name="valor_adicional" id="valor_adicional" placeholder="valor adicional" class="money_class">
+                    <input type="text" name="km" id="km" placeholder="km">
+                    <input type="text" name="valor_em_km_receber" id="valor_em_km" placeholder="valor em KM a receber">
+                    <input type="text" name="custos_adicionais" id="custos_adicionais" placeholder="Custos adicionais" class="money_class">
+                    <input type="text" name="descricao_orcamento" id="descicao_orcamento" placeholder="Descrição do orçamento">
+                    <select name="status_orcamento" id="status_orcamento">
+                        <option value="aguardando" selected>Aguardando</option>
+                        <option value="recusado">Recusado</option>
+                        <option value="Aprovado">Aprovado</option>
+                    </select>
+                    <input type="text" name="responsavel_aprovacao" id="approvement" placeholder="Responsavel pela aprovação">
                     <textarea name="descrição" id="description" cols="20" rows="7" placeholder="Escopo do chamado"></textarea>
-
-
                     <input type="text" name="endereço" id="address" placeholder="endereço: Rua Cidade Estado">
                     <input type="text" name="cep_input" id="cep_field" placeholder="Digite o CEP">
                     <select name="estados" id="states">
@@ -38,36 +50,22 @@
                         <option value="em_andamento">Em atendimento</option>
                         <option value="completa">Concluida</option>
                     </select>
+                </section>
+
+                <section class="section_form">
+                    <input type="text" name="valor_orçamento" id="orçamento" placeholder="orçamento" class="money_class">
                     <select name="usuarios" id="users">
                         <option disabled selected value="empty">Alocar técnico</option>
                         <?php foreach ($user_result as $usuario) : ?>
                             <option value="<?php echo esc_attr($usuario->user_login); ?>" <?php selected($usuario->user_login); ?>><?php echo esc_html($usuario->user_login); ?></option>
                         <?php endforeach; ?>
                     </select>
-                </section>
-
-                <section class="section_form">
-                    <input type="text" name="valor_orçamento" id="orçamento" placeholder="orçamento" class="money_class">
-                    <input type="text" name="projeto" id="project" placeholder="projeto">
-                    <input type="text" name="valor_receber" id="valor_receber" placeholder="valor a receber" class="money_class">
-                    <input type="text" name="valor_adicional" id="valor_adicional" placeholder="valor adicional" class="money_class">
-                    <input type="text" name="km" id="km" placeholder="km">
+                    <input type="text" name="valor_receber" id="valor_tec_receber" placeholder="valor tecnico a receber" class="money_class">
                     <input type="text" name="valor_em_km" id="valor_em_km" placeholder="valor em KM">
-                    <input type="text" name="custos_adicionais" id="custos_adicionais" placeholder="Custos adicionais" class="money_class">
-                    <input type="text" name="valor_orcamento" id="valor_orcamento" placeholder="Valor do Orçamento" class="money_class">
-                    <input type="date" name="data_da_atividade" id="data_da_atividade">
+                    <input type="text" name="he-tec" id="he-tec" placeholder="He-Tec">
                     <input type="text" name="cidade" id="cidade" placeholder="cidade">
                     <input type="text" name="uf" id="uf" placeholder="UF">
-                    <input type="text" name="responsavel_aprovacao" id="approvement" placeholder="Responsavel pela aprovação">
-                    <input type="text" name="descricao_orcamento" id="descicao_orcamento" placeholder="Descrição do orçamento">
-                    <input type="text" name="he-tec" id="he-tec" placeholder="He-Tec">
                     <input type="text" name="ordem_servico" id="Ordem_servico" placeholder="Ordem de serviço (RAT)">
-                    <select name="status_orcamento" id="status_orcamento">
-                        <option value="aguardando" selected>Aguardando</option>
-                        <option value="recusado">Recusado</option>
-                        <option value="Aprovado">Aprovado</option>
-                    </select>
-
                 </section>
 
             </div>
@@ -143,7 +141,7 @@
                         'incoming_value_per_km' => floatval($valor_em_km),
                         'aditional_cousts' => $custo_adicional,
                         'date_' => $data,
-                        'value_budget' => ($valor_orcamento),
+                        'value_budget' => $valor_orcamento,
                         'task_id' => $task->id,
                         'company' => $company_name,
                         'city' => $city,

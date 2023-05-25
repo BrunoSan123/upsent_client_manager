@@ -73,7 +73,9 @@
                         <th>Descrição do tecnico</th>
                     <?php endif ?>
                     <th>Posição do cliente</th>
+                    <?php if($result->states!='completa'):?>
                     <th></th>
+                    <?php endif?>
                     <th>Status</th>
                     <?php if ($result->concluida != 0) : ?>
                         <th>Comprovante</th>
@@ -88,7 +90,9 @@
                     <td><?php echo $result->funcionaro_responsavel ?></td>
                     <td class="client-description"><a class="button">Abrir</a></td>
                     <td><a class="client_position">Ver posição</a></td>
-                    <td><button class="change_btn button">alterar</button></td>
+                    <?php if($result->states!='completa'):?>
+                        <td><button class="change_btn button">alterar</button></td>
+                    <?php endif?>
                     <td>
                         <div class="<?php if ($result->states == "parado") : ?>conclued_bullet<?php elseif ($result->states == "em_andamento") : ?>bullet-yellow<?php else : ?>bullet-green<?php endif ?>"></div>
                     </td>
@@ -371,7 +375,10 @@ echo "</div>";
                 </div>
                 <button class="upsent_close_button_img">X</button>
             </div>
-
+            <?php else:?>
+                <div class="img_comprovante">
+                <button class="upsent_close_button_img">X</button>
+                </div>
         <?php endif ?>
         <?php $i++; ?>
     <?php endforeach; ?>

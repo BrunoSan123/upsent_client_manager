@@ -400,7 +400,11 @@ echo "</div>";
                 <button class="upsent_close_button_img">X</button>
 
             </div>
-
+            <?php else:?>
+                <div class="img_comprovante">
+                <button class="upsent_close_button_img">X</button>    
+                </div>
+                
         <?php endif ?>
 
         <?php $i++; ?>
