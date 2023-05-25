@@ -717,6 +717,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
         getTaskMap(i, task_results);
       });
     });
+
+    money_fields.forEach((e,i)=>{
+      e.addEventListener("change",(j)=>{
+        j.target.value=mascaraFinanceira(j.target.value);
+      })
+    })
   }
 
   if (cadastroDeTarefas) {

@@ -329,7 +329,7 @@ echo "</div>";
                             'status_budget' => $budget_state,
                             'km'=>$km,
                             'value_km'=>$km_value,
-                            'incoming_value_per_km '=>$incoming_km_value
+                            'incoming_value_per_km'=>$incoming_km_value
 
                         ),
                         array(
@@ -357,22 +357,22 @@ echo "</div>";
 
         <div class="upsent-pop-up-desc" id="upsent-<?php echo $i ?>">
             <section class="section_form">
-                <input type="text" name="valor_orçamento" class="valor_orçamento" id="orçamento" placeholder="orçamento" value="<?php echo $emp_report[0]->value_budget ?>">
+                <input type="text" name="valor_orçamento" class="valor_orçamento money_class" id="orçamento" placeholder="orçamento" value="<?php echo $emp_report[0]->value_budget ?>">
                 <input type="text" name="projeto" class="projeto" id="project" placeholder="projeto" value="<?php echo $emp_report[0]->project ?>">
-                <input type="text" name="valor_receber" class="valor_receber" id="valor_receber" placeholder="valor a receber" value="<?php echo $emp_report[0]->incoming_value ?>">
-                <input type="text" name="valor_adicional" class="valor_adicional" id="valor_adicional" placeholder="valor adicional" value="<?php echo $emp_report[0]->aditional_value_per_hour ?>">
+                <input type="text" name="valor_receber" class="valor_receber money_class" id="valor_receber" placeholder="valor a receber" value="<?php echo $emp_report[0]->incoming_value ?>">
+                <input type="text" name="valor_adicional" class="valor_adicional money_class" id="valor_adicional" placeholder="valor adicional" value="<?php echo $emp_report[0]->aditional_value_per_hour ?>">
                 <input type="text" name="km" class="km" id="km" placeholder="km" value="<?php echo $emp_report[0]->km ?>">
-                <input type="text" name="valor_em_km_rcv" class="valor_em_km_rcv" id="valor_em_km_rcv" placeholder="valor em KM a receber" value="<?php echo $emp_report[0]->incoming_value_per_km ?>">
-                <input type="text" name="valor_em_km" class="valor_em_km" id="valor_em_km" placeholder="valor em KM" value="<?php echo $emp_report[0]->value_km ?>">
-                <input type="text" name="custos_adicionais" class="custos_adicionais" id="custos_adicionais" placeholder="Custos adicionais" value="<?php echo $emp_report[0]->aditional_cousts ?>">
-                <input type="text" name="valor_orcamento" class="valor_orcamento" id="valor_orcamento" placeholder="Valor do Orçamento" value="<?php echo $emp_report[0]->value_budget ?>">
+                <input type="text" name="valor_em_km_rcv" class="valor_em_km_rcv money_class" id="valor_em_km_rcv" placeholder="valor em KM a receber" value="<?php echo $emp_report[0]->incoming_value_per_km?>">
+                <input type="text" name="valor_em_km" class="valor_em_km money_class" id="valor_em_km" placeholder="valor em KM" value="<?php echo $emp_report[0]->value_km ?>">
+                <input type="text" name="custos_adicionais" class="custos_adicionais money_class" id="custos_adicionais" placeholder="Custos adicionais" value="<?php echo $emp_report[0]->aditional_cousts ?>">
+                <input type="text" name="valor_orcamento" class="valor_orcamento money_class" id="valor_orcamento" placeholder="Valor do Orçamento" value="<?php echo $emp_report[0]->value_budget ?>">
                 <input type="date" name="data_da_atividade" class="data_da_atividade" id="data_da_atividade" value="<?php echo $emp_report[0]->date_ ?>">
                 <input type="text" name="cidade" id="cidade" class="cidade" placeholder="cidade" value="<?php echo $emp_report[0]->city ?>">
                 <input type="text" name="uf" class="uf" id="uf" placeholder="UF" value="<?php echo $emp_report[0]->uf ?>">
                 <input type="text" name="responsavel_aprovacao" class="responsavel_aprovacao" id="approvement" placeholder="Responsavel pela aprovação" value="<?php echo $emp_report[0]->aprovement_responseble ?>">
                 <input type="text" name="descricao_orcamento" class="descricao_orcamento" id="descicao_orcamento" placeholder="Descrição do orçamento" value="<?php echo $emp_report[0]->budget_describe ?>">
                 <input class="solution-observation" type="text" name="observacao" placeholder="Observação da solution" value="<?php echo $emp_report[0]->solution_observation ?>">
-                <input class="valor_faturado" type="text" name="valor_faturado" placeholder="Valor já faturado" value="<?php echo $emp_report[0]->employer_featured_value ?>">
+                <input class="valor_faturado money_class" type="text" name="valor_faturado" placeholder="Valor já faturado" value="<?php echo $emp_report[0]->employer_featured_value ?>">
                 <select name="status_orcamento" id="status_orcamento" class="budget_state">
                     <option value="aguardando" selected>Aguardando</option>
                     <option value="recusado">Recusado</option>

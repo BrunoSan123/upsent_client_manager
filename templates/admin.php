@@ -33,7 +33,7 @@
                     <input type="text" name="valor_receber" id="valor_receber" placeholder="valor a receber" class="money_class">
                     <input type="text" name="valor_adicional" id="valor_adicional" placeholder="valor adicional" class="money_class">
                     <input type="text" name="km" id="km" placeholder="km">
-                    <input type="text" name="valor_em_km_receber" id="valor_em_km" placeholder="valor em KM a receber">
+                    <input type="text" name="valor_em_km_receber" id="valor_em_km" placeholder="valor em KM a receber" class="money_class">
                     <input type="text" name="custos_adicionais" id="custos_adicionais" placeholder="Custos adicionais" class="money_class">
                     <input type="text" name="descricao_orcamento" id="descicao_orcamento" placeholder="Descrição do orçamento">
                     <select name="status_orcamento" id="status_orcamento">
@@ -61,7 +61,7 @@
                         <?php endforeach; ?>
                     </select>
                     <input type="text" name="valor_receber_tec" id="valor_tec_receber" placeholder="valor tecnico a receber" class="money_class">
-                    <input type="text" name="valor_em_km" id="valor_em_km" placeholder="valor em KM">
+                    <input type="text" name="valor_em_km" id="valor_em_km" placeholder="valor em KM" class="money_class">
                     <input type="text" name="he-tec" id="he-tec" placeholder="He-Tec">
                     <input type="text" name="cidade" id="cidade" placeholder="cidade">
                     <input type="text" name="uf" id="uf" placeholder="UF">
