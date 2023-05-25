@@ -43,9 +43,13 @@ textarea {
   background: blue !important;
   color: #fff !important;
   border-radius: 15px !important;
-  //margin-bottom: 5% !important;
+  margin-bottom: 5% !important;
   cursor: pointer !important;
   line-height: 1.2 !important;
+}
+
+#wpfooter{
+  display: none !important;
 }
 
 @media (max-width: 900px) {

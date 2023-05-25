@@ -137,6 +137,7 @@
             company VARCHAR(50) NOT NULL,
             client VARCHAR(50) NOT NULL,
             employer_name VARCHAR(50) NOT NULL,
+            employer_incoming_value VARCHAR(50) NOT NULL,
             task_id mediumint(9),
             month_total_time mediumint(9),
             date_ VARCHAR(50) NOT NULL,

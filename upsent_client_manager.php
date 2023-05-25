@@ -213,7 +213,7 @@ function custom_xls_download() {
                           <td>$result->aprovement_responseble</td>
                           <td>$result->value_budget</td>
                           <td>$result->employer_name</td>
-                          <td>$result->incoming_value/td>
+                          <td>$result->employer_incoming_value/td>
                           <td>$result->value_km</td>
                           <td>$result->he_tec</td>
                           <td>$result->aditional_cousts</td>

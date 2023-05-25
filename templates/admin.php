@@ -53,14 +53,14 @@
                 </section>
 
                 <section class="section_form">
-                    <input type="text" name="valor_orçamento" id="orçamento" placeholder="orçamento" class="money_class">
+                    <input type="text" name="valor_orcamento" id="orçamento" placeholder="orçamento" class="money_class">
                     <select name="usuarios" id="users">
                         <option disabled selected value="empty">Alocar técnico</option>
                         <?php foreach ($user_result as $usuario) : ?>
                             <option value="<?php echo esc_attr($usuario->user_login); ?>" <?php selected($usuario->user_login); ?>><?php echo esc_html($usuario->user_login); ?></option>
                         <?php endforeach; ?>
                     </select>
-                    <input type="text" name="valor_receber" id="valor_tec_receber" placeholder="valor tecnico a receber" class="money_class">
+                    <input type="text" name="valor_receber_tec" id="valor_tec_receber" placeholder="valor tecnico a receber" class="money_class">
                     <input type="text" name="valor_em_km" id="valor_em_km" placeholder="valor em KM">
                     <input type="text" name="he-tec" id="he-tec" placeholder="He-Tec">
                     <input type="text" name="cidade" id="cidade" placeholder="cidade">
@@ -84,11 +84,13 @@
         $company_name = isset($_POST['nome_da_empresa']) ? $_POST['nome_da_empresa'] : '';
         $cep = isset($_POST['cep_input']) ? $_POST['cep_input'] : '';
         $client = isset($_POST['nome_do_cliente']) ? $_POST['nome_do_cliente'] : '';
-        $orcamento = isset($_POST['valor_orçamento']) ? $_POST['valor_orçamento'] : '';
+        $orcamento = isset($_POST['valor_orcamento']) ? $_POST['valor_orcamento'] : '';
+        $emp_orcamento_receber=isset($_POST['valor_receber_tec'])?$_POST['valor_receber_tec']:'';
         $projeto = isset($_POST['projeto']) ? $_POST['projeto'] : '';
         $valor_receber = isset($_POST['valor_receber']) ? $_POST['valor_receber'] : '';
         $valor_adicional = isset($_POST['valor_adicional']) ? $_POST['valor_adicional'] : '';
         $km = isset($_POST['km']) ? $_POST['km'] : '';
+        $valor_em_km_receber = isset($_POST['valor_em_km_receber']) ? $_POST['valor_em_km_receber'] : '';
         $valor_em_km = isset($_POST['valor_em_km']) ? $_POST['valor_em_km'] : '';
         $custo_adicional = isset($_POST['custos_adicionais']) ? $_POST['custos_adicionais'] : '';
         $valor_orcamento = isset($_POST['valor_orcamento']) ? $_POST['valor_orcamento'] : '';
@@ -138,7 +140,8 @@
                         'incoming_value' => $valor_receber,
                         'aditional_value_per_hour' => $valor_adicional,
                         'km' => floatval($km),
-                        'incoming_value_per_km' => floatval($valor_em_km),
+                        'incoming_value_per_km' => floatval($valor_em_km_receber),
+                        'value_km'=>floatval($valor_em_km),
                         'aditional_cousts' => $custo_adicional,
                         'date_' => $data,
                         'value_budget' => $valor_orcamento,
@@ -153,7 +156,8 @@
                         'month_' => $realMonth['month'],
                         'he_tec' => $he_tec,
                         'status_budget' => $budget_state,
-                        'service_order'=>$rat
+                        'service_order'=>$rat,
+                        'employer_incoming_value'=>$emp_orcamento_receber
                     )
                 );
             }

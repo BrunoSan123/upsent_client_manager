@@ -599,6 +599,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
           const solutionObservation=document.querySelectorAll(".solution-observation")
           const featuredValue=document.querySelectorAll(".valor_faturado")
           const budget_state = document.querySelectorAll(".budget_state")
+          const incoming_km_value=document.querySelectorAll(".valor_em_km_rcv")
 
           document.cookie = `descritivo_ortcamento=${emp_budget[i].value}`;
           document.cookie = `projeto=${emp_project[i].value}`;
@@ -616,6 +617,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
           document.cookie =`observacao_solution=${solutionObservation[i].value}`;
           document.cookie =`valor_faturado=${featuredValue[i].value}`;
           document.cookie =`orcamento_status=${budget_state[i].value}`;
+          document.cookie=`valor_km_rcv=${incoming_km_value[i].value}`;
           updatePopDesc[i].classList.remove("reveal");
         });
       });

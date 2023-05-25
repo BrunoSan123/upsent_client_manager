@@ -288,6 +288,7 @@ echo "</div>";
                     $solution_observation = $_COOKIE['observacao_solution'];
                     $featured_value = $_COOKIE['valor_faturado'];
                     $budget_state = $_COOKIE['orcamento_status'];
+                    $incoming_km_value=$_COOKIE['valor_km_rcv'];
                     echo $solution_observation;
                     echo $featured_value;
                     echo $budget_state;
@@ -325,7 +326,11 @@ echo "</div>";
                             'budget_describe' => $budget_describe,
                             'solution_observation' => $solution_observation,
                             'employer_featured_value' => $featured_value,
-                            'status_budget' => $budget_state
+                            'status_budget' => $budget_state,
+                            'km'=>$km,
+                            'value_km'=>$km_value,
+                            'incoming_value_per_km '=>$incoming_km_value
+
                         ),
                         array(
                             'task_id' => $resulte->id
@@ -357,6 +362,7 @@ echo "</div>";
                 <input type="text" name="valor_receber" class="valor_receber" id="valor_receber" placeholder="valor a receber" value="<?php echo $emp_report[0]->incoming_value ?>">
                 <input type="text" name="valor_adicional" class="valor_adicional" id="valor_adicional" placeholder="valor adicional" value="<?php echo $emp_report[0]->aditional_value_per_hour ?>">
                 <input type="text" name="km" class="km" id="km" placeholder="km" value="<?php echo $emp_report[0]->km ?>">
+                <input type="text" name="valor_em_km_rcv" class="valor_em_km_rcv" id="valor_em_km_rcv" placeholder="valor em KM a receber" value="<?php echo $emp_report[0]->incoming_value_per_km ?>">
                 <input type="text" name="valor_em_km" class="valor_em_km" id="valor_em_km" placeholder="valor em KM" value="<?php echo $emp_report[0]->value_km ?>">
                 <input type="text" name="custos_adicionais" class="custos_adicionais" id="custos_adicionais" placeholder="Custos adicionais" value="<?php echo $emp_report[0]->aditional_cousts ?>">
                 <input type="text" name="valor_orcamento" class="valor_orcamento" id="valor_orcamento" placeholder="Valor do Orçamento" value="<?php echo $emp_report[0]->value_budget ?>">
